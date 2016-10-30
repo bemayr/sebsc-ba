@@ -1,4 +1,5 @@
-# Bachelorarbeit - Der Einsatz von Docker zur Verbesserung des Softwareentwicklerworkflows
+# Bachelorarbeit (von Bernhard Mayr)
+## Der Einsatz von Docker zur Verbesserung des Softwareentwicklerworkflows
 
 ## Tools
 - [lead.to](http://lead.to/amazon/en/) (Convert Amazon Book entries to BibTex compliant format)
