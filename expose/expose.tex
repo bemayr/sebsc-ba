@@ -1,0 +1,87 @@
+\documentclass[a4paper, parindent, ngerman]{scrreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{babel}
+\usepackage{enumitem} %numbered lists (http://tex.stackexchange.com/questions/126754/numbers-in-nested-list)
+
+\usepackage[babel, german=quotes]{csquotes}
+\usepackage[style=authoryear-icomp]{biblatex}
+\bibliography{../literature}
+
+%%\usepackage{indentfirst}
+
+\begin{document}
+
+\title{Exposé zur Bachelorarbeit}
+\subtitle{Der Einsatz von Docker zur Verbesserung des Workflows\\für Softwareentwickler}
+\author{Bernhard Mayr}
+\maketitle
+
+%%\tableofcontents
+
+\chapter{Motivation \& Zielsetzung}
+Viele tägliche Aufgaben des Softwareentwicklers sind Arbeitsabläufe, die sehr schnell zur Routine werden, sich jedoch mit einigen Parametern automatisieren ließen. Der Vorteil dieser Automatisierung liegt in der Reproduzierbarkeit und daraus resultierenden verminderten Fehleranfälligkeit.
+Automatisierte Workflows auf Docker-Container-Basis bieten hier eine zusätzliche Abstraktionsschicht, wodurch der Aspekt der  \emph{Betriebssystemunterschiede} beinahe verschwindet. Dies ist insbesondere bei Webprojekten von großem Vorteil, da ein stark heterogenes Entwicklerteam mit den gleichen Werkzeugen kollaborieren kann, diese allerdings nicht auf jedem Rechner nativ installiert und konfiguriert sein müssen.
+Diese leichtgewichtige Virtualisierung ermöglicht auch neue Szenarien der plattformübergreifenden Entwicklung, da der Erstellungsprozess von Software in Container verlegt werden kann. Das Kompilieren von C++-Quelltexten mit einem containerbasierten GNU GCC Compiler unter Windows war der Anlass für mich, neue Anwendungsmöglichkeiten für Docker zu finden und diese Bachelorarbeit zu schreiben.
+Ein weiterer Vorteil der Containerarchitektur ist, dass die Infrastruktur der Anwendung als Quelltext versioniert und in das Projekt integriert wird. Dadurch verkürzt sich die Einarbeitungszeit neuer Mitarbeiter und die Anwendung kann in einer sehr produktionsähnlichen Umgebung entwickelt und getestet werden.
+Im Zusammenhang mit Docker fallen wiederholt die Begriffe Vagrant, Chef, Puppet, Ansible, weshalb ein wichtiger Teil der Schrift auch die Unterschiede dieser Werkzeuge zu Docker, sowie optimale Kombinationsmöglichkeiten darstellt.
+
+Das Ziel der Bachelorarbeit ist eine Übersicht der möglichen Verbesserungen, die sich durch den Einsatz von Docker im täglichen Entwicklerworkflow ergeben. Durch den theoretischen Basisteil, der Vergleiche zum Konfigurationsmanagement, insbesondere der herkömmlichen VM-basierten Automatisierung zieht, soll die Arbeit auch dazu anregen, neue Ideen für den Einsatz von Docker zu entwickeln.
+
+\chapter{Inhaltsverzeichnis}
+Die Zahlen in Klammern geben den Umfang des Kapitels in der Anzahl der Seiten an.
+
+\begin{enumerate}[label*=\arabic*.]
+    \item Virtualisierung (8--11)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Beweggründe \& Geschichte (2)
+        \item Betriebssystemvirtualisierung (3)
+        \item Containervirtualisierung (4)
+    \end{enumerate}
+    \item Konfigurationsmanagement (4--7)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Vagrant (2)
+        \item Chef (1)
+        \item Puppet (1)
+        \item Ansible (1)
+    \end{enumerate}
+    \item Docker (9--11)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Geschichte, Aufbau \& Plattformen (3)
+        \item Komponenten des Docker-Systems (3)
+        \item DSL der Dockerfiles (2)
+        \item Multi-Container Anwendungen (2)
+    \end{enumerate}
+    \item Szenarien für den Softwareentwickler-Workflow (12--15)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Softwareevaluierung (2)
+        \item Verbesserung des Build-Prozesses (3)
+        \item Testen mithilfe von Containern (2)
+        \item Plattformübergreifende Kompilierung (2)
+        \item IDE as a Container (3)
+        \item Replikation der Produktionsumgebung (3)
+    \end{enumerate}
+\end{enumerate}
+
+
+\chapter{Vorläufige Literaturliste}
+
+\begingroup
+\renewcommand{\cleardoublepage}{}
+\renewcommand{\clearpage}{}
+\nocite{*}
+\printbibliography[heading=none]{}
+\endgroup
+
+\chapter{Grober Terminplan}
+\begin{tabular}{ll}
+Anfang Oktober: & Abgabe Exposé\\
+Mitte Oktober: & Leseprobe\\
+Anfang Dezember: & Fertigstellung der theoretischen Erklärungen\\
+Mitte Jänner: & Implementierung der konkreten Beispiele\\
+Anfang Februar: & Erstversion der Schrift\\
+Ende Februar: & Einarbeitung der Korrekturen und Abgabe der finalen Version
+\end{tabular}
+
+\end{document}
