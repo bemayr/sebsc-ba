@@ -1,0 +1,27 @@
+\documentclass[a4paper, ngerman]{scrreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{babel}
+
+\usepackage[babel, german=quotes]{csquotes}
+\usepackage[backend=biber, style=authoryear-icomp, sortlocale=de_DE,]{biblatex}
+\bibliography{../literature}
+
+
+%%% ---------- Document Data ----------
+\title{Bachelorarbeit}
+\subtitle{Der Einsatz von Docker zur Verbesserung des Workflows\\für Softwareentwickler}
+\author{Bernhard Mayr}
+
+\begin{document}
+\maketitle
+\include{front/kurzfassung}
+\include{front/abstract}
+\tableofcontents
+\include{chapters/virtualisierung}
+\include{chapters/konfigurationsmanagement}
+\include{chapters/docker}
+\include{chapters/anwendungsszenarien}
+\printbibliography[heading=none]{}
+\end{document}
