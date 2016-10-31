@@ -1,5 +1,5 @@
 %%% ----- general packages and settings ----- %%%
-\documentclass[a4paper, ngerman, bibliography=totoc, listof=totoc]{scrreprt}
+\documentclass[a4paper, ngerman, bibliography=totoc]{scrreprt}  %%, listof=totoc
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -18,7 +18,8 @@
 %%% ----- listings ----- %%%
 \usepackage{color}
 \usepackage{listings}
-\renewcommand*{\lstlistlistingname}{Quelltexte}
+\renewcommand{\lstlistingname}{Quelltext}
+\renewcommand*{\lstlistlistingname}{Quelltextverzeichnis}
 
 \definecolor{strings}{rgb}{0.69, 0.196, 0.267}
 \definecolor{comments}{rgb}{0.247, 0.518, 0.173}
@@ -26,16 +27,21 @@
 \definecolor{linenumbers}{rgb}{0.25, 0.25, 0.25}
 
 \lstset{ %
-  keywordstyle=\color{keywords}\bfseries,
-  stringstyle=\color{strings},
+  belowcaptionskip=1\baselineskip{},
+  breaklines=true,
+  captionpos=b,
   commentstyle=\color{comments},
+  keywordstyle=\color{keywords}\bfseries,
   morecomment=[s][\color{comments}]{/**}{*/},
   numbers=left,
-  numberstyle=\tiny\color{linenumbers},
   numbersep=16pt,
-  tabsize=2,
-  captionpos=b
+  numberstyle=\tiny\color{linenumbers},
+  stringstyle=\color{strings},
+  tabsize=2
 }
+
+%%% ----- graphics ----- %%%
+\usepackage{graphicx}
 
 
 %%% ---------- Document Data ----------
@@ -52,7 +58,7 @@
 \include{chapters/konfigurationsmanagement}
 \include{chapters/docker}
 \include{chapters/anwendungsszenarien}
-
+\listoffigures{}
 \lstlistoflistings{}
 \printbibliography{}
 \end{document}
