@@ -1,12 +1,24 @@
+%%% ----- general packages and settings ----- %%%
 \documentclass[a4paper, ngerman]{scrreprt}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{babel}
 
+%%% ----- bibliography ----- %%%
 \usepackage[babel, german=quotes]{csquotes}
 \usepackage[backend=biber, style=authoryear-icomp, sortlocale=de_DE,]{biblatex}
 \bibliography{../literature}
+
+%%% ----- references (prettyref: http://strobelstefan.org/?p=145) ----- %%%
+\usepackage{prettyref}
+\usepackage{titleref}
+%%% Für Abschnitte %%%
+\newrefformat{sec}{siehe Abschnitt~\ref{#1} \glqq\titleref{#1}\grqq\ auf Seite~\pageref{#1}}
+%%% Für Abbildungen %%%
+\newrefformat{fig}{siehe Abb.~\ref{#1} \glqq\titleref{#1}\grqq\ auf Seite~\pageref{#1}}
+%%% Für Tabellen %%%
+\newrefformat{tab}{siehe Tab.~\ref{#1} \glqq\titleref{#1}\grqq\ auf Seite~\pageref{#1}}
 
 
 %%% ---------- Document Data ----------
