@@ -1,5 +1,5 @@
 %%% ----- general packages and settings ----- %%%
-\documentclass[a4paper, ngerman]{scrreprt}
+\documentclass[a4paper, ngerman, bibliography=totoc, listof=totoc]{scrreprt}
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
@@ -16,7 +16,26 @@
 \usepackage{cleveref}
 
 %%% ----- listings ----- %%%
+\usepackage{color}
 \usepackage{listings}
+\renewcommand*{\lstlistlistingname}{Quelltexte}
+
+\definecolor{strings}{rgb}{0.69, 0.196, 0.267}
+\definecolor{comments}{rgb}{0.247, 0.518, 0.173}
+\definecolor{keywords}{rgb}{0.114, 0.180, 0.992}
+\definecolor{linenumbers}{rgb}{0.25, 0.25, 0.25}
+
+\lstset{ %
+  keywordstyle=\color{keywords}\bfseries,
+  stringstyle=\color{strings},
+  commentstyle=\color{comments},
+  morecomment=[s][\color{comments}]{/**}{*/},
+  numbers=left,
+  numberstyle=\tiny\color{linenumbers},
+  numbersep=16pt,
+  tabsize=2,
+  captionpos=b
+}
 
 
 %%% ---------- Document Data ----------
@@ -33,5 +52,7 @@
 \include{chapters/konfigurationsmanagement}
 \include{chapters/docker}
 \include{chapters/anwendungsszenarien}
-\printbibliography[]{}
+
+\lstlistoflistings{}
+\printbibliography{}
 \end{document}
