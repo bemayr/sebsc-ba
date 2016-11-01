@@ -54,16 +54,30 @@ Der Vagrantfile beschreibt, dass die Box mit dem Namen \emph{hashicorp/precise64
 \lstinputlisting[caption=Vagrantfile, language=Ruby]{listings/Vagrantfile}
 \label{lst:vagrantfile}
 
-Vagrant dient also zum Verwalten von virtuellen Maschinen, im besondern und standardmäßigen Einsatzzweck, dem Verwalten von virtuellen Maschinen für Enwickler, die die Produktionsumgebung spiegeln und ein plattformunabhängiges Entwickeln ermöglichen.
+Vagrant dient also zum Verwalten von virtuellen Maschinen, im besonderen und standardmäßigen Einsatzzweck, dem Verwalten von virtuellen Maschinen für Entwickler, die die Produktionsumgebung spiegeln und ein plattformunabhängiges Entwickeln ermöglichen.
 Ein besonders nützlicher Anwendungsfall für Vagrant-Boxen sind Legacy-Systeme, für die eine vorkonfigurierte Entwicklungsumgebung benötigt wird, die allerdings auf keinem aktuellen Entwicklerrechner mehr verwendet wird.
 So kann für einfache Bug-Fixes eine Vagrant-Entwicklerbox gestartet werden, ohne dass am Entwicklerrechner nicht mehr benötigte Werkzeuge installiert sein müssen.
 
 
 \subsection{Chef}
 \label{sub:chef}
+Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung. Daher konkurriert Chef mit den nächsten drei beschriebenen Werkzeugen, indem sie versuchen, dasselbe Problem zu lösen.
+
+\autocite[34\psqq]{Wolff201604} liefert eine sehr gute und prägnante Einführung in das Werkzeug Chef.
+Im Gegensatz zu einer Sammlung von Shell-Skripten, liefert Chef keinen Ablaufplan für das Erstellen eines Systems, sondern erstellt auf Basis gewisser Anforderungen Anweisungen, die das System in den Endzustand konfigurieren.
+Dies hat den Vorteil, dass Sonderfälle minimiert werden, zum Beispiel ein schon vorhandenes veraltetes System muss nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen aktuellen Zustand gebracht werden.
+Da das System auch nach mehrmaligem Ausführen gleich aussieht, spricht man von einer idempodenten Installationsprozedur.
+
+Chef verwendet ebenso wie Vagrant eine Ruby-DSL, die in den sogenannten Rezepten (Recipes) Verwendung findet.
+Diese Rezepte definieren die Anforderungen an die einzelnen Teile der Infrastruktur. Darin werden Konfigurationsdateien, Benutzer, Anwendungen, Plug-Ins und weitere Abhängigkeiten spezifiziert.
+Da diese Rezepte mit steigender Komplexität des Systems an Übersichtlichkeit verlieren, gibt es die Gruppierung dieser in Kochbücher (Cookbooks).
+Diese Kochbücher fassen mehrere Rezepte zusammen und bieten die Möglichkeit der Vorlagen (Templates) für Konfigurationsdateien, wodurch zahlreiche Server unterschiedlich parametrisiert werden können.
+Chef kann entweder in einem Solo-Operationsmodus betrieben werden, oder als Chef-Zero für Testzwecke, oder in einer Client-Server-Umgebung, in der ein Chef-Server das Management der Konfigurationen übernimmt.
+Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet und bestehende gewartet werden. Dazu existieren als Erweiterung zu Chef Werkzeuge wie Knife\footnote{https://docs.chef.io/knife.html}.
 
 \subsection{Puppet}
 \label{sub:puppet}
+Puppet wird noch etwas mehr, da ein Vergleich zu Chef gezogen wird, die restlichen Tools werden nur grob dargestellt, um deren Einsatzzweck zu dokumentieren.
 
 \subsection{Ansible}
 \label{sub:ansible}
