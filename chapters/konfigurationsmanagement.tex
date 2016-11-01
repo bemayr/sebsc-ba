@@ -1,32 +1,32 @@
 \chapter{Konfigurationsmanagement}
 \label{cha:konfigurationsmanagement}
-Im Zusammenhang mit Docker und dem Softwareentwicklungsprozess werden oftmals zahlreiche weitere Werkzeuge genannt, die ähnliche Einsatzgebiete haben, oder in Kombination mit Docker den Prozess erheblich verbessern können.
+Im Zusammenhang mit Docker und einem Softwareentwicklungsprozess werden oftmals zahlreiche weitere Werkzeuge genannt, die ähnliche Einsatzgebiete haben, oder in Kombination mit Docker den Prozess erheblich verbessern können.
 In den folgenden Abschnitten werden die bekanntesten und am weitest verbreiteten Werkzeuge und deren jeweilige Einsatzzwecke vorgestellt.
 Zusätzlich werden exemplarische Szenarien und die mögliche Kombination mit Docker aufgezeigt.
 
 Die vorgestellten Werkzeuge dienen der Konfiguration der Entwicklungs- und Produktionsumgebung.
 Wie~\autocite[29\psq]{Wolff201604} beschreibt, ließen sich diese Konfigurationen auch manuell vornehmen, doch damit treten erhebliche Probleme im Sinne der Testbarkeit, Reproduzierbarkeit und Automatisierung auf.
 Ein noch größeres Problem stellt das implizite Wissen der Entwickler dar, das bei einer händischen Konfiguration nur verbal weitergegeben wird.
-Auch dokumentierte Handbücher sind problematisch hinsichtlich der fehlerlosen Reproduzierbarkeit, da der Mensch im Gegensatz zum Computer dazu tendiert, fest definierte Abfolgen, trotz deren Spezifikation nicht fehlerlos durchzuführen, weshalb die Idee der Infrastrukturverwaltung in Versionskontrollsystemen entstanden ist.
+Auch dokumentierte Handbücher sind problematisch hinsichtlich der fehlerlosen Reproduzierbarkeit, da der Mensch im Gegensatz zum Computer dazu tendiert, fest definierte Abfolgen trotz genauer Spezifikation nicht fehlerlos durchzuführen, weshalb die Idee der Infrastrukturverwaltung in Versionsverwaltungssystemen entstanden ist.
 
 
 \section{Infrastructure as Code}
 \label{sec:infrastructureascode}
-Da jede Anwendung eine Umgebung zur Ausführung benötigt und gerade in den letzten Jahren die Komplexität der Anwendungen im Hinblick auf die Anzahl und das Zusammenspiel zahlreicher Komponenten stark zugenommen hat, gibt es den Ansatz des \emph{Infrastructure as Code}.
-Dabei werden wie zuvor bereits beschrieben, die Vorteile von Versionskontrollsystemen auf die Infrastruktur einer Anwendung angewandt.
+Da jede Anwendung eine Umgebung zur Ausführung benötigt und gerade in den letzten Jahren die Komplexität der Anwendungen im Hinblick auf die Anzahl und das Zusammenspiel zahlreicher Komponenten stark zugenommen hat, gibt es den Ansatz des \emph{Infrastructure as Code} \autocite{InfrastructureAsCode:online}.
+Dabei werden, wie zuvor bereits beschrieben, die Vorteile von Versionsverwaltungssystemen auf die Infrastruktur einer Anwendung angewandt.
 Die Anwendungsinfrasktruktur wird nicht mehr händisch aufgebaut, sondern in Quelltexten abgelegt, wodurch das tatsächliche Erstellen der Infrastruktur auf diverse Werkzeuge verteilt wird.
 
-Dadurch können wie in~\autocite[64\psqq]{Wolff201604} beschrieben, zahlreiche Vorteile erreicht werden.
+Dadurch können, wie in~\autocite[64\psqq]{Wolff201604} beschrieben, zahlreiche Vorteile erreicht werden:
 \begin{itemize}
     \item Das System wird reproduzierbar, da manuelle Konfigurationsfehler vermieden werden.
     \item Bei einer konsequenten Durchführung entstehen idente Test- und Produktionsumgebungen, die sich bis zur Netzwerkebene nicht unterscheiden.
-    \item Inkonsistente Systeme müssen nicht zwangsläufig repariert werden, wodurch sich Änderungen oder weitere Probleme ergeben können, sondern können entsorgt und sofort wieder aufgebaut werden.
-    \item Die Infrastruktur ist nun reviewfähig, wordurch Probleme frühzeitig entdeckt werden.
-    \item Wenn zusätzlich zu Infrastructure as Code auch noch verstärkt mit Virtualisierungstechniken gearbeitet wird, lässt sich zu Zeiten mit sehr hoher Last aufgrund der replizierbaren Umgebung einfach skalieren.
-    \item Eine Dokumentation der gesamten Infrastruktur entsteht automatisch. Allerdings ohne, dass sie aktualisiert werden muss, denn der Infrastruktur-Quelltext ist die Dokumentation selbst zugleich.
+    \item Inkonsistent gewordene Systeme müssen nicht zwangsläufig repariert werden, wodurch sich Änderungen oder weitere Probleme ergeben können, sondern können entsorgt und sofort wieder aufgebaut werden.
+    \item Die Infrastruktur ist nun reviewfähig, wodurch Probleme frühzeitig entdeckt werden. Unter reviewfähig ist hier zu verstehen, dass die Infrastruktur aufgrund der Darstellung in Quelltext von dritter Seite geprüft und validiert werden kann.
+    \item Wenn zusätzlich zu Infrastructure as Code auch noch verstärkt mit Virtualisierungstechniken gearbeitet wird, lässt sich die Umgebung der Anwendung unter hoher Last aufgrund der replizierbaren Umgebung einfach skalieren. Dies bringt allerdings nur einen Vorteil, wenn die Anwendung auf eine horizontale Skalierung ausgelegt ist.
+    \item Eine Dokumentation der gesamten Infrastruktur entsteht automatisch. Allerdings ohne dass sie aktualisiert werden muss, denn der Infrastruktur-Quelltext ist zugleich die Dokumentation.
     \item Durch diese Selbstdokumentation wird auch gewährleistet, dass an jede Softwareversion auch die dazu benötigte Infrastrukturversion gebunden wird. Diese Tatsache vereinfacht das Testen und das Ausrollen der Software um ein Vielfaches, da die Anforderungen an die Umgebung bekannt sind. Voraussetzung dafür ist allerdings, dass sich der Anwendungs- und Infrastrukturquelltext in einem gemeinsamen oder zumindest verknüften Repository der Versionsverwaltung befinden.
 \end{itemize}
-Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur \emph{allerdings nur} an den Konfigurationsdateien geändert werden. Da die Infrastruktur auf Basis dieser Konfiguration erstellt wird, gibt es keinen Datenrückfluss aus den Systemen in die Konfiguration.
+Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur allerdings \emph{nur} an den Konfigurationsdateien geändert werden. Da die Infrastruktur auf Basis dieser Konfiguration erstellt wird, gibt es keinen Datenrückfluss aus den Systemen in die Konfiguration.
 
 
 \section{Werkzeuge}
@@ -34,50 +34,50 @@ Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur \emph
 \subsection{Vagrant}
 \label{sub:vagrant}
 Die folgenden Informationen und Quelltext-Beispiele sind aus \autocite{Vagrant:online} entnommen.
-Vagrant ist ein Verwaltungswerkzeug für virtuelle Maschinen (siehe~\vref{sec:betriebssystemvirtualisierung}).
-Die Idee von Vagrant ist, bestehende Virtualisierungslösungen wie VMware, VirtualBox oder AWS zu verwenden und darauf mit Werkzeugen die sich um die Bereitstellung von Software kümmern (vgl. \cref{sub:chef} oder \cref{sub:puppet}) fertige virtuelle Maschinen für Entwickler, Designer oder Infrastrukturmanager zu erstellen.
+Vagrant ist ein Verwaltungswerkzeug für virtuelle Maschinen (siehe~\cref{sec:betriebssystemvirtualisierung}).
+Die Idee von Vagrant ist, bestehende Virtualisierungslösungen wie VMware, VirtualBox oder AWS zu verwenden und darauf mit Werkzeugen, die sich um die Bereitstellung von Software kümmern (vgl. \cref{sub:chef} oder \cref{sub:puppet}), fertige virtuelle Maschinen für Entwickler oder Infrastrukturmanager zu erstellen.
 Aufgrund dieses Aufbaus können virtuelle Maschinen sehr einfach erweitert und daher generisch verwendet werden.
-Um nicht immer jede virtuelle Maschine komplett neu erstellen zu müssen, gibt es bereits vorgefertigte \emph{Boxen}, die als Basis verwendet werden können.
+Um nicht immer jede virtuelle Maschine komplett neu erstellen zu müssen, gibt es in Vagrant bereits vorgefertigte \emph{Boxen}, die als Basis verwendet werden können.
 
-Vagrant verwendet dazu eine eigene auf Ruby basierende DSL, die in den sogenannten Vagrantfiles Einsatz findet.
-Diese Datei wird mit dem Quelltext mitversioniert und bietet den Entwicklern reproduzierbare, portable und plattformunabhängige Entwicklungsgeräte.
-Das Konzept der Vagrantfiles ist auch in Docker (siehe~\vref{sec:dockerfiles}) wiederzufinden.
-Dadurch verliert der bekannte Satz \emph{''But it works on my machine.''} stark an Bedeutung und Relevanz.
-Anwendungen, die in der von Vagrant zur Vefügung gestellten Umgebung laufen, laufen auch immer in einer identen Umgebung, die sehr einfach mit Vagrant zur Verfügung gestellt werden können.
+Vagrant verwendet dazu eine eigene auf Ruby basierende \emph{Domain Specific Language} (DSL), die in den so genannten \emph{Vagrantfiles} Einsatz findet.
+Das Vagrantfile wird mit dem Quelltext mitversioniert und bietet den Entwicklern reproduzierbare, portable und plattformunabhängige Entwicklungsgeräte.
+Das Konzept der Vagrantfiles ist auch in Docker (siehe~\cref{sec:dockerfiles}) wiederzufinden.
+Dadurch verliert der bekannte Satz ``But it works on my machine!'' stark an Bedeutung und Relevanz.
+Anwendungen, die in der von Vagrant zur Vefügung gestellten Umgebung laufen, laufen immer auch in einer identen Umgebung, die sehr einfach mit Vagrant zur Verfügung gestellt werden kann.
 
-\subsubsection{Beispiel eines Apache Webservers mit Vagrant}
-Mit den folgenden zwei Quelltextfragmenten wird ein Apache Webserver in einer virtuellen Maschine gestartet.
+\subsubsection{Beispiel eines Apache-Webservers mit Vagrant}
+Mit den folgenden Skripten wird ein Apache-Webserver in einer virtuellen Maschine gestartet.
 Das erste Skript ist ein ausführbares Shell-Skript, welches den Apache-Webserver installiert und vom Vagrantfile verwendet wird.
-\lstinputlisting[caption=bootstrap.sh, language=bash]{listings/bootstrap.sh}
+\lstinputlisting[caption=Skript zum Installieren des Apache-Webservers (bootstrap.sh), language=bash]{listings/bootstrap.sh}
 \label{lst:vagrant-bootstrap}
-Der Vagrantfile beschreibt, dass die Box mit dem Namen \emph{hashicorp/precise64} verwendet wird und zum Erstellen der fertigen virtuellen Maschine ein Shell-Skript namens \emph{bootstrap.sh} ausgeführt werden soll.
-\lstinputlisting[caption=Vagrantfile, language=Ruby]{listings/Vagrantfile}
-\label{lst:vagrantfile}
+Der Vagrantfile in \cref{lst:vagrantfile} beschreibt, dass die Box mit dem Namen \emph{hashicorp/precise64} verwendet wird und zum Erstellen der fertigen virtuellen Maschine ein Shell-Skript namens \emph{bootstrap.sh} ausgeführt werden soll.
+Der Parameter \lstinline{"2"} in der ersten Zeile gibt die Version des Vagrant-Konfigurationsobjekts an.
+Dadurch kann Vagrant die Rückwärtskompatibilität zu älteren Parametern gewährleisten.
+\lstinputlisting[caption=Vagrantfile,label={lst:vagrantfile}, language=Ruby]{listings/Vagrantfile}
 
-Vagrant dient also zum Verwalten von virtuellen Maschinen, im besonderen und standardmäßigen Einsatzzweck, dem Verwalten von virtuellen Maschinen für Entwickler, die die Produktionsumgebung spiegeln und ein plattformunabhängiges Entwickeln ermöglichen.
-Ein besonders nützlicher Anwendungsfall für Vagrant-Boxen sind Legacy-Systeme, für die eine vorkonfigurierte Entwicklungsumgebung benötigt wird, die allerdings auf keinem aktuellen Entwicklerrechner mehr verwendet wird.
-So kann für einfache Bug-Fixes eine Vagrant-Entwicklerbox gestartet werden, ohne dass am Entwicklerrechner nicht mehr benötigte Werkzeuge installiert sein müssen.
+Der Haupteinsatzzweck von Vagrant liegt im Verwalten von virtuellen Maschinen für Entwickler, die die Produktionsumgebung spiegeln und ein plattformunabhängiges Entwickeln ermöglichen.
+Ein besonders nützlicher Anwendungsfall für Vagrant-Boxen sind Legacy-Systeme, für die eine vorkonfigurierte Entwicklungsumgebung benötigt wird, die auf keinem aktuellen Entwicklerrechner mehr verwendet wird.
+So kann für einfache Bug-Fixes eine Vagrant-Entwicklerbox gestartet werden, ohne dass am Entwicklerrechner nicht mehr benötigte Werkzeuge installiert sein/werden müssen.
 
 
 \subsection{Chef}
 \label{sub:chef}
-Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung. Daher konkurriert Chef mit den nächsten drei beschriebenen Werkzeugen, indem sie versuchen, dasselbe Problem zu lösen.
+Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef~Software,~Inc.\ beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung. Daher konkurriert Chef mit den nächsten drei beschriebenen Werkzeugen, da diese versuchen, dasselbe Problem zu lösen.
 
 \autocite[34\psqq]{Wolff201604} liefert eine sehr gute und prägnante Einführung in das Werkzeug Chef.
-Im Gegensatz zu einer Sammlung von Shell-Skripten, liefert Chef keinen Ablaufplan für das Erstellen eines Systems, sondern erstellt auf Basis gewisser Anforderungen Anweisungen, die das System in den Endzustand konfigurieren.
-Dies hat den Vorteil, dass Sonderfälle minimiert werden, zum Beispiel ein schon vorhandenes veraltetes System muss nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen aktuellen Zustand gebracht werden.
-Da das System auch nach mehrmaligem Ausführen gleich aussieht, spricht man von einer idempodenten Installationsprozedur.
+Im Gegensatz zu einer Sammlung von Shell-Skripten liefert Chef keinen Ablaufplan für das Erstellen eines Systems, sondern erstellt auf Basis gewisser Anforderungen Anweisungen, die das System in den Endzustand konfigurieren.
+Dies hat den Vorteil, dass Sonderfälle minimiert werden. Zum Beispiel muss ein schon vorhandenes veraltetes System nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen aktuellen Zustand gebracht werden.
 
-Chef verwendet ebenso wie Vagrant eine Ruby-DSL, die in den sogenannten Rezepten (Recipes) Verwendung findet.
-Diese Rezepte definieren die Anforderungen an die einzelnen Teile der Infrastruktur. Darin werden Konfigurationsdateien, Benutzer, Anwendungen, Plug-Ins und weitere Abhängigkeiten spezifiziert.
-Da diese Rezepte mit steigender Komplexität des Systems an Übersichtlichkeit verlieren, gibt es die Gruppierung dieser in Kochbücher (Cookbooks).
-Diese Kochbücher fassen mehrere Rezepte zusammen und bieten die Möglichkeit der Vorlagen (Templates) für Konfigurationsdateien, wodurch zahlreiche Server unterschiedlich parametrisiert werden können.
-Chef kann entweder in einem Solo-Operationsmodus betrieben werden, oder als Chef-Zero für Testzwecke, oder in einer Client-Server-Umgebung, in der ein Chef-Server das Management der Konfigurationen übernimmt.
+Chef verwendet ebenso wie Vagrant eine Ruby DSL, die in den so genannten \emph{Rezepten} (\emph{Recipes}) Verwendung findet.
+Diese Rezepte definieren die Anforderungen an die einzelnen Teile der Infrastruktur. Darin werden Konfigurationsdateien, Benutzer, Anwendungen, Plug-ins und weitere Abhängigkeiten spezifiziert.
+Da diese Rezepte mit steigender Komplexität des Systems an Übersichtlichkeit verlieren, gibt es die Gruppierung dieser in \emph{Kochbücher} (\emph{Cookbooks}).
+Diese Kochbücher fassen mehrere Rezepte zusammen und bieten die Möglichkeit der \emph{Vorlagen} (\emph{Templates}) für Konfigurationsdateien, wodurch zahlreiche Server unterschiedlich parametrisiert werden können.
+Chef kann entweder in einem Solo-Operationsmodus betrieben werden oder als Chef Zero für Testzwecke. Zusätzlich gibt es auch die Option einer Client-Server-Umgebung, in der ein Chef Server das Management der Konfigurationen übernimmt.
 Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet und bestehende gewartet werden. Dazu existieren als Erweiterung zu Chef Werkzeuge wie Knife\footnote{https://docs.chef.io/knife.html}.
 
 \subsection{Puppet}
 \label{sub:puppet}
-Puppet wird noch etwas mehr, da ein Vergleich zu Chef gezogen wird, die restlichen Tools werden nur grob dargestellt, um deren Einsatzzweck zu dokumentieren.
+\emph{Anmerkung:} Puppet wird noch etwas genauer beschrieben, da ein Vergleich zu Chef gezogen wird. Die restlichen Tools werden nur grob dargestellt, um deren Einsatzzweck zu dokumentieren.
 
 \subsection{Ansible}
 \label{sub:ansible}
@@ -97,6 +97,6 @@ Puppet wird noch etwas mehr, da ein Vergleich zu Chef gezogen wird, die restlich
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.9\linewidth,trim=190 160 190 160,clip]{images/cliffhanger}
-    \caption{Das Zusammenspiel der Konfigurationsmanagementwerkzeuge}
+    \caption{Das Zusammenspiel der Werkzeuge zum  Konfigurationsmanagement}
 \label{fig:konfigurationsmanagement-kombinationen}
 \end{figure}

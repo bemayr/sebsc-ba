@@ -10,10 +10,11 @@
 \usepackage[backend=biber, style=alphabetic-verb]{biblatex}
 \bibliography{literatur}
 
-%%% ----- references ----- %%%
+%%% ----- references (http://tex.stackexchange.com/a/83051) ----- %%%
 \usepackage{varioref}
 \usepackage{hyperref}
 \usepackage{cleveref}
+\crefname{lstlisting}{Quelltext}{Quelltext}
 
 %%% ----- listings ----- %%%
 \usepackage{color}
@@ -45,19 +46,30 @@
 
 
 %%% ---------- Document Data ----------
-\title{Bachelorarbeit}
-\subtitle{Der Einsatz von Docker zur Verbesserung des Workflows\\für Softwareentwickler}
+\title{Der Einsatz von Docker zur Verbesserung des Workflows für Softwareentwickler}
+\subtitle{Probekapitel zur Bachelorarbeit}
 \author{Bernhard Mayr}
+\date{Version 1.0}
 
 \begin{document}
 \maketitle
 \include{front/kurzfassung}
 \include{front/abstract}
+%%% --- TODO ---
+%% Ziel
+%% Aufgabenstellung
+%%%
 \tableofcontents
 \include{chapters/virtualisierung}
 \include{chapters/konfigurationsmanagement}
 \include{chapters/docker}
 \include{chapters/anwendungsszenarien}
+%%% --- TODO ---
+%% Erkenntnisse
+%% Resumee
+%% - Zusammenfassung
+%% - Ausblick
+%%%
 \listoffigures{}
 \lstlistoflistings{}
 \printbibliography{}
