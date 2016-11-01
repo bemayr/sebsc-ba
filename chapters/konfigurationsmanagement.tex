@@ -4,10 +4,10 @@ Im Zusammenhang mit Docker und dem Softwareentwicklungsprozess werden oftmals za
 In den folgenden Abschnitten werden die bekanntesten und am weitest verbreiteten Werkzeuge und deren jeweilige Einsatzzwecke vorgestellt.
 Zusätzlich werden exemplarische Szenarien und die mögliche Kombination mit Docker aufgezeigt.
 
-Die vorgestellten Werkzeuge dienen der Konfiguration der Entwicklungs- und Produktumgebung.
+Die vorgestellten Werkzeuge dienen der Konfiguration der Entwicklungs- und Produktionsumgebung.
 Wie~\autocite[29\psq]{Wolff201604} beschreibt, ließen sich diese Konfigurationen auch manuell vornehmen, doch damit treten erhebliche Probleme im Sinne der Testbarkeit, Reproduzierbarkeit und Automatisierung auf.
 Ein noch größeres Problem stellt das implizite Wissen der Entwickler dar, das bei einer händischen Konfiguration nur verbal weitergegeben wird.
-Auch dokumentierte Handbücher sind problematisch hinsichtlich der fehlerlosen Reproduzierbarkeit, weshalb die Idee der Infrastrukturverwaltung in Versionskontrollsystemen entstanden ist.
+Auch dokumentierte Handbücher sind problematisch hinsichtlich der fehlerlosen Reproduzierbarkeit, da der Mensch im Gegensatz zum Computer dazu tendiert, fest definierte Abfolgen, trotz deren Spezifikation nicht fehlerlos durchzuführen, weshalb die Idee der Infrastrukturverwaltung in Versionskontrollsystemen entstanden ist.
 
 
 \section{Infrastructure as Code}
@@ -45,13 +45,6 @@ Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur \emph
 \subsection{Puppet}
 \label{sub:puppet}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.9\linewidth]{images/dummy}
-    \caption{some dummy}
-\label{fig:dummy}
-\end{figure}
-
 \subsection{Ansible}
 \label{sub:ansible}
 
@@ -67,3 +60,9 @@ Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur \emph
 
 \section{Kombinationsmöglichkeiten der Werkzeuge}
 \label{sec:werkzeugkombinationsmoeglichkeiten}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth,trim=190 160 190 160,clip]{images/cliffhanger}
+    \caption{Das Zusammenspiel der Konfigurationsmanagementwerkzeuge}
+\label{fig:konfigurationsmanagement-kombinationen}
+\end{figure}
