@@ -4,10 +4,11 @@
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
 \usepackage{babel}
+\usepackage{microtype} % fixes line breaks
 
 %%% ----- bibliography ----- %%%
 \usepackage[babel, german=quotes]{csquotes}
-\usepackage[backend=biber, style=alphabetic-verb]{biblatex}
+\usepackage[backend=biber, style=alphabetic-verb]{biblatex} %
 \bibliography{literatur}
 
 %%% ----- references (http://tex.stackexchange.com/a/83051) ----- %%%
@@ -43,7 +44,6 @@
 
 %%% ----- graphics ----- %%%
 \usepackage{graphicx}
-
 
 %%% ---------- Document Data ----------
 \title{Der Einsatz von Docker zur Verbesserung des Workflows für Softwareentwickler}
