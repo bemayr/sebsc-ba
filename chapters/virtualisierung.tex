@@ -1,14 +1,59 @@
 \chapter{Virtualisierung}
 \label{cha:virtualisierung}
-Die Virtualisierung von IT-Systemen entwickelte sich in den letzten Jahren zur Standardlösung bei dem Betrieb von Server-Software, doch 2016 stagnierte der Erwerb von neuen Virtualisierungslizenzen zum ersten Mal. (GARTNER!!!)
-Zur Virtualisierung führte die Tatsache, dass leistungsfähigere Systeme, schnellere Technologiewechsel und sich ständig ändernde Voraussetzungen durch die Verwendung von rein hardwarebasierten Systemen zu teuer geworden ist. (VMWARE + IBM!!!)
+Die Virtualisierung von IT-Systemen entwickelte sich in den letzten Jahren zur Standardlösung bei dem Betrieb von Server-Software, doch 2016 stagnierte der Erwerb von neuen Virtualisierungslizenzen zum ersten Mal. \autocite{Gartner-Magic-Quadrant2016:online}
+Zur Virtualisierung führte die Tatsache, dass leistungsfähigere Systeme, schnellere Technologiewechsel und sich ständig ändernde Voraussetzungen durch die Verwendung von rein hardwarebasierten Systemen zu teuer geworden ist.~\autocite{vmware-virtualization-history:online}
+
 Warum Containertechnologien der nächste Schritt sind, welche Rolle Docker darin einnimmt und wohin diese Technologie noch führen kann, wird im folgenden Kapitel erläutert.
 \section{Beweggründe und Geschichte}
 \label{sec:virtualisierungsgeschichte}
+(VMWARE + PAPER + IBM) In den 1960er-Jahren begann IBM mit dem Einsatz von Großrechnern, sogenannten Mainframes.
+Da die Kosten für derartige Computersysteme den Einsatz eines einzelnen Rechners nicht gerechtfertigen konnten, wurden auf einem Mainframe mehrere Systeme parallel virtuell betrieben.
+Dadurch konnte die Rechnenleistung effizienter ausgenutzt werden, sowie Versionsinkompatibiläteten durch den parallelen Betrieb alter und neuer Mainframes vermieden werden.
+Als im Laufe der 80er-Jahre die x86-Architektur den Aufschwung erlebte stand die Virtualisierung still.
+Der günstige Preis und die fehlende Virtualisierungsunterstützung machten es unnötig und unmöglich Endgeräte zu virtualisieren.
+Erst mit der wieder steigenden Rechenleistung und des Erscheinens von Mehrkernprozessoren hat die IT-Virtualisierung wieder an Traktion gewonnen.
+In den letzten Jahren wird besonders durch die Cloud-Angebote alles Mögliche nur mehr virtuell betrieben.
+Von der  kompletten Netzwerkinfrastruktur, bis hin zum Speicher wird in modernen Rechnezentren (Amazon, Microsoft, \dots) alles virtualisiert.
+Die Analyse-Firma Gartner Inc.\ spricht von einem Virtualisierungsgrad von 75\% im Serverbereich \autocite{Gartner-Server-Virtualization:online}.
+Aspekte wie die einfache Provisionierung von virtualisierten Systemen führen dazu, dass beispielsweise horizontale Skalierung ohne großen Mehraufwand betrieben werden kann.
+Auch das Testen von Infrastrukturen wurde durch Virtualisierung ermöglicht.
+Es ist nicht mehr notwendig ein gesamtes IT-System temporär dem Testen zur Verfügung zu stellen, oder sogar ein solches eigenes anzuschaffen, stattdessen können die benötigten Ressourcen in der Cloud lediglich für den benötigten Zeitraum angemietet werden.
 % - IBM als Beginn der Virtualisierung (kurze Erklärung der Geschichte)
 % - Warum wird heutzutage virtualisiert (Cloud-Umgebungen, Skalierung, Ressourcenverteilung) + Gartner-Trends
-\subsubsection{Vorteile der Virtualisierung}
-\subsubsection{Nachteile der Virtualisierung}
+\subsubsection{Vorteile der Virtualisierung \autocite[198]{Baun2009}}
+Der kostensparendste Aspekt der Virtualisierung ist die Konsolidierung von Servern.
+Server, die nicht unter voller Last laufen, benötigen trotzdem Strom, Kühlung, Wartung und Infrastruktur.
+Durch Konsolidierung können nun ungenutzte Ressourcen genutzt werden, die zuvor lediglich Kostern verursachten.
+Virtualisierte Server bieten sind außerdem erheblich einfacher zu provisionieren.
+Wird ein neuer Server benötigt, können dazu bestehende, freie Ressourcen genützt werden, anstatt, dass weitere Hardware anzuschaffen ist.
+
+Wartungsaufgaben werden stark vereinfacht, da durch diverse Managementwerkzeuge viele Aufgaben automatisiert, sowie ohne einer Änderung an den physischen Systemen durchgeführt werden können.
+Dazu zählt auch die Live-Migration von virtuellen Maschinen.
+Diese können dadurch für den Endanwender unterbrechungsfrei und daher unbemerkt zwischen zwei Rechnern verschoben werden.
+So wird Wartung an der Hardware ermöglicht, ohne dass sich eine Downtime für die Benutzer ergibt, Voraussetzung dafür ist allerdings, dass Ressourcen im Rechenzentrum frei sind, auf die Systeme (temporär) migriert werden können.
+
+Durch Virtualisierung wird auch die Dimensionierung der Ressourcen erheblich vereinfacht, da lediglich eine ungefähre Menge an Rechenleistung initial zu schätzen ist, diese sich allerdings im Betrieb umverteilen lässt.
+So können Systeme, die ihre Leistungsgrenzen erreicht haben, oder bei weitem nicht nützen im laufenden Betrieb neu dimensioniert werden.
+Dazu kommt die vorhin beschriebene Live-Migration zum Einsatz.
+Laut \autocite{Hantelmann2008} können die Rechenzentrumskosten um 50\% reduziert werden, wohingegen die Anschaffungskosten neuer Hardware um bis zu 70\% verringert werden können.
+\autocite{Azure-Scaling:online} beschreibt Möglichkeiten zur automatischen Skalierung von Ressourcen in der Microsoft-Azure-Cloud.
+Dabei spielt Virtualisierung eine essentielle Rolle, da alle bei Azure gemieteten Ressourcen virtualisiert laufen.
+So kann in diesem Fall allerdings eine, für den Systemadministrator, angenehme Version der Dimensionierung erreicht werden, da die Azure-Cloud automatisch die Leistung der Ressourcen an die aktuelle Auslastung anpasst.
+
+Nicht nur durch Features wie die Live-Migration wird die Flexibilität in virtualisierten Rechenzentren erhöht.
+Virtuelle Maschinen bestehen aus wenigen Dateien, von denen sehr einfach Klone zum Backup erstellt werden können.
+Zusätzlich gibt es die Funktion von Snapshots, dabei wird ein Abbild einer virtuellen Maschine erstellt, das jederzeit wieder hergestellt werden kann.
+Dies ist besonders hilfreich, wenn es Snapshots von fertig konfigurierten, jedoch unbenutzten Systemen gibt, da damit fehlerhafte Maschinen sehr schnell wieder hergestellt werden können.
+
+Durch die Abschottung der virtuellen Maschinen gegeneinander können trotz der Virtualisierung hohe Service Level Agreements erreicht werden, da der Ausfall einer Maschine lediglich diese betrifft, das Hostsystem bleibt allerdings intakt.
+In einem Hochverfügbarkeitsszenario besteht auch die Möglichkeit, dass ein überwachendes System (Supervisor) den Ausfall erkennt und solch ein System auf einem anderen Knoten neu startet.
+
+\subsubsection{Nachteile der Virtualisierung \autocite[198]{Baun2009}}
+\begin{itemize}
+    \item Geringere Leistung
+    \item Hardwareanforderungen
+    \item Hostausfall
+\end{itemize}
 \section{Betriebssystemvirtualisierung}
 \label{sec:betriebssystemvirtualisierung}
 % - Abgrenzung zu Hardwarevirtualisierung + Warum sinnvoll?
