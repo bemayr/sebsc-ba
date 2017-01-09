@@ -1,3 +1,9 @@
+% --- Books ---
+% - https://www.amazon.de/Docker-Software-entwickeln-deployen-Containern/dp/386490384X/ref=sr_1_1?ie=UTF8&qid=1483784437&sr=8-1&keywords=docker
+% - https://www.amazon.com/Docker-Action-Jeff-Nickoloff/dp/1633430235/ref=sr_1_1?ie=UTF8&qid=1483784469&sr=8-1&keywords=docker
+% - https://www.amazon.com/Docker-Practice-Ian-Miell/dp/1617292729/ref=sr_1_10?ie=UTF8&qid=1483784469&sr=8-10&keywords=docker
+% - https://www.amazon.com/Developing-Docker-Jaroslaw-Krochmalski-ebook/dp/B01GEJKJ6A/ref=sr_1_33?ie=UTF8&qid=1483784510&sr=8-33&keywords=docker
+
 \chapter{Docker}
 \label{cha:docker}
 % - Warum ich Docker zur Containervirtualisierung gewählt habe?
@@ -7,6 +13,14 @@
 % - Docker Aufbau, LXC, usw...
 % - https://youtu.be/9CuClvKMt04?t=1m12s
 % - Plattformunterschiede, Docker-Toolbox, Native-Docker, mein Docker Setup
+% - Docker Windows 10
+%   - http://stackoverflow.com/questions/41338203/import-module-posh-docker-is-not-working
+%   - https://github.com/samneirinck/posh-docker
+%   - http://stackoverflow.com/questions/39133098/how-to-mount-a-windowss-folder-in-docker-using-powershell-or-cmd
+%   - http://superuser.com/questions/1051520/docker-windows-container-how-to-mount-a-host-folder-as-data-volume-on-windows
+%   - https://github.com/docker/for-win/issues/328
+%   - https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
+% - Clean up: https://lebkowski.name/docker-volumes/
 \section{Komponenten des Docker-Systems}
 \label{sec:docker-komponenten}
 % - swarm
@@ -25,14 +39,24 @@
 % - http://bitjudo.com/blog/2014/03/13/building-efficient-dockerfiles-node-dot-js/
 % - Example: https://nodejs.org/en/docs/guides/nodejs-docker-webapp/ (http://jdlm.info/articles/2016/03/06/lessons-building-node-app-docker.html)
 % - https://www.brandpending.com/2016/06/14/building-nodejs-with-npm-dependencies-into-a-docker-container-without-using-a-dockerfile/ ???
-\section{Multi-Container-Anwendungen}
+% - Faster Builds: http://thenewstack.io/understanding-the-docker-cache-for-faster-builds/
+% - Building good Images
+% - https://blog.replicated.com/2016/02/05/refactoring-a-dockerfile-for-image-size/
+% - https://nickjanetakis.com/blog/alpine-based-docker-images-make-a-difference-in-real-world-apps
+% - http://blog.xebia.com/create-the-smallest-possible-docker-container/
+
+% - ENTRYPOINT vs. CMD
+% - https://www.ctl.io/developers/blog/post/dockerfile-entrypoint-vs-cmd/
+% - http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
+% - http://www.projectatomic.io/docs/docker-image-author-guidance/
+\section{Multi-Container-Anwendungen} % - Namen überdenken!!!
 \label{sec:docker-multi-container-anwendungen}
 % - fig vs. docker-compose
 % - Bash-Skripte vs. docker-compose
 % - bei größeren Systemen auf Kapitel 1 (Orchestration) verweisen
 % - https://ypereirareis.github.io/blog/2015/05/04/docker-with-shell-script-or-makefile/
 % - http://codereview.stackexchange.com/questions/137877/shell-script-wrapper-for-docker-build-and-run
-% - https://github.com/JonathonReinhart/scuba
+% - https://github.com/JonathonReinhart/scuba -> Simple Container-Utilizing Build Apparatus
 % - https://blog.codeship.com/cross-platform-docker-development-environment/
 \section{Häufige Docker-Kommandos und deren Verwendung}
 \label{docker-verwendung}
