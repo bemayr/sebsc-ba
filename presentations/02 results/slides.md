@@ -4,14 +4,14 @@
 
 
 
-\                               ##         .
-\                         ## ## ##        ==
-\                      ## ## ## ## ##    ===
-\                  /"""""""""""""""""\\\_\_\_/ ===
-\             ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
-\                  \\\_\_\_\_\_\_ o           \_\_/
-\                    \\    \\         \_\_/
-\                     \\\_\_\_\_\\\_\_\_\_\_\_\_/
+\                                         ##         .
+\                                   ## ## ##        ==
+\                                ## ## ## ## ##    ===
+\                            /"""""""""""""""""\\\_\_\_/ ===
+\                       ~~~ {~~ ~~~~ ~~~ ~~~~ ~~~ ~ /  ===- ~~~
+\                            \\\_\_\_\_\_\_ o           \_\_/
+\                              \\    \\         \_\_/
+\                               \\\_\_\_\_\\\_\_\_\_\_\_\_/
 
 
 -> "Docker als unterstützendes Werkzeug <-
@@ -25,7 +25,7 @@
 
 --------------------------------------------------
 
--> # Erkenntnisse per Kapitel <-
+-> # Erkenntnisse <-
 
 ^
 1. Virtualisierung
@@ -60,34 +60,41 @@
 
 --------------------------------------------------
 
--> # Docker als Werkzeug (Anwendungsmöglichkeiten) <-
+-> # Plattformunabhängige CLI-Anwendungen <-
+
+> *Create Dockerfile for [mdp](https://github.com/visit1985/mdp)*
 
     FROM alpine:3.5
     MAINTAINER Bernhard Mayr <bernhard@mayr.io>
     ENV MDP_VERSION 1.0.9
     RUN apk update && \
         apk add make gcc [...] && \
-        # install mdp
-        mkdir -p /mdp && \
+        [...]
         wget -P /mdp https://github.com/visit1985/mdp/archive/$MDP_VERSION.tar.gz && \
         tar -xzf /mdp/$MDP_VERSION.tar.gz -C /mdp && \
         make -C /mdp/mdp-$MDP_VERSION && make -C /mdp/mdp-$MDP_VERSION install && \
         cp /mdp/mdp-$MDP_VERSION/sample.md /demo.md && \
         printf "#!/bin/sh\nsleep 0.1\n\$*\n" > /start.sh && chmod +x /start.sh && \
-        rm -rf /mdp && \
-        apk del make && apk del gcc
+        rm -rf /mdp && apk del make && apk del gcc
     
     WORKDIR /data
     ENTRYPOINT ["/start.sh"]
     CMD ["mdp", "/demo.md"]
 
---------------------------------------------------
 
--> # Creating Docker Images (for Non-Linux-Geeks)<-
+> *Integrate `mdp` into Windows (Create Powershell-"Alias")*
 
-> *Run Interactive Build Container*
+    docker build -t bemayr/mdp .
+    function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
+
+
+
+-> ## Creating Docker Images (for Non-(Linux-Geeks)) <-
+
+> *Run Interactive Container from Base-Image*
 
     docker run -it --rm alpine sh
+    ... # guess commands ;)
 
 
 --------------------------------------------------
@@ -97,7 +104,7 @@
 - Inhalt finalisiert
 - alle Quellen gesammelt und zugeordnet
 - Schrift ~50%
-- Beispiele ~85%
+- Anwendungsmöglichkeiten ~85%
 
 
 
