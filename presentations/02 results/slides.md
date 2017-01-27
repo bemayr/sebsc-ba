@@ -70,13 +70,6 @@ Entwicklung der [Homepage](http://ff-wartberg.mayr.io/) für die *Freiwillige Fe
 -> ## it can be used to run Jekyll with the proper tweaks. <-
 
 ^
-> *Frontend Build Task (inkl. Watch-Modus)*
-~~~
-    docker-compose up -d
-    docker-compose logs -f   # falls Ausgabe erwünscht ist
-~~~
-
-
 > *auf Basis von docker-compose.yml*
 ~~~
     version: '2' 
@@ -87,6 +80,14 @@ Entwicklung der [Homepage](http://ff-wartberg.mayr.io/) für die *Freiwillige Fe
         - "4000:4000" 
         volumes: 
         - .:/srv/jekyll
+~~~
+
+
+^
+> *Frontend Build Task (inkl. Watch-Modus)*
+~~~
+    docker-compose up -d
+    docker-compose logs -f   # falls Ausgabe erwünscht ist
 ~~~
 
 
