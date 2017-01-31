@@ -49,17 +49,24 @@ Durch die Abschottung der virtuellen Maschinen gegeneinander können trotz der V
 In einem Hochverfügbarkeitsszenario besteht auch die Möglichkeit, dass ein überwachendes System (Supervisor) den Ausfall erkennt und solch ein System auf einem anderen Knoten neu startet.
 
 \subsubsection{Nachteile der Virtualisierung \autocite[198]{Baun2009}}
-\begin{itemize}
-    \item Geringere Leistung
-    \item Hardwareanforderungen
-    \item Hostausfall
-% - Servervirtualisierung PDF
-\end{itemize}
-\section{Betriebssystemvirtualisierung}
-\label{sec:betriebssystemvirtualisierung}
+Da bei virtualisierten Systemen die Instruktionen auf vom virtuellen auf das Hostsystem umgesetzt werden müssen, ergibt sich ein Leistungsverlust.
+Dieser wird allerdings mit leistungsfähigeren Mehrkernprozessoren und durch Prozesservirtualisierung wie Intel® VT\footnote{http://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html} verschwindend gering.
+Die Prozessoren bieten native Virtualisierungstechniken an, bei denen die Befehle nicht mehr umgesetzt werden müssen, wodurch die Verringerung der Leistung auf unter 10\% \autocite{Hardt2005} sinkt.
+
+Ein wesentlich größeres Problem in der Virtualisierung stellen besondere Hardwareanforderungen dar.
+Authentifizierung über Hardware-Dongles oder die Ansteuerung von Legacy-Hardware ist in virtualisierten Umgebungen durch den fehlenden Direktzugriff auf die Hardware sehr schwierig bis nicht möglich.
+
+Besondere Vorsicht muss außerdem der Infrastruktur in den Rechenzentren zukommen, da bei einem Hostausfall in virtualisierten Umgebungen zahlreiche Systeme betroffen sind.
+Dieses Problem lässt sich durch redundante Installationen und gut durchdachte Ausfallkonzepte lösen, wobei hier die Vermeidung eines \emph{Single Point of Failures} (SPOF) höchste Priorität genießen muss.
+Damit ein redundantes System im Fehlerfall Wirkung zeigen kann, muss dieses vollredundant sein.
+Die Konzeption, Installation und der Betrieb eines solchen Systems erfordern eine hochwertige Infrastruktur und zusäzliches Detailwissen.
+
+
+\section{Servervirtualisierung}
+\label{sec:Servervirtualisierung}
 % - Abgrenzung zu Hardwarevirtualisierung + Warum sinnvoll?
 % - kurz das Rechtekonzept mit den Ringen erklären
-% - Vor- \& Nachteile bei Betriebssystemvirtualisierung
+% - Vor- \& Nachteile bei Servervirtualisierung
 %   - Speicherplatz
 %   - ganzes System kann, aber muss abstrahiert werden (Kernel, ...)
 % - http://winfwiki.wi-fom.de/index.php/Entwicklung,_aktueller_Stand_und_Zukunft_von_Virtualisierungsl%C3%B6sungen_im_Serverbereich#cite_note-0
