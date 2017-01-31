@@ -63,7 +63,39 @@ Die Konzeption, Installation und der Betrieb eines solchen Systems erfordern ein
 
 
 \section{Vollständige Virtualisierung}
-\label{sec:full-virtualization}
+\label{sec:vollständige-virtualisierung}
+\autocite{Baun2009} stellt dar, dass die vollständige Virtualisierung Gastsystemen eine gesamte virtuelle Umgebung zur Verfügung stellt.
+Weiters wird darin das Zusammenspiel der einzelnen Komponenten folgendermaßen beschrieben.
+Der \emph{Virtuelle Maschinenmonitor} (VMM) läuft auf dem Host-System und ist jene Komponente, die die virtuelle Umgebung zur Verfügung stellt.
+Dieses vollwertige System beinhaltet ein BIOS, sowie eine Abstraktion der gesamten Hardware, wodurch die Gast-Systeme nicht merken, dass sie virtualisiert werden.
+Zugriffe auf die Hardware werden vom VMM intelligent auf die Hardware des Hosts verteilt, oder über Hardware-Emulation zugänglich gemacht.
+Dieser Aufbau ist in \cref{fig:architektur-vollständige-virtualisierung} zu sehen.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth,clip]{images/vollständige-virtualisierung}
+    \caption{Architektur der vollständigen Virtualisierung}
+\label{fig:architektur-vollständige-virtualisierung}
+\end{figure}
+Einerseits zeigt die Abbildung, dass Anwendungen ohne Problem parallel zu den virtualisierten Systemen laufen können, andererseits wird verdeutlicht, dass jedes virtuelle System ein gesamtes Betriebssystem (Gast-OS) beinhaltet.
+Jegliche Kommunikation eines Gastsystems mit den Systemresourcen des Hosts läuft über den VMM, wodurch gewährleistet wird, dass dieser Zugriff kontrolliert werden kann.
+Dies stellt sicher, dass die virtuellen Maschinen voneinander abgeschottet sind und ein Ausfall eines Gastsystems die anderen nicht beeinflusst.
+
+Aus dieser hohen Abstraktion folgt, dass am Gastsystem keine Änderungen durchgeführt werden müssen und unterschiedliche Kernels parallel virtualisiert werden können.
+Lediglich die Prozessorarchitektur muss zusammenpassen.
+Der Vorteil eines gesamten Betriebssystems pro Gastsystem bringt allerdings den Nachteil mit sich, dass jedes dieser Systeme Speicher für den Kernel und das Betriebssystem belegt. Weiters ist ein Bootvorgang nötig, der die Verwendung zu Entwicklungszwecken verzögert.
+Allerdings gibt die vollständige Virtualisierung dem Entwickler die Möglichkeit, seine Software auf dem lokalen Rechner auf verschiedenen Betriebssystemen zu testen, oder Werkzeuge zu verwenden, die auf dem Host-System nicht verfügbar sind.
+Außerdem können vorgefertigte \emph{Basissysteme} (Snapshots) für die Entwickler bereitgestellt werden, um die Konfigurationszeit zu verkürzen und eine einheitliche Entwicklungsumgebung zu haben.
+Folgende Probleme treten hingegen in einer virtualisierten Entwicklungsumgebung auf:
+\begin{itemize}
+\item Updates müssen nun entweder doppelt durchgeführt werden, oder die Entwickler werden periodisch mit neuen Snapshots versorgt.
+\item Für die Daten und Konfigurationen der Entwickler muss ein Platz außerhalb der virtuellen Maschine gefunden werden. Besonders bei einem Snapshot-basierten Updateverfahren gehen durch die Verwendung eines neuen Snapshots alle Daten in der VM verloren. Die Konfiguration der Entwicklungsumgebung können idealerweise auf Netzwerklaufwerke verlegt werden und die Quelltexte sollten sich in einem Versionskontrollsystem befinden.
+\item Ein weiters Problem mit den Daten betrifft die Authentifizierung. Für SSH-Schlüssel für Versionskontrollsysteme und andere Zugangsdaten muss ebenfalls eine Möglichkeit geschaffen werden, diese in die virtuellen Maschinen zu bringen. 
+\item Entwicklungsumgebungen gelangen bei virtualisierten System schnell an die Performancegrenzen, wodurch die Produktivität der Mitarbeiter sinkt.
+\item Bei mehreren parallelen Projekten und damit verbundenen virtuellen Maschinen kann der Speicherplatz auf dem Host-System sehr knapp werden.
+\end{itemize}
+Wie sich die vollständige Virtualisierung für Entwickler in der Praxis verwenden lässt, wird in \cref{sub:vagrant} dargestellt.  
+
+Gartner Servervirtualisierung
 % - Abgrenzung zu Hardwarevirtualisierung + Warum sinnvoll?
 % - kurz das Rechtekonzept mit den Ringen erklären
 % - Vor- \& Nachteile bei Servervirtualisierung
@@ -74,6 +106,13 @@ Die Konzeption, Installation und der Betrieb eines solchen Systems erfordern ein
 % - https://www.gartner.com/doc/reprints?ct=160707&id=1-3B9FAM0&st=sb
 \section{Containervirtualisierung}
 \label{sec:containervirtualisierung}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth,clip]{images/vollständige-virtualisierung}
+    \caption{Architektur der vollständigen Virtualisierung}
+\label{fig:architektur-vollständige-virtualisierung}
+\end{figure}
+% - https://semaphoreci.com/community/tutorials/how-to-deploy-a-go-web-application-with-docker
 % - Grafik der Containervirtualisierung, Shared Host with mapped Syscalls
 % - Abschottung/Security
 % - Produkte (https://coreos.com/rkt/docs/latest/rkt-vs-other-projects.html)
