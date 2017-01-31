@@ -1,25 +1,27 @@
 \chapter{Virtualisierung}
 \label{cha:virtualisierung}
-Die Virtualisierung von IT-Systemen entwickelte sich in den letzten Jahren zur Standardlösung bei dem Betrieb von Server-Software, doch 2016 stagnierte der Erwerb von neuen Virtualisierungslizenzen zum ersten Mal. \autocite{Gartner-Magic-Quadrant2016:online}
-Zur Virtualisierung führte die Tatsache, dass leistungsfähigere Systeme, schnellere Technologiewechsel und sich ständig ändernde Voraussetzungen durch die Verwendung von rein hardwarebasierten Systemen zu teuer geworden ist.~\autocite{vmware-virtualization-history:online}
+Die Virtualisierung von IT-Systemen entwickelte sich in den letzten Jahren zur Standardlösung bei dem Betrieb von Server-Software, doch 2016 stagnierte der Erwerb von neuen Virtualisierungslizenzen zum ersten Mal.~\autocite{Gartner-Magic-Quadrant2016:online}
+Zur Virtualisierung führte die Tatsache, dass leistungsfähigere Systeme, schnellere Technologiewechsel und sich ständig ändernde Voraussetzungen durch die Verwendung von rein hardwarebasierten Systemen zu teuer wurde.~\autocite{vmware-virtualization-history:online}
 
 Warum Containertechnologien der nächste Schritt sind, welche Rolle Docker darin einnimmt und wohin diese Technologie noch führen kann, wird in diesem Kapitel erläutert.
 \section{Beweggründe und Geschichte}
 \label{sec:virtualisierungsgeschichte}
-(VMWARE + PAPER + IBM) In den 1960er-Jahren begann IBM mit dem Einsatz von Großrechnern, sogenannten Mainframes.
+Im folgenden Absatz wird die Geschichte der Virtualisierung auf Basis von \autocite{Baun2009} kurz dargestellt.
+In den 1960er-Jahren begann IBM mit dem Einsatz von Großrechnern, sogenannten Mainframes.~\autocite{IBM1981}
 Da die Kosten für derartige Computersysteme den Einsatz eines einzelnen Rechners nicht gerechtfertigen konnten, wurden auf einem Mainframe mehrere Systeme parallel virtuell betrieben.
 Dadurch konnte die Rechnenleistung effizienter ausgenutzt werden, sowie Versionsinkompatibiläteten durch den parallelen Betrieb alter und neuer Mainframes vermieden werden.
-Als im Laufe der 80er-Jahre die x86-Architektur den Aufschwung erlebte stand die Virtualisierung still.
+Als im Laufe der 80er-Jahre die x86-Architektur den Aufschwung erlebte, stand die Virtualisierung still.
 Der günstige Preis und die fehlende Virtualisierungsunterstützung machten es unnötig und unmöglich Endgeräte zu virtualisieren.
 Erst mit der wieder steigenden Rechenleistung und des Erscheinens von Mehrkernprozessoren hat die IT-Virtualisierung wieder an Traktion gewonnen.
-In den letzten Jahren wird besonders durch die Cloud-Angebote alles Mögliche nur mehr virtuell betrieben.
-Von der  kompletten Netzwerkinfrastruktur, bis hin zum Speicher wird in modernen Rechnezentren (Amazon, Microsoft, \dots) alles virtualisiert.
+In den letzten Jahren wird besonders durch Cloud-Angebote alles Mögliche nur mehr virtuell betrieben.
+Von der  kompletten Netzwerkinfrastruktur, bis hin zum Speicher wird in modernen Rechenzentren (Amazon Web Services\footnote{\url{https://aws.amazon.com/}}, Microsoft Azure\footnote{\url{https://azure.microsoft.com/}}, \dots) alles virtualisiert.
 Die Analyse-Firma Gartner Inc.\ spricht von einem Virtualisierungsgrad von 75\% im Serverbereich \autocite{Gartner-Server-Virtualization:online}.
-Aspekte wie die einfache Provisionierung von virtualisierten Systemen führen dazu, dass beispielsweise horizontale Skalierung ohne großen Mehraufwand betrieben werden kann.
+Aspekte wie die einfache Provisionierung von virtualisierten Systemen führen dazu, dass beispielsweise eine horizontale Skalierung ohne großen Mehraufwand betrieben werden kann.
 Auch das Testen von Infrastrukturen wurde durch Virtualisierung ermöglicht.
-Es ist nicht mehr notwendig ein gesamtes IT-System temporär dem Testen zur Verfügung zu stellen, oder sogar ein solches eigenes anzuschaffen, stattdessen können die benötigten Ressourcen in der Cloud lediglich für den benötigten Zeitraum angemietet werden.
-% - IBM als Beginn der Virtualisierung (kurze Erklärung der Geschichte)
-% - Warum wird heutzutage virtualisiert (Cloud-Umgebungen, Skalierung, Ressourcenverteilung) + Gartner-Trends
+Es ist nicht mehr notwendig ein gesamtes IT-System temporär lediglich zu Testzwecken zur Verfügung zu stellen, oder sogar ein solches eigenes anzuschaffen, stattdessen können die benötigten Ressourcen in der Cloud lediglich für den benötigten Zeitraum angemietet werden.
+% TODO: evtl. Warum wird heutzutage virtualisiert (Cloud-Umgebungen, Skalierung, Ressourcenverteilung) + Gartner-Trends
+
+Zahlreiche Vorteile der Virtualisierung, führten im Gegensatz zu den wenigen Nachteilen zur großen Adaption und Verbreitung.
 \subsubsection{Vorteile der Virtualisierung \autocite[198]{Baun2009}}
 Der kostensparendste Aspekt der Virtualisierung ist die Konsolidierung von Servern.
 Server, die nicht unter voller Last laufen, benötigen trotzdem Strom, Kühlung, Wartung und Infrastruktur.
@@ -50,7 +52,7 @@ In einem Hochverfügbarkeitsszenario besteht auch die Möglichkeit, dass ein üb
 
 \subsubsection{Nachteile der Virtualisierung \autocite[198]{Baun2009}}
 Da bei virtualisierten Systemen die Instruktionen auf vom virtuellen auf das Hostsystem umgesetzt werden müssen, ergibt sich ein Leistungsverlust.
-Dieser wird allerdings mit leistungsfähigeren Mehrkernprozessoren und durch Prozesservirtualisierung wie Intel® VT\footnote{http://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html} verschwindend gering.
+Dieser wird allerdings mit leistungsfähigeren Mehrkernprozessoren und durch Prozesservirtualisierung wie Intel® VT\footnote{\url{http://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html}} verschwindend gering.
 Die Prozessoren bieten native Virtualisierungstechniken an, bei denen die Befehle nicht mehr umgesetzt werden müssen, wodurch die Verringerung der Leistung auf unter 10\% \autocite{Hardt2005} sinkt.
 
 Ein wesentlich größeres Problem in der Virtualisierung stellen besondere Hardwareanforderungen dar.
@@ -62,19 +64,19 @@ Damit ein redundantes System im Fehlerfall Wirkung zeigen kann, muss dieses voll
 Die Konzeption, Installation und der Betrieb eines solchen Systems erfordern eine hochwertige Infrastruktur und zusäzliches Detailwissen.
 
 
-\section{Vollständige Virtualisierung}
-\label{sec:vollständige-virtualisierung}
-\autocite{Baun2009} stellt dar, dass die vollständige Virtualisierung Gastsystemen eine gesamte virtuelle Umgebung zur Verfügung stellt.
+\section{Vollvirtualisierung}
+\label{sec:vollvirtualisierung}
+\autocite{Baun2009} stellt dar, dass die Vollvirtualisierung Gastsystemen eine gesamte virtuelle Umgebung zur Verfügung stellt.
 Weiters wird darin das Zusammenspiel der einzelnen Komponenten folgendermaßen beschrieben.
 Der \emph{Virtuelle Maschinenmonitor} (VMM) läuft auf dem Host-System und ist jene Komponente, die die virtuelle Umgebung zur Verfügung stellt.
 Dieses vollwertige System beinhaltet ein BIOS, sowie eine Abstraktion der gesamten Hardware, wodurch die Gast-Systeme nicht merken, dass sie virtualisiert werden.
 Zugriffe auf die Hardware werden vom VMM intelligent auf die Hardware des Hosts verteilt, oder über Hardware-Emulation zugänglich gemacht.
-Dieser Aufbau ist in \cref{fig:architektur-vollständige-virtualisierung} zu sehen.
+Dieser Aufbau ist in \cref{fig:architektur-vollvirtualisierung} zu sehen.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth,clip]{images/vollständige-virtualisierung}
-    \caption{Architektur der vollständigen Virtualisierung}
-\label{fig:architektur-vollständige-virtualisierung}
+    \includegraphics[width=0.9\linewidth,clip]{images/vollvirtualisierung}
+    \caption{Architektur der Vollvirtualisierung}
+\label{fig:architektur-vollvirtualisierung}
 \end{figure}
 Einerseits zeigt die Abbildung, dass Anwendungen ohne Problem parallel zu den virtualisierten Systemen laufen können, andererseits wird verdeutlicht, dass jedes virtuelle System ein gesamtes Betriebssystem (Gast-OS) beinhaltet.
 Jegliche Kommunikation eines Gastsystems mit den Systemresourcen des Hosts läuft über den VMM, wodurch gewährleistet wird, dass dieser Zugriff kontrolliert werden kann.
@@ -83,51 +85,72 @@ Dies stellt sicher, dass die virtuellen Maschinen voneinander abgeschottet sind 
 Aus dieser hohen Abstraktion folgt, dass am Gastsystem keine Änderungen durchgeführt werden müssen und unterschiedliche Kernels parallel virtualisiert werden können.
 Lediglich die Prozessorarchitektur muss zusammenpassen.
 Der Vorteil eines gesamten Betriebssystems pro Gastsystem bringt allerdings den Nachteil mit sich, dass jedes dieser Systeme Speicher für den Kernel und das Betriebssystem belegt. Weiters ist ein Bootvorgang nötig, der die Verwendung zu Entwicklungszwecken verzögert.
-Allerdings gibt die vollständige Virtualisierung dem Entwickler die Möglichkeit, seine Software auf dem lokalen Rechner auf verschiedenen Betriebssystemen zu testen, oder Werkzeuge zu verwenden, die auf dem Host-System nicht verfügbar sind.
+Allerdings gibt die Vollvirtualisierung dem Entwickler die Möglichkeit, seine Software auf dem lokalen Rechner auf verschiedenen Betriebssystemen zu testen, oder Werkzeuge zu verwenden, die auf dem Host-System nicht verfügbar sind.
 Außerdem können vorgefertigte \emph{Basissysteme} (Snapshots) für die Entwickler bereitgestellt werden, um die Konfigurationszeit zu verkürzen und eine einheitliche Entwicklungsumgebung zu haben.
 Folgende Probleme treten hingegen in einer virtualisierten Entwicklungsumgebung auf:
 \begin{itemize}
 \item Updates müssen nun entweder doppelt durchgeführt werden, oder die Entwickler werden periodisch mit neuen Snapshots versorgt.
 \item Für die Daten und Konfigurationen der Entwickler muss ein Platz außerhalb der virtuellen Maschine gefunden werden. Besonders bei einem Snapshot-basierten Updateverfahren gehen durch die Verwendung eines neuen Snapshots alle Daten in der VM verloren. Die Konfiguration der Entwicklungsumgebung können idealerweise auf Netzwerklaufwerke verlegt werden und die Quelltexte sollten sich in einem Versionskontrollsystem befinden.
-\item Ein weiters Problem mit den Daten betrifft die Authentifizierung. Für SSH-Schlüssel für Versionskontrollsysteme und andere Zugangsdaten muss ebenfalls eine Möglichkeit geschaffen werden, diese in die virtuellen Maschinen zu bringen. 
+\item Ein weiters Problem mit den Daten betrifft die Authentifizierung. Für SSH-Schlüssel für Versionskontrollsysteme und andere Zugangsdaten muss ebenfalls eine Möglichkeit geschaffen werden, diese in die virtuellen Maschinen zu bringen.
 \item Entwicklungsumgebungen gelangen bei virtualisierten System schnell an die Performancegrenzen, wodurch die Produktivität der Mitarbeiter sinkt.
 \item Bei mehreren parallelen Projekten und damit verbundenen virtuellen Maschinen kann der Speicherplatz auf dem Host-System sehr knapp werden.
 \end{itemize}
-Wie sich die vollständige Virtualisierung für Entwickler in der Praxis verwenden lässt, wird in \cref{sub:vagrant} dargestellt.  
+Wie sich die Vollvirtualisierung für Entwickler in der Praxis verwenden lässt, wird in \cref{sub:vagrant} dargestellt.
 
-Gartner Servervirtualisierung
-% - Abgrenzung zu Hardwarevirtualisierung + Warum sinnvoll?
-% - kurz das Rechtekonzept mit den Ringen erklären
-% - Vor- \& Nachteile bei Servervirtualisierung
-%   - Speicherplatz
-%   - ganzes System kann, aber muss abstrahiert werden (Kernel, ...)
-% - http://winfwiki.wi-fom.de/index.php/Entwicklung,_aktueller_Stand_und_Zukunft_von_Virtualisierungsl%C3%B6sungen_im_Serverbereich#cite_note-0
+% TODO: evtl. Gartner Servervirtualisierung
 % - http://www.gartner.com/newsroom/id/3315817
 % - https://www.gartner.com/doc/reprints?ct=160707&id=1-3B9FAM0&st=sb
 \section{Containervirtualisierung}
 \label{sec:containervirtualisierung}
+Die Containervirtualisierung, auch manchmal Betriebssystemvirtualisierung genannt, bringt lediglich ähnliche Ergebnisse hervor als die Vollvirtualisierung, hat allerdings eine fundamental andere Funktionsweise.
+Der folgende Absatz baut auf \autocite{EntwicklerDE2015} auf, worin ein sehr guter Überblick über die Funktionsweise der Containervirtualisierung gegeben wird.
+In \cref{fig:architektur-containervirtualisierung} ist die wesentlich schlankere Architektur der Containervirtualisierung zu sehen.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth,clip]{images/vollständige-virtualisierung}
-    \caption{Architektur der vollständigen Virtualisierung}
-\label{fig:architektur-vollständige-virtualisierung}
+    \includegraphics[width=0.9\linewidth,clip]{images/containervirtualisierung}
+    \caption{Architektur der Containervirtualisierung}
+    \label{fig:architektur-containervirtualisierung}
 \end{figure}
+Darin fällt auf, dass es zwischen dem Host-Betriebssystem und den Containern keine Zwischenschicht gibt.
+Im Fall der Containervirtualisierung ist der Host gleichzeitig Hypervisor, wodurch eine Virtualisierung mit einem wesentlich geringeren Overhead entsteht.
+In manchen Grafiken zur Containervirtualisierung existiert eine Schicht zwischen dem Host und den Containern, welche allerdings lediglich darstellt, dass die Container irgendwie gestartet werden müssen, tatsächlich wird eine abgeschottete Instanz des Host-Betriebssystems erzeugt, aus der die Anwendungen nicht ausbrechen können.
+Ein weit verbreitetes Synonym ist \emph{Jails}, basierend auf dem Namen dieser Funktion in BSD\footnote{\url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/jails.html}}.
+\begin{description}
+    \item [namespaces] namespaces
+    \item [cgroups] cgroups
+\end{description}
+Das oft erwähnte \emph{LXC\footnote{https://linuxcontainers.org/}} (Linux Containers) verwendet \emph{namespaces} und \emph{cgroups} zum Erstellen und Verwalten von Containern, wurde früher von vom Container-Marktführer Docker verwendet, zwischenzeitlich allerdings durch \emph{libcontainer} ersetzt und nun durch \emph{runc\footnote{https://runc.io/}} abgelöst.
+Dies ist nun in der \emph{Open Container Initiative} (OCI, siehe \cref{sec:open-container-initiative}) standardisiert.
+
 % - https://semaphoreci.com/community/tutorials/how-to-deploy-a-go-web-application-with-docker
-% - Grafik der Containervirtualisierung, Shared Host with mapped Syscalls
-% - Abschottung/Security
+
+\subsection{Anbieter von Containervirtualisierungslösungen}
+\label{sec:container-solutions}
 % - Produkte (https://coreos.com/rkt/docs/latest/rkt-vs-other-projects.html)
 \begin{description}
-    \item [Docker] \blindtext
-    \item [rkt] \blindtext
-    \item [containerd] \blindtext
-    \item [LXC/LXD] \blindtext
-    \item [OpenVZ] \blindtext
+    \item [Docker] Da Docker die in dieser Arbeit verwendete Technologie ist, wird sie in \cref{cha:docker} ausführlich behandelt und die Verwendung exemplarisch gezeigt.
+    \item [rkt] rkt
+    \item [containerd] containerd
+    \item [LXC/LXD] LXC/LXD
+    \item [OpenVZ] OpenVZ
 \end{description}
 % - file:///D:/download/Realitaetscheck-Brauchen-wir-Docker-wirklich_Nils-Magnus_inovex-GmbH.pdf
 \subsection{Open Container Initiative (\emph{OCI})}
 \label{sec:open-container-initiative}
 \subsection{Orchestrierungsmechanismen}
 \label{sec:orchestrierungsmechanismen}
+Im Folgenden werden die aktuell wichtigsten Orchestrierungsmechanismes für Container beschrieben.
+Softwareentwickler werden diese weder lokal zur Entwicklung benötigen, noch aktiv in der Produktion einsetzen, doch ein kurzer Überblick ist aus drei Gründen sehr wichtig.
+Die Entwickler sollten zumindest wissen, was Orchestrierung ist und warum es notwendig ist.
+Außerdem fallen diese Schlagwörter beim Arbeiten mit Containern sehr oft. Ein Basiswissen dazu genügt, um zu entscheiden, ob das vorgeschlagene Werkzeug im konkreten Problemfall wirklich relevant ist.
+Die Funktionsweise und Philosopohie der Containerorchestrierung sollte schon im Entwicklungsprozess bedacht werden, da die Architektur von Anwendungen davon stark beeinflusst wird.
+Das Wissen über die Behandlung von Containern verhindert Fehler beim Programmieren und zwingt die Entwickler auch an den Betrieb der Software zu denken, wodurch die Idee des \emph{DevOps} in den Entwicklungszyklus integriert wird.
+
+\begin{description}
+    \item [Kubernetes] Kubernetes
+    \item [Mesos] Mesos
+    \item [Rancher] Rancher
+\end{description}
 % - DC/OS
 % - Mesosphere
 % - Swarm
