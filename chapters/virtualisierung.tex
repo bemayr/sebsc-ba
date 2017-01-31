@@ -115,24 +115,32 @@ Darin fällt auf, dass es zwischen dem Host-Betriebssystem und den Containern ke
 Im Fall der Containervirtualisierung ist der Host gleichzeitig Hypervisor, wodurch eine Virtualisierung mit einem wesentlich geringeren Overhead entsteht.
 In manchen Grafiken zur Containervirtualisierung existiert eine Schicht zwischen dem Host und den Containern, welche allerdings lediglich darstellt, dass die Container irgendwie gestartet werden müssen, tatsächlich wird eine abgeschottete Instanz des Host-Betriebssystems erzeugt, aus der die Anwendungen nicht ausbrechen können.
 Ein weit verbreitetes Synonym ist \emph{Jails}, basierend auf dem Namen dieser Funktion in BSD\footnote{\url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/jails.html}}.
+
+Diese Funktionsweise wird in \autocite{Diedrich2016} beschrieben.
+Jede virtualisierte Instanz bekommt eine eigene Sicht auf den Kernel und dessen Funktionen, die aber strikt von den anderen virtualisierten Instanzen getrennt ist.
+So ist keine Vollvirtualisierung notwendig, da Betriebssystemfunktionen direkt vom Kernel verarbeitet werden.
+Dies führt zu der bei Containern üblichen extrem schnellen Startzeit.
+Da die Virtualisierung über eine geteilte Kernel-Instanz abgewickelt wird, besteht bei der Containervirtualisierung die Einschränkung, dass das Gast-System den gleichen Kernel unterstützen muss, wie das Hostsystem.
+Für diese abgeschottete Instanz des Betriebssystems sind folgende zwei Funktionen aus dem Linux-Kernel notwendig:
 \begin{description}
-    \item [namespaces] namespaces
-    \item [cgroups] cgroups
+    \item [namespaces] Namespaces sind die Grundlage für die Abschottung der Prozesse untereinander. Diese Namensräume ermöglichen es Prozessen, dass sie private \emph{Prozess-IDs} (PIDs) verwalten. Diese Prozesse und ihre Kinder können nun die anderen PIDs nicht sehen, wodurch eine Abstraktion erreicht wird, die einer Virtualisierung ähnelt.
+    \item [cgroups] Durch Namensräume wird zwar das Problem der Abschottung gelöst, allerdings können sich Prozesse gegenseitig stören, da sie keine Limits bei der Verwendung ihrer Ressourcen auferlegt bekommen. \emph{Control Groups} (cgroups) lösen genau dieses Problem, sie erlauben eine Zuteilung von RAM, CPU-Zeit und Disk-I/O zu einzelnen Prozessen. So können sich Prozesse gegenseitig keine Ressourcen wegnehmen, es entsteht allerdings kein Overhead, da nativ am Kernel gearbeitet wird.
 \end{description}
 Das oft erwähnte \emph{LXC\footnote{https://linuxcontainers.org/}} (Linux Containers) verwendet \emph{namespaces} und \emph{cgroups} zum Erstellen und Verwalten von Containern, wurde früher von vom Container-Marktführer Docker verwendet, zwischenzeitlich allerdings durch \emph{libcontainer} ersetzt und nun durch \emph{runc\footnote{https://runc.io/}} abgelöst.
 Dies ist nun in der \emph{Open Container Initiative} (OCI, siehe \cref{sec:open-container-initiative}) standardisiert.
+Die hier beschriebene Containervirtualisierung trifft lediglich auf die Linux-Container zu. Microsoft arbeitet gerade an einer ersten Versioin der Windows Container\footnote{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}, leitet diesen Artikel allerdings mit "This is preliminary content and subject to change." ein, weshalb diese Technologie aufgrund des Erscheinungsdatums aus dieser Arbeit ausgeklammert wurde.
 
 % - https://semaphoreci.com/community/tutorials/how-to-deploy-a-go-web-application-with-docker
 
-\subsection{Anbieter von Containervirtualisierungslösungen}
+\subsection{Implementierungen von Containervirtualisierungslösungen}
+Für das Verwalten und Starten von Containern gibt es zahlreiche Lösungen, wobei \autocite{rkt-comparison:online} einen Vergleich dieser bietet.
 \label{sec:container-solutions}
-% - Produkte (https://coreos.com/rkt/docs/latest/rkt-vs-other-projects.html)
 \begin{description}
     \item [Docker] Da Docker die in dieser Arbeit verwendete Technologie ist, wird sie in \cref{cha:docker} ausführlich behandelt und die Verwendung exemplarisch gezeigt.
-    \item [rkt] rkt
-    \item [containerd] containerd
-    \item [LXC/LXD] LXC/LXD
-    \item [OpenVZ] OpenVZ
+    \item [rkt] rkt (ausgesprochen: rocket) ist ein Container-Manager des quelloffenen Unix-Systems CoreOS. Im Gegensatz zu Docker ist es lediglich ein einzelnes ausführbares Programm ohne Hintergrundprozess (Deamon). Die Images der Container werden über HTTPS verteilt. Durch den fehlenden Deamon kann rkt sehr einfach in bestehende Systeme wie systemd und Kubernetes integriert werden. rkt baut auf dem standardisierten Containerformat appc\footnote{https://github.com/appc/spec/} auf.
+    \item [runc] runc ist eine sehr systemnahe Möglichkeit Container zu starten und zu verwalten. Sie bietet allerdings keine Möglichkeit Images herunterzuladen und erfordert hohe Detailkenntnisse des Betriebssystems und dessen Konfiguration.
+    \item [containerd] containerd ist ein Deamon für runc. Auch hier ist keine Möglichkeit für den Download von Images vorhanden. containerd und runc bieten die Basis für Docker seit der Version 1.11.0.
+    \item [LXC] Der primäre Einsatzzweck von LXC ist das Starten einer kompletten Linux-Version parallel zum Host-System. Anwendungscontainer können auch verwaltet werden, erfordern allerdings mehr Wissen als zum Beispiel mit Docker oder rkt.
 \end{description}
 % - file:///D:/download/Realitaetscheck-Brauchen-wir-Docker-wirklich_Nils-Magnus_inovex-GmbH.pdf
 \subsection{Open Container Initiative (\emph{OCI})}
