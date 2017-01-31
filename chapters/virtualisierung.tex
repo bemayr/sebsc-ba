@@ -145,19 +145,37 @@ Für das Verwalten und Starten von Containern gibt es zahlreiche Lösungen, wobe
 % - file:///D:/download/Realitaetscheck-Brauchen-wir-Docker-wirklich_Nils-Magnus_inovex-GmbH.pdf
 \subsection{Open Container Initiative (\emph{OCI})}
 \label{sec:open-container-initiative}
-\subsection{Orchestrierungsmechanismen}
-\label{sec:orchestrierungsmechanismen}
-Im Folgenden werden die aktuell wichtigsten Orchestrierungsmechanismes für Container beschrieben.
+Um einen industrieweiten Standard für Container zu erstellen, hat Docker auf der DockerCon 2015 die damals noch Open Container Project genannte Initiative unter der Linux Foundation vorgestellt.~\autocite{docker-ocp:online}
+Die OCI beschreibt mit \autoref{oci-about:online} spezifiziert folgende zwei Standards:
+\begin{description}
+    \item [runtime-spec\footnote{https://github.com/opencontainers/runtime-spec}] Die Runtime-Spezification regelt wie ein bereits entpackter Container (Filesystem Bundle) ausgeführt wird.
+    \item [image-spec\footnote{https://github.com/opencontainers/image-spec}] Das Ziel der Image-Specification ist ein Format zu definieren, das das erstellen, verifizieren, benennen und verteilen von Images ermöglicht.
+\end{description}
+Der Inititative sind mittlerweile zahlreiche große Unternehmen beigetreten um Containertechnologien zu standardisieren. Einige davon sind: Amazon, Cisco, Docker, Facebook, Hewlett Packard, IBM, Intel und Microsoft.\footnote{https://www.opencontainers.org/about/members}
+
+\subsection{Orchestrierungssysteme}
+\label{sec:orchestrierungssysteme}
+Im Folgenden werden kurz die aktuell wichtigsten Orchestrierungssysteme für Container und deren Zweck beschrieben.
 Softwareentwickler werden diese weder lokal zur Entwicklung benötigen, noch aktiv in der Produktion einsetzen, doch ein kurzer Überblick ist aus drei Gründen sehr wichtig.
 Die Entwickler sollten zumindest wissen, was Orchestrierung ist und warum es notwendig ist.
 Außerdem fallen diese Schlagwörter beim Arbeiten mit Containern sehr oft. Ein Basiswissen dazu genügt, um zu entscheiden, ob das vorgeschlagene Werkzeug im konkreten Problemfall wirklich relevant ist.
 Die Funktionsweise und Philosopohie der Containerorchestrierung sollte schon im Entwicklungsprozess bedacht werden, da die Architektur von Anwendungen davon stark beeinflusst wird.
 Das Wissen über die Behandlung von Containern verhindert Fehler beim Programmieren und zwingt die Entwickler auch an den Betrieb der Software zu denken, wodurch die Idee des \emph{DevOps} in den Entwicklungszyklus integriert wird.
 
+Die Orchestrierung von Containern kann auch als Besetzung bezeichnet werden, wobei den jeweiligen Aufgaben in einem Softwaresystem mithilfe von Containern Services zugewiesen werden.
+Diese Zuteilung geschieht deklarativ, wodurch gleichzeitig eine skalierbare Konfiguration entsteht.
+Das Orchestrierungssystem weiß nun welche Container es für welchen Zweck einsetzen muss und wie diese skaliert werden sollen. An dieser Stelle wird meistens Cattle vs. Pet-Analogie verwendet.~\autocite{pets-vs-cattle:online}
+In containerbasierten Systemen werden die Serviceinstanzen nicht als Pets angesehen, um die sich der Administrator händisch kümmern muss und alles versucht um sie am Leben zu erhalten.
+Stattdessen werden die Container als Herde betrachtet, bei der der Ausfall eines Services durch die große Menge kompensiert wird.
+Außerdem ist das System so gebaut, dass das Orchestrierungswerkzeug den Ausfall eines Containers erkennt und einfach einen neuen Container dieser Art startet und konfiguriert.
+Die Folge dieser Philosophie ist, dass das Softwaresystem so gebaut werden muss, dass es auch den Ausfall und womöglich häufigen Neustart einzelner Servies verkraftet.
+
+\autocite{ix-orchestrierung-2017} liefert einen Überblick über die aktuell am meisten verwendeten Werkzeuge zur Containerorchestrierung.
 \begin{description}
-    \item [Kubernetes] Kubernetes
-    \item [Mesos] Mesos
-    \item [Rancher] Rancher
+    \item [Kubernetes] Wenn es um die Verwaltung von sehr vielen Containern (mehrere Tausende) geht, dann ist der Cluster-Manager Kubernetes von Google das Richtige. Die Archtitektur ist nach dem Master/Slave-Schema aufgebaut. Der Master verteilt die Arbeit auf zahlreiche Knoten. Die Container werden noch einmal abstrahiert, indem sie zu sogenannten Pods zusammengefasst werden. Kubernetes wird über die Kommandozeile konfiguriert, wodurch es Einsteiger mit einer sehr steilen Lernkurve konfrontiert.
+    \item [DC/OS] DC/OS ist ein Cluster-Manager, der in der Cloud laufen kann. Er kann außerdem nicht nur Container verwalten, sondern auch benutzerdefinierte Pakete. Durch diese Flexibilität ist DC/OS sehr komplex, besitzt jedoch eine automatische Installation und eine grafische Benutzeroberfläche. Zu großer Verwirrung können die verwendeten Namen führen. DC/OS steht für "Datacenter Operating System". Ein Teil von DC/OS heißt Mesos und die Software selbst ist von der Firma Mesosphere.
+    \item [Rancher] Rancher ist ein Orchestrierungsprodukt der Firma RancherOS. Genau wie Kubernetes ist die Architektur aufgeteilt in einen Master und mehrere Agenten. Rancher selbst ist ein Docker-Container, der beim Starten privilegierte Rechte erhält um selbst wieder Container starten zu können. Rancher erweitert die bestehenden Docker-Componenten, verwendet allerdings dieselbe Syntax, wodurch ein schneler Einstieg ermöglicht wird.
+    Zusätzlich gibt es für die Verwaltung eine grafische Benutzeroberfläche. Wenn die Anwendung über die Möglichkeiten von Rancher hinauswächst, bietet Rancher an, Kubernetes oder Mesos zu integrieren und Rancher lediglich als Verwaltungswerkzeug dessen zu verwenden.
 \end{description}
 % - DC/OS
 % - Mesosphere
