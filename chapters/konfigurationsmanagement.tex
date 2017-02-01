@@ -51,7 +51,7 @@ Das erste Skript ist ein ausführbares Shell-Skript, welches den Apache-Webserve
 \lstinputlisting[caption=Skript zum Installieren des Apache-Webservers (bootstrap.sh), language=bash]{listings/bootstrap.sh}
 \label{lst:vagrant-bootstrap}
 Der Vagrantfile in \cref{lst:vagrantfile} beschreibt, dass die Box mit dem Namen \emph{hashicorp/precise64} verwendet wird und zum Erstellen der fertigen virtuellen Maschine ein Shell-Skript namens \emph{bootstrap.sh} ausgeführt werden soll.
-Der Parameter \lstinline{"2"} in der ersten Zeile gibt die Version des Vagrant-Konfigurationsobjekts an.
+Der Parameter \lstinline{"`2"'} in der ersten Zeile gibt die Version des Vagrant-Konfigurationsobjekts an.
 Dadurch kann Vagrant die Rückwärtskompatibilität zu älteren Parametern gewährleisten.
 \lstinputlisting[caption=Vagrantfile,label={lst:vagrantfile}, language=Ruby]{listings/Vagrantfile}
 

@@ -8,8 +8,9 @@
 
 %%% ----- bibliography ----- %%%
 \usepackage[babel, german=quotes]{csquotes}
-\usepackage[backend=biber, style=alphabetic-verb]{biblatex} %
+\usepackage[backend=biber, style=alphabetic-verb]{biblatex}
 \bibliography{literatur}
+\DeclareFieldFormat[article]{title}{#1\isdot} % http://golatex.de/formatierung-des-literaturverzeichnisses-mit-biblatex-t3988.html
 
 %%% ----- references (http://tex.stackexchange.com/a/83051) ----- %%%
 \usepackage{varioref}
@@ -46,17 +47,17 @@
 \usepackage{graphicx}
 
 %%% ---------- Document Data ----------
-\title{Docker als unterstützendes Werkzeug für Software-Entwickler}
+\title{Docker als unterstützendes Werkzeug für Softwareentwickler}
 \subtitle{Erstes Kapitel der Bachelorarbeit}
 \author{Bernhard Mayr}
-\date{Version 1.0}
+\date{Version 1.1}
 
 \begin{document}
 \maketitle
 \include{additions/kurzfassung}
 \include{additions/abstract}
-\include{additions/ziel}
 \tableofcontents
+\include{additions/einleitung}
 \include{chapters/virtualisierung}
 \include{chapters/konfigurationsmanagement}
 \include{chapters/docker}
