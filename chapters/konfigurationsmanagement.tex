@@ -105,7 +105,20 @@ https://saltstack.com/
 
 \subsection{Packer}
 \label{sub:packer}
-https://www.packer.io/intro/index.html
+Packer ist ein Werkzeug zum Erstellen von vorkonfigurierten virtuellen Maschinen.
+In \autocite{Packer:online} werden Anwendungsszenarien und Einsatzmöglichkeiten gezeigt.
+
+Das quelloffene Kommandozeilenwerkzeug verwendet Konfigurationsmanagementwerkzeuge wie Chef oder Puppet zum Konfigurieren und Erstellen von virtuellen Maschinen.
+Der große Vorteil darin besteht in der Abstraktion des Zielsystems.
+Packer erstellt virtuelle Maschinen auf Basis von Konfigurationsdateien, wobei die Zielplattform unabhängig von der Konfiguration ist.
+Dadurch kann eine beinahe idente virtuelle Maschine für die Produktion, sowie für die Entwickler zur Verfügung gestellt werden, indem auf Basis einer Konfiguration beispielsweise virtuelle Maschinen Amazon AWS (Produktion) und für Vagrant (Entwicklung) erstellt wird.
+
+Packer abstrahiert die Plattformunterschiede weg, wodurch bei der Provisionierung von Maschinen durch Konfigurationswerkzeuge die Zielplattform nicht feststehen muss.
+Zusätzlich lässt sich diese bei der Verwendung von Packer sehr einfach verändern.
+
+Durch die Verwendung von Packer wird eine zusätzliche Abstraktionsstufe geschaffen, die Vendor-Lock-Ins stark reduziert.
+Auch Docker-Container können mithilfe von Packer erzeugt werden.
+Diese Möglichkeit erzeugt dasselbe Resultat wie die Verwendung von Dockerfiles (siehe \cref{sec:dockerfiles}), wobei keine Bindung an Docker entsteht, allerdings ein zusätzliches Werkzeug verwendet wird, das nicht in das Docker-Ökosystem integriert ist.
 
 \subsection{Habitat}
 \label{sub:habitat}
