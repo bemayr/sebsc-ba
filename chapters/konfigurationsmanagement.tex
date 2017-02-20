@@ -62,22 +62,37 @@ So kann für einfache Bug-Fixes eine Vagrant-Entwicklerbox gestartet werden, ohn
 
 \subsection{Chef}
 \label{sub:chef}
-Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef~Software,~Inc.\ beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung. Daher konkurriert Chef mit den nächsten drei beschriebenen Werkzeugen, da diese versuchen, dasselbe Problem zu lösen.
+Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef~Software,~Inc.\ beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung.
 
-\autocite[34\psqq]{Wolff201604} liefert eine sehr gute und prägnante Einführung in das Werkzeug Chef.
+\autocite{Wolff201604} liefert eine sehr gute und prägnante Einführung in das Werkzeug Chef.
 Im Gegensatz zu einer Sammlung von Shell-Skripten liefert Chef keinen Ablaufplan für das Erstellen eines Systems, sondern erstellt auf Basis gewisser Anforderungen Anweisungen, die das System in den Endzustand konfigurieren.
-Dies hat den Vorteil, dass Sonderfälle minimiert werden. Zum Beispiel muss ein schon vorhandenes veraltetes System nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen aktuellen Zustand gebracht werden.
+Dies hat den Vorteil, dass Sonderfälle minimiert werden. Zum Beispiel muss ein schon vorhandenes veraltetes System nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen, aktuellen Zustand gebracht werden.
 
 Chef verwendet ebenso wie Vagrant eine Ruby DSL, die in den so genannten \emph{Rezepten} (\emph{Recipes}) Verwendung findet.
 Diese Rezepte definieren die Anforderungen an die einzelnen Teile der Infrastruktur. Darin werden Konfigurationsdateien, Benutzer, Anwendungen, Plug-ins und weitere Abhängigkeiten spezifiziert.
 Da diese Rezepte mit steigender Komplexität des Systems an Übersichtlichkeit verlieren, gibt es die Gruppierung dieser in \emph{Kochbücher} (\emph{Cookbooks}).
 Diese Kochbücher fassen mehrere Rezepte zusammen und bieten die Möglichkeit der \emph{Vorlagen} (\emph{Templates}) für Konfigurationsdateien, wodurch zahlreiche Server unterschiedlich parametrisiert werden können.
 Chef kann entweder in einem Solo-Operationsmodus betrieben werden oder als Chef Zero für Testzwecke. Zusätzlich gibt es auch die Option einer Client-Server-Umgebung, in der ein Chef Server das Management der Konfigurationen übernimmt.
-Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet und bestehende gewartet werden. Dazu existieren als Erweiterung zu Chef Werkzeuge wie Knife\footnote{https://docs.chef.io/knife.html}.
+Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet und bestehende gewartet werden. Dazu existieren als Erweiterung zu Chef Werkzeuge wie Knife\footnote{\url{https://docs.chef.io/knife.html}}.
 
 \subsection{Puppet}
 \label{sub:puppet}
-\emph{Anmerkung:} Puppet wird noch etwas genauer beschrieben, da ein Vergleich zu Chef gezogen wird. Die restlichen Tools werden nur grob dargestellt, um deren Einsatzzweck zu dokumentieren.
+Der Zweck von Puppet ist genau wie der von Chef die Automatisierung der Infrastruktur. \autocite{Wolff201604} liefert einen Vergleich der beiden Werkzeuge.
+
+Puppet verfolgt ebenso den Ansatz einer Beschreibung des Endzustandes des Systems, anstelle von Installationsskripten.
+Im Gegensatz zu Chef werden bei Puppet die Konfigurationen rein deklarativ beschrieben.
+Daher reicht als Beschreibungsformat \emph{JSON}.
+Die möglichen Anweisungen können mit Ruby-Code erweitert werden.
+Dadurch wird wie bei Chef eine sehr hohe Flexibilität erreicht, viele der Aufgaben sind allerdings durch die deklarative Beschreibung leichter verständlich.
+Diese Unterschiede in der Syntax reflektieren die ursprüngliche Anwendergruppe.
+Chef war durch die starke Verwendung von Ruby eher für Entwickler gedacht.
+Puppet hingegen durch die deklarative Beschreibung der Konfigurationen für Systemadministratoren, die eher an Konfigurationsdateien und die Kommandozeile gewöhnt sind.
+
+In \autocite{chef-vs-puppet:online} wird beschrieben, dass der Chef-Ansatz eine höhere Flexibilität ermöglicht, dies allerdings mit einer steileren Lernkurve einhergeht.
+Der modellgetriebene Ansatz von Puppet ist zwar simpel, liefert jedoch im Gegensatz zu einer prozedureellen Systembeschreibung Interpretationsspielraum.
+Beim Erstellen des Systems muss sichergestellt werden, dass die Kommandos jedesmal gleich erzeugt werden, was durch Änderungen am Algorithmus nicht garantiert werden kann.
+
+\autocite{chef-vs-puppet-revisited:online} liefert eine Einführung in die weiterführenden Systeme und Werkzeuge der Firmen Chef\footnote{\url{https://www.chef.io/about/}} und Puppet\footnote{\url{https://puppet.com/company}}.
 
 \subsection{Ansible}
 \label{sub:ansible}
