@@ -19,7 +19,7 @@
 \crefname{lstlisting}{Quelltext}{Quelltext}
 
 %%% ----- listings ----- %%%
-\usepackage{color}
+\usepackage{xcolor} % http://tex.stackexchange.com/a/150377
 \usepackage{listings}
 \renewcommand{\lstlistingname}{Quelltext}
 \renewcommand*{\lstlistlistingname}{Quelltextverzeichnis}
@@ -48,8 +48,8 @@
 
 %%% ----- circled numbers (http://tex.stackexchange.com/a/7045) ----- %%%
 \usepackage{tikz}
-\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
-            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
 
 %%% ---------- Document Data ----------
 \title{Docker als unterstützendes Werkzeug für Softwareentwickler}
