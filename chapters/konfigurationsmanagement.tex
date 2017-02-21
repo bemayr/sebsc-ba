@@ -77,7 +77,7 @@ Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet
 
 \subsection{Puppet}
 \label{sub:puppet}
-Der Zweck von Puppet ist genau wie der von Chef die Automatisierung der Infrastruktur. \autocite{Wolff201604} liefert einen Vergleich der beiden Werkzeuge.
+Der Zweck von Puppet ist wie bei Chef die Automatisierung der IT-Infrastruktur. \autocite{Wolff201604} liefert einen Vergleich der beiden Werkzeuge.
 
 Puppet verfolgt ebenso den Ansatz einer Beschreibung des Endzustandes des Systems, anstelle von Installationsskripten.
 Im Gegensatz zu Chef werden bei Puppet die Konfigurationen rein deklarativ beschrieben.
@@ -89,19 +89,43 @@ Chef war durch die starke Verwendung von Ruby eher für Entwickler gedacht.
 Puppet hingegen durch die deklarative Beschreibung der Konfigurationen für Systemadministratoren, die eher an Konfigurationsdateien und die Kommandozeile gewöhnt sind.
 
 In \autocite{chef-vs-puppet:online} wird beschrieben, dass der Chef-Ansatz eine höhere Flexibilität ermöglicht, dies allerdings mit einer steileren Lernkurve einhergeht.
-Der modellgetriebene Ansatz von Puppet ist zwar simpel, liefert jedoch im Gegensatz zu einer prozedureellen Systembeschreibung Interpretationsspielraum.
-Beim Erstellen des Systems muss sichergestellt werden, dass die Kommandos jedesmal gleich erzeugt werden, was durch Änderungen am Algorithmus nicht garantiert werden kann.
+Der modellgetriebene Ansatz von Puppet ist zwar simpel, liefert jedoch im Gegensatz zu einer prozeduralen Systembeschreibung Interpretationsspielraum.
+Beim Erstellen des Systems muss sichergestellt werden, dass die Kommandos jedes Mal gleich erzeugt werden, was durch Änderungen am Algorithmus nicht garantiert werden kann.
 
 \autocite{chef-vs-puppet-revisited:online} liefert eine Einführung in die weiterführenden Systeme und Werkzeuge der Firmen Chef\footnote{\url{https://www.chef.io/about/}} und Puppet\footnote{\url{https://puppet.com/company}}.
 
-\subsection{Ansible}
-\label{sub:ansible}
-https://www.ansible.com/
-https://www.ansible.com/quick-start-video
-
 \subsection{SaltStack}
 \label{sub:saltstack}
-https://saltstack.com/
+SaltStack ist eine Open-Source-Softwarelösung für die Konfiguration und Automatisierung von Servern.
+Die folgenden Informationen stammen aus \autocite{SaltStack:online}.
+
+SaltStack basiert auf einer Master-Slave-Architektur, bei der sich die Slaves (in SaltStack \emph{Minions} genannt) beim Master registrieren und ab diesem Zeitpunkt steuern lassen.
+Der einfachste Anwendungsfall ist die Ausführung von Kommandos auf zahlreichen verteilten Servern.
+Dazu sendet der Master die Kommandos an die Minions, die diese ausführen.
+Um Reproduzierbarkeit und dadurch Konfigurationsmanagement zu erreichen, werden die Konfigurationen mit YAML in SLS-Dateien (SaLt State) definiert und an die Minions verteilt.
+Diese States werden für einzelne Gruppen definiert, wobei jeder Minion seine Gruppenzugehörigkeit weiß und die zu ihm passenden States anwendet.
+
+Laut \autocite{SaltStack-Event:online} bietet SaltStack die Möglichkeit von ereignisgetriebenen Infrastrukturen.
+Alle Aktionen im SaltStack-System führen zu Ereignissen, auf die reagiert werden kann.
+So entstehen reaktive Infrastrukturen, die sich selbst bereitstellen, verwalten und reparieren können.
+Dazu lassen sich für Ereignisse und Ereignisgruppen Beobachter und Reaktoren definieren, die wissen welche Aktionen bei welchen Ereignissen oder Ausnahmen zu tätigen sind.
+So kann zum Beispiel bei einer zu voll werdenden Festplatte neuer Speicher zur Verfügung gestellt, oder das System defragmentiert werden.
+Weiters sind auch Szenarien möglich, bei denen bei steigender Last oder Knotenausfall neue Server bereitgestellt werden.
+
+\subsection{Ansible}
+\label{sub:ansible}
+Wie die zuvor beschriebenen Werkzeuge bietet auch Ansible die Automatisierung von IT-Systemen.
+\autocite{Ansible:online} liefert eine Einführung in Ansible.
+
+Die Konfigurationsdateien in Ansible werden Playbooks genannt und sind wie bei SaltStack in YAML geschrieben.
+Der große Unterschied bei Ansible ist, dass kein Ansible-Service auf den Client laufen muss, da Ansible die Kommandos über SSH, WinRM oder Cloud-APIs ausführt.
+Lediglich auf dem Master ist Ansible installiert.
+Dieser weiß zusätzlich über ein in Ansible \emph{Inventory} genanntes Verzeichnis Bescheid, welche Clients im System verfügbar sind und wie er diese anzusteuern hat.
+
+Die eben beschriebene CLI-Funktionalität wird durch Ansible Tower um ein grafisches Benutzerinterface erweitert.
+Dadurch können die Ansible-Aufgaben sehr einfach verwaltet und dem gesamten Team zur Verfügung gestellt werden.
+
+Mit der Entwicklung von Ansible wurde erst 2012 gestartet, wodurch viele der Probleme aus anderen Systemen behoben und verbessert wurden \autocite{Wolff201604}. Dieser technisch besseren Basis steht allerdings der Nachteil der kleineren Benutzergemeinschaft gegenüber.
 
 \subsection{Packer}
 \label{sub:packer}
@@ -113,16 +137,12 @@ Der große Vorteil darin besteht in der Abstraktion des Zielsystems.
 Packer erstellt virtuelle Maschinen auf Basis von Konfigurationsdateien, wobei die Zielplattform unabhängig von der Konfiguration ist.
 Dadurch kann eine beinahe idente virtuelle Maschine für die Produktion, sowie für die Entwickler zur Verfügung gestellt werden, indem auf Basis einer Konfiguration beispielsweise virtuelle Maschinen Amazon AWS (Produktion) und für Vagrant (Entwicklung) erstellt wird.
 
-Packer abstrahiert die Plattformunterschiede weg, wodurch bei der Provisionierung von Maschinen durch Konfigurationswerkzeuge die Zielplattform nicht feststehen muss.
-Zusätzlich lässt sich diese bei der Verwendung von Packer sehr einfach verändern.
+Packer abstrahiert die Plattformunterschiede weg, wodurch bei der Konfiguration von virtuellen Maschinen die Zielplattform noch nicht feststehen muss.
+Diese lässt sich bei der Verwendung von Packer im Nachhinein sehr einfach anpassen.
 
 Durch die Verwendung von Packer wird eine zusätzliche Abstraktionsstufe geschaffen, die Vendor-Lock-Ins stark reduziert.
 Auch Docker-Container können mithilfe von Packer erzeugt werden.
 Diese Möglichkeit erzeugt dasselbe Resultat wie die Verwendung von Dockerfiles (siehe \cref{sec:dockerfiles}), wobei keine Bindung an Docker entsteht, allerdings ein zusätzliches Werkzeug verwendet wird, das nicht in das Docker-Ökosystem integriert ist.
-
-\subsection{Habitat}
-\label{sub:habitat}
-https://www.habitat.sh/
 
 
 \section{Kombinationsmöglichkeiten der Werkzeuge}
