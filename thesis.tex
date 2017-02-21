@@ -46,11 +46,16 @@
 %%% ----- graphics ----- %%%
 \usepackage{graphicx}
 
+%%% ----- circled numbers (http://tex.stackexchange.com/a/7045) ----- %%%
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+
 %%% ---------- Document Data ----------
 \title{Docker als unterstützendes Werkzeug für Softwareentwickler}
-\subtitle{Erstes Kapitel der Bachelorarbeit}
+\subtitle{Vorabversion der Bachelorarbeit}
 \author{Bernhard Mayr}
-\date{Version 1.1}
+\date{Version 3.0}
 
 \begin{document}
 \maketitle

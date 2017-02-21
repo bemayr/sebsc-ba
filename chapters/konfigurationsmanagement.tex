@@ -147,5 +147,41 @@ Diese Möglichkeit erzeugt dasselbe Resultat wie die Verwendung von Dockerfiles 
 
 \section{Kombinationsmöglichkeiten der Werkzeuge}
 \label{sec:werkzeugkombinationsmoeglichkeiten}
-Am Beispiel von npm, die im Deployment mit Packer und co.\ arbeiten.
-http://blog.npmjs.org/post/152035356435/how-we-deploy-at-npm
+Eine sehr durchdachte Kombination der eben vorgestellten Werkzeuge befindet sich bei der Firma npm Inc.\footnote{\url{https://www.npmjs.com/about}} im Einsatz.
+npm ist der Paketmanager für die serverseitige JavaScript-Runtime Node.js.
+Zusätzlich existiert die freie npm-Registry und Kommandozeilenwerkzeuge zum Verwalten der JavaScript-Pakete.
+Die Firma npm Inc.\ entwickelt diese und hostet die Registry.
+Der starke Open-Source-Ansatz von npm führte zu \autocite{npm-deployment:online}, worin beschrieben wird, welche Werkzeuge beim npm-Deployment im Einsatz sind. Daraus entstammen die folgenden Überlegungen.
+
+\lstinputlisting[caption=Deployment-Prozess bei npm, language=bash]{listings/npm-deploy.sh}
+\label{lst:npm-deploy}
+Die Motivation des Deployment-Prozesses von npm liegt in der höchstmöglichen Simplizität für die Entwickler.
+Daraus resultiert ein häufigeres Deployment, da nicht darüber nachgedacht werden muss, ob ein Deployment momentan überhaupt möglich ist.
+In \cref{lst:npm-deploy} ist der gesamte Deployment-Aufwand dargestellt.
+Ein git-Push auf den production-Branch genügt um den neuen Code samt Infrastruktur zu veröffentlichen.
+
+In \cref{fig:configurationtools-npm} ist dargestellt, welche Aufgaben die Werkzeuge des Konfigurationsmanagements dabei übernehmen.
+Die gesamte npm-Infrastruktur läuft auf ca.\ 120 virtuellen Maschinen in der Amazon-Cloud.
+Um den Deployment-Prozess zu beschleunigen wird von Packer in \circled{0} ein Basis-VM-Image mit Ubuntu erstellt.
+Darin befindet sich bereits eine LTS-Version von Node.js als Laufzeitumgebung und das npm-interne Monitoring-System.
+
+\emph{Terraform\footnote{\url{https://www.terraform.io/}}} kommt als nächstes Werkzeug, zum Einsatz.
+Terraform ist ein weiteres Werkzeug zur Verwaltung von Infrastruktur als Code.
+Der Haupteinsatzzweck liegt in der deklarativen Verwaltung von Cloud-Ressourcen.
+Terraform dient dabei als Abstraktionsschicht zu den Cloud-Providern.
+Bei npm wird nun das von Packer erstellte Basis-Image von Terraform verwendet \circled{1}, um eine virtuelle Maschine in der Amazon-Cloud zu erstellen \circled{2}.
+
+Danach wird Ansible mit einem Playbook aufgerufen, das die benötigten Services installiert und startet, Webhooks konfiguriert und zum Start der npm-Services die Deployment-Skripte startet \circled{4}.
+npm verwendet dazu keine externen Werkzeuge, sondern Bash-Skripte die auch händisch gestartet werden können.
+Zur Konfiguration werden eigene Konfigurationsdatenbanken (etcd\footnote{\url{https://github.com/coreos/etcd}}) verwendet.
+Ein weiterer Grund gegen ein Werkzeug ist im Fall von npm die Einbindung in den internen Slack-Bot, über den der gesamte Deployment-Prozess beobachtet und verwaltet werden kann.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.9\linewidth,clip]{images/npm-deployment}
+    \caption{Packer, Terraform und Ansible im Einsatz bei npm}
+\label{fig:configurationtools-npm}
+\end{figure}
+
+Nach dem Start und der Konfiguration der virtuellen Maschine wird diese zuerst in einen Canary-Modus im Load-Balancer geschaltet.
+Dieser testet unter sehr geringer Produktivlast die Funktionsfähigkeit des Systems, bevor der neue Knoten tatsächlich unter volle Produktionslast geschaltet wird.
