@@ -7,7 +7,7 @@ Zusätzlich werden exemplarische Szenarien und die mögliche Kombination mit Doc
 Die vorgestellten Werkzeuge dienen der Konfiguration der Entwicklungs- und Produktionsumgebung.
 Wie~\autocite[29\psq]{Wolff201604} beschreibt, ließen sich diese Konfigurationen auch manuell vornehmen, doch damit treten erhebliche Probleme im Sinne der Testbarkeit, Reproduzierbarkeit und Automatisierung auf.
 Ein noch größeres Problem stellt das implizite Wissen der Entwickler dar, das bei einer händischen Konfiguration nur verbal weitergegeben wird.
-Auch dokumentierte Handbücher sind problematisch hinsichtlich der fehlerlosen Reproduzierbarkeit, da der Mensch im Gegensatz zum Computer dazu tendiert, fest definierte Abfolgen trotz genauer Spezifikation nicht fehlerlos durchzuführen, weshalb die Idee der Infrastrukturverwaltung in Versionsverwaltungssystemen entstanden ist.
+Selbst eine ausführliche Dokumentation löst dieses Problem nicht, da der Mensch im Gegensatz zum Computer dazu tendiert, fest definierte Abfolgen trotz genauer Spezifikation nicht fehlerlos durchzuführen, weshalb die Idee der Infrastrukturverwaltung in Versionsverwaltungssystemen entstanden ist.
 
 
 \section{Infrastructure as Code}
@@ -31,13 +31,16 @@ Damit dieses System funktioniert, dürfen Änderungen an der Infrastruktur aller
 
 \section{Werkzeuge}
 \label{sec:konfigurationswerkzeuge}
+Um die Verwaltung der Infrastruktur zu erleichtern, existieren zahlreiche Werkzeuge, von denen die wichtigsten im Folgenden beschrieben werden.
+
 \subsection{Vagrant}
 \label{sub:vagrant}
 Die folgenden Informationen und Quelltext-Beispiele sind aus \autocite{Vagrant:online} entnommen.
 Vagrant ist ein Verwaltungswerkzeug für virtuelle Maschinen (siehe~\cref{sec:vollvirtualisierung}).
-Die Idee von Vagrant ist, bestehende Virtualisierungslösungen wie VMware, VirtualBox oder AWS zu verwenden und darauf mit Werkzeugen, die sich um die Bereitstellung von Software kümmern (vgl. \cref{sub:chef} oder \cref{sub:puppet}), fertige virtuelle Maschinen für Entwickler oder Infrastrukturmanager zu erstellen.
+Die Idee von Vagrant ist, bereits bestehende Virtualisierungslösungen wie VMware, VirtualBox oder AWS zu verwenden.
+Diese werden mit Werkzeugen, die sich um die Bereitstellung von Software kümmern (vgl. \cref{sub:chef} oder \cref{sub:puppet}) zu fertigen virtuellen Maschinen für Entwickler oder Infrastrukturmanager erweitert.
 Aufgrund dieses Aufbaus können virtuelle Maschinen sehr einfach erweitert und daher generisch verwendet werden.
-Um nicht immer jede virtuelle Maschine komplett neu erstellen zu müssen, gibt es in Vagrant bereits vorgefertigte \emph{Boxen}, die als Basis verwendet werden können.
+Um nicht immer jede virtuelle Maschine komplett neu erstellen zu müssen, gibt es in Vagrant bereits vorgefertigte Schablonen für virtuelle Maschinen, sogenannte \emph{Boxen}, die als Basis verwendet werden können.
 
 Vagrant verwendet dazu eine eigene auf Ruby basierende \emph{Domain Specific Language} (DSL), die in den so genannten \emph{Vagrantfiles} Einsatz findet.
 Das Vagrantfile wird mit dem Quelltext mitversioniert und bietet den Entwicklern reproduzierbare, portable und plattformunabhängige Entwicklungsgeräte.
@@ -47,9 +50,8 @@ Anwendungen, die in der von Vagrant zur Vefügung gestellten Umgebung laufen, la
 
 \subsubsection{Beispiel eines Apache-Webservers mit Vagrant}
 Mit den folgenden Skripten wird ein Apache-Webserver in einer virtuellen Maschine gestartet.
-Das erste Skript ist ein ausführbares Shell-Skript, welches den Apache-Webserver installiert und vom Vagrantfile verwendet wird.
-\lstinputlisting[caption=Skript zum Installieren des Apache-Webservers (bootstrap.sh), language=bash]{listings/bootstrap.sh}
-\label{lst:vagrant-bootstrap}
+\cref{lst:vagrant-bootstrap} ist ein ausführbares Shell-Skript, welches den Apache-Webserver installiert und vom Vagrantfile verwendet wird.
+\lstinputlisting[caption=Skript zum Installieren des Apache-Webservers (\emph{bootstrap.sh}),label={lst:vagrant-bootstrap}, language=bash]{listings/bootstrap.sh}
 Der Vagrantfile in \cref{lst:vagrantfile} beschreibt, dass die Box mit dem Namen \emph{hashicorp/precise64} verwendet wird und zum Erstellen der fertigen virtuellen Maschine ein Shell-Skript namens \emph{bootstrap.sh} ausgeführt werden soll.
 Der Parameter \lstinline{"`2"'} in der ersten Zeile gibt die Version des Vagrant-Konfigurationsobjekts an.
 Dadurch kann Vagrant die Rückwärtskompatibilität zu älteren Parametern gewährleisten.
@@ -65,14 +67,15 @@ So kann für einfache Bug-Fixes eine Vagrant-Entwicklerbox gestartet werden, ohn
 Wie auf der offiziellen Homepage \autocite{Chef:online} von Chef~Software,~Inc.\ beschrieben, ist Chef ein Werkzeug zur Infrastrukturautomatisierung.
 
 \autocite{Wolff201604} liefert eine sehr gute und prägnante Einführung in das Werkzeug Chef.
-Im Gegensatz zu einer Sammlung von Shell-Skripten liefert Chef keinen Ablaufplan für das Erstellen eines Systems, sondern erstellt auf Basis gewisser Anforderungen Anweisungen, die das System in den Endzustand konfigurieren.
-Dies hat den Vorteil, dass Sonderfälle minimiert werden. Zum Beispiel muss ein schon vorhandenes veraltetes System nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen, aktuellen Zustand gebracht werden.
+Im Gegensatz zu einer Sammlung von Shell-Skripten, bietet Chef ein Framework für die Konfiguration und das Erstellen von Systemen.
+Bestehende Funktionalität wird von Chef angeboten und die Konfigurationen werden in einer Meta-Sprache geschrieben.
+Dies hat den Vorteil, dass Sonderfälle minimiert werden, da sie von Chef übernommen werden. Zum Beispiel muss ein schon vorhandenes veraltetes System nicht komplett entfernt und neuinstalliert werden, sondern kann durch das Aktualisieren der Anforderungen auf den neuen, aktuellen Zustand gebracht werden.
 
-Chef verwendet ebenso wie Vagrant eine Ruby DSL, die in den so genannten \emph{Rezepten} (\emph{Recipes}) Verwendung findet.
+Chef verwendet ebenso wie Vagrant eine Ruby-DSL, die in den so genannten \emph{Rezepten} (\emph{Recipes}) Verwendung findet.
 Diese Rezepte definieren die Anforderungen an die einzelnen Teile der Infrastruktur. Darin werden Konfigurationsdateien, Benutzer, Anwendungen, Plug-ins und weitere Abhängigkeiten spezifiziert.
 Da diese Rezepte mit steigender Komplexität des Systems an Übersichtlichkeit verlieren, gibt es die Gruppierung dieser in \emph{Kochbücher} (\emph{Cookbooks}).
 Diese Kochbücher fassen mehrere Rezepte zusammen und bieten die Möglichkeit der \emph{Vorlagen} (\emph{Templates}) für Konfigurationsdateien, wodurch zahlreiche Server unterschiedlich parametrisiert werden können.
-Chef kann entweder in einem Solo-Operationsmodus betrieben werden oder als Chef Zero für Testzwecke. Zusätzlich gibt es auch die Option einer Client-Server-Umgebung, in der ein Chef Server das Management der Konfigurationen übernimmt.
+Chef kann entweder in einem "`Solo"'-Operationsmodus betrieben werden oder als "`Chef Zero"' für Testzwecke. Zusätzlich gibt es auch die Option einer Client-Server-Umgebung, in der ein Chef-Server das Management der Konfigurationen übernimmt.
 Von dort aus können mit geringem Aufwand neue Teile der Infrastruktur gestartet und bestehende gewartet werden. Dazu existieren als Erweiterung zu Chef Werkzeuge wie Knife\footnote{\url{https://docs.chef.io/knife.html}}.
 
 \subsection{Puppet}
@@ -153,8 +156,7 @@ Zusätzlich existiert die freie npm-Registry und Kommandozeilenwerkzeuge zum Ver
 Die Firma npm Inc.\ entwickelt diese und hostet die Registry.
 Der starke Open-Source-Ansatz von npm führte zu \autocite{npm-deployment:online}, worin beschrieben wird, welche Werkzeuge beim npm-Deployment im Einsatz sind. Daraus entstammen die folgenden Überlegungen.
 
-\lstinputlisting[caption=Deployment-Prozess bei npm, language=bash]{listings/npm-deploy.sh}
-\label{lst:npm-deploy}
+\lstinputlisting[caption=Deployment-Prozess bei npm,label={lst:npm-deploy},language=bash]{listings/npm-deploy.sh}
 Die Motivation des Deployment-Prozesses von npm liegt in der höchstmöglichen Simplizität für die Entwickler.
 Daraus resultiert ein häufigeres Deployment, da nicht darüber nachgedacht werden muss, ob ein Deployment momentan überhaupt möglich ist.
 In \cref{lst:npm-deploy} ist der gesamte Deployment-Aufwand dargestellt.
