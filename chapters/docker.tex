@@ -6,12 +6,12 @@
 
 \chapter{Docker}
 \label{cha:docker}
-Wie in \cref{sec:vollvirtualisierung} beschrieben, ermöglicht die Virtualisierung von IT-Systemen Abstraktion von der Hardware.
-Ressourcen lassen sich effizienter ausnützen, die Systeme werden jedoch nur suboptimal ausgenützt, da das gesamte Betriebssystem virtualisiert wird.
+Wie in \cref{sec:vollvirtualisierung} beschrieben, ermöglicht die Virtualisierung von IT-Systemen eine Abstraktion der Hardware.
+Ressourcen lassen sich effizienter nutzen, die Systeme werden jedoch nicht optimal ausgenützt, da das gesamte Betriebssystem virtualisiert wird.
 Dies führt zu langen Startzeiten und einem hohen Speicherverbrauch.
 
 Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kernels.
-Dadurch entsteht die Möglichkeit Anwendungen mitsamt den benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
+Dadurch entsteht die Möglichkeit, Anwendungen mitsamt den benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
 Für einen Container wird lediglich die Laufzeitumgebung benötigt, ist diese installiert, ist garantiert, dass der Container funktioniert.
 Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) der Unternehmen eingesetzt, die auf Containervirtualisierung setzen \autocite{ContainerAdoption}.
 
@@ -21,7 +21,7 @@ Der Blogeintrag \autocite{redhat-container-history:online} schildert die Geschic
 
 Im Jahr 2001 ermöglicht Jacques Gélinas mithilfe eines gepatchten Kernels zum ersten Mal das Ausführen mehrerer Linux-Server auf einem einzelnen Rechner, ohne auf Vollvirtualisierung zurückzugreifen.
 
-2006 folgt die Aufnahme von cgroups in den Linux-Kernel, worauf 2008 die Implementierung der namespaces folgen.
+2006 folgt die Aufnahme von cgroups in den Linux-Kernel, worauf 2008 die Implementierung der namespaces folgt.
 Ebenfalls 2008 beginnt IBM mit der Entwicklung von LXC, wobei auf cgroups und namespaces aufgesetzt wird.
 % http://searchservervirtualization.techtarget.com/feature/A-brief-history-of-Docker-Containers-overnight-success
 % http://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016
@@ -45,15 +45,15 @@ Ein grundlegendes Wissen über diese Komponenten ist für die Verwendung von Doc
 \begin{description}
     \item [daemon] Im Hintergrund von Docker läuft der Server-Prozess, genannt \texttt{daemon}, der sich um das Anlegen und Verwalten von \texttt{images}, \texttt{containern}, \texttt{networks} und \texttt{data volumes} kümmert.
     Er läuft auf dem Host-System und nimmt Kommandos der \texttt{clients} über eine REST-Schnittstelle entgegen.
-    \item [client] Der \texttt{client} ist die Benutzeroberfläche von Docker, die in Form einer Kommandozeilenapplikation zur Verfügung gestellt wird.
-    Er nimmt Kommandos und Konfigurationen entgegen und sendet diese an einen Konfigurierten \texttt{daemon}.
-    \item [engine] Als \texttt{engine} wird die Kombination aus \texttt{daemon} und \texttt{client} bezeichnet, die den Kern von Docker bilden.
-    \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Es wird idealerweise über ein \cref{sec:dockerfiles} erstellt.
-    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden. Er ist eine ausführbare Instanz eines \texttt{images}. \texttt{Container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen werden, oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
-    \item [registry] \texttt{Registrys} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar. Sie können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
-    \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet werden und die Basis für Multi-Container-Anwendungen darstellen. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
+    \item [client] Der \texttt{client} ist die Benutzeroberfläche von Docker, die in Form einer Kommandozeilenanwendung zur Verfügung steht.
+    Er nimmt Kommandos und Konfigurationen entgegen und sendet diese an einen zuvor festgelegten \texttt{daemon}.
+    \item [engine] Als \texttt{engine} wird die Kombination aus \texttt{daemon} und \texttt{client} bezeichnet, die den Kern von Docker bildet.
+    \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Images sollten immer deklarativ mihilfe von Dockerfiles (siehe \cref{sec:dockerfiles}) erstellt werden.
+    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden. Sie sind die ausführbare Instanz eines \texttt{images}. \texttt{Container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen werden, oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
+    \item [registry] \texttt{Registrys} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar und können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
+    \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet wird und die Basis für Multi-Container-Anwendungen darstellt. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
 \end{description}
-In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem die Bash ausgeführt wird.
+In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem die Bash gestarte wird.
 \begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
     $ docker run -i -t ubuntu /bin/bash
 \end{lstlisting}
@@ -64,8 +64,8 @@ Dabei erledigt die Docker-Engine folgende Schritte:
     \item Ein schreibfähiges Dateisystem wird zu dem eben erstellten Container hinzugefügt.
     \item Für den Container wird eine Netzwerkverbindung geschaffen, die eine Kommunikation mit dem Host ermöglicht. Standardmäßig wird die \texttt{bridged}-Schnittstelle verwendet.
     \item Der Container erhält eine IP-Adresse.
-    \item Das angegebene Programm wird ausgeführt. In diesem Fall ist das \lstinline{/bin/bash}.
-    \item Die Parameter \lstinline{-t} und \lstinline{-i} führen dazu, dass die Standardeingabe und Standardausgabe verbunden werden und der Container in einen interaktiven Modus geschaltet wird. Der Benutzer befindet sich nun in der Bash in Ubuntu in Docker.
+    \item Das angegebene Programm wird ausgeführt. In diesem Fall ist das \texttt{/bin/bash}.
+    \item Die Parameter \texttt{-t} und \texttt{-i} führen dazu, dass die Standardeingabe und Standardausgabe verbunden werden und der Container in einen interaktiven Modus geschaltet wird. Der Benutzer befindet sich nun in der Bash in Ubuntu in Docker.
 \end{enumerate}
 In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \begin{figure}[htbp]
@@ -80,7 +80,7 @@ In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \label{sec:docker-platforms}
 Docker läuft nur auf Linux-Versionen nativ, deren Kernels zu Docker kompatibel sind.
 Auf allen anderen Systemen wird durch virtualisierte Umgebungen eine Möglichkeit geschaffen Docker auszuführen.
-Bei diesen Werkzeugen hat sich in den letzten Jahren sehr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS nun sehr stark vereinfacht wurde.
+Bei diesen Werkzeugen wurde im letzten Jahr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS stark vereinfacht wurde, momentan allerdings eine Vielzahl von Werkzeugen existiert.
 
 \subsection{Docker for Windows}
 \label{sec:docker-windows}
