@@ -186,7 +186,7 @@ Die erste Möglichkeit besteht darin, ein Basis-Image mit einer Shell zu starten
 Nach allen ausgeführten Kommandos wird der Zustand dieses Containers eingefroren und in ein Image verwandelt.
 Dies führt allerdings dazu, dass dieser Prozess nur sehr schwer reproduzierbar ist.
 Aus diesem Grund gibt es die sogenannten \emph{Dockerfiles}.
-Sie stellen Bauanleitungen für ein Docker-Image dar, die an den Docker-Deamon übergeben werden, der auf Basis dieser das Image erstellt.
+Sie stellen Bauanleitungen für ein Docker-Image dar, die an den Docker-Daemon übergeben werden, der auf Basis dieser das Image erstellt.
 Daraus resultiert ein reproduzierbarer und plattformunabhängiger Erstellungsprozess.
 
 \lstinputlisting[caption=Apache-Dockerfile von kstaken,label={lst:dockerfile-apache}]{listings/Dockerfile.apache}
@@ -199,7 +199,7 @@ Nachfolgend werden die verwendeten Instruktionen beschrieben, eine vollständige
     \item[RUN] \emph{RUN} ermöglicht das Ausführen von Befehlen zum Erstellen des Images. Jedes RUN erzeugt eine neue Schicht des Images. In diesem Fall wird RUN verwendet um mit dem Paketmanager \texttt{apt-get} Apache zu installieren und gleich im Anschluss das System wieder aufzuräumen.
     \item[ENV] Mit dem \emph{ENV}-Befehl werden Umgebungsvariablen gesetzt.
     \item[EXPOSE] \emph{EXPOSE} kennzeichnet die Netzwerk-Ports, auf denen der Container zur Laufzeit erreichbar ist. Die Ports werden lediglich als verfügbar gekennzeichnet. Ob und auf welchem Port der Container tatsächlich erreichbar ist, bestimmt der Anwender beim Starten des Containers.
-    \item[CMD] \emph{CMD} spezifiziert jene Anwendung, die standardmäßig beim Starten des Containers ausgeführt wird. Diese kann beim Starten des Containers überschrieben werden. Genauere Informationen dazu sind unter \cref{sec:cmd-vs-entrypoint} zu lesen.
+    \item[CMD] \emph{CMD} spezifiziert jene Anwendung, die standardmäßig beim Starten des Containers ausgeführt wird. Diese kann beim Starten des Containers überschrieben werden. Genauere Informationen dazu sind unter \cref{sec:container-startup-command} zu lesen.
 \end{description}
 
 Um aus diesem Dockerfile ein Image zu erstellen muss ein \texttt{docker build} ausgeführt werden.
@@ -222,7 +222,7 @@ Für das Erstellen von Dockerfiles werden von Docker folgende Best-Practices vor
     \item Container sollen per Definition "`flüchtig"' gestaltet werden. Damit ist gemeint, dass ein Container mit minimalem Aufwand gestoppt, gelöscht und neu gestartet werden kann. Der Container muss von seinem Zustand unabhängig sein. Dies bedeutet, dass Daten und Konfigurationen außerhalb des Containers existieren müssen.
     \item Ein Container soll so klein wie möglich sein (siehe \cref{sec:minimize-imagesize}). Unnötige Pakete sollen vermieden werden. Ein Datenbankcontainer benötigt keinen Texteditor.
     \item Jeder Container soll im Gesamtsystem lediglich \emph{eine} Aufgabe haben. Durch diese Aufteilung können Systeme wesentlich besser skalieren. Diese Regel besagt nicht, dass ein Container lediglich einen Prozess ausführen darf. Prozesse können auch Kindprozesse starten, allerdings soll damit nur eine Aufgabe gelöst werden.
-    \item Die Anzahl der Schichten eines Images soll möglichst gering gehalten werden. Alles in einen Befehl zu packen ist allerdings auch nicht der richtige Weg. Hier muss ein guter Mittelweg gefunden werden. Die offiziellen Images im Docker Hub bieten dafür sehr gute Lernressourcen.
+    \item Die Anzahl der Schichten eines Images soll möglichst geringgehalten werden. Alles in einen Befehl zu packen ist allerdings auch nicht der richtige Weg. Hier muss ein guter Mittelweg gefunden werden. Die offiziellen Images im Docker Hub bieten dafür sehr gute Lernressourcen.
     \item Mehrzeilige Argumente sollen zur besseren Wartbarkeit alphabetisch sortiert werden.
     \item Durch die Wiederverwendung von Schichten bietet Docker die Möglichkeit eines Build-Caches. Unveränderte Teile des Images müssen nicht neu erzeugt werden. Daher sollen die Schichten so gestaltet werden, dass sich häufig ändernde Module möglichst spät hinzugefügt werden, da dies die Geschwindigkeit beim Erzeugen eines Images erheblich beschleunigt.
 \end{itemize}
@@ -231,7 +231,7 @@ Für das Erstellen von Dockerfiles werden von Docker folgende Best-Practices vor
 \label{sec:minimize-imagesize}
 Einer der wichtigsten Punkte beim Erstellen von Docker-Images ist die Größe des resultierenden Images.
 Diese wirkt enorm auf die Startgeschwindigkeit und den Speicherbedarf von Containern aus und spielt bei komplexen Systemen mit vielen unterschiedlichen Containern eine große Rolle.
-Zur Optimierung der Imagegröße existieren zahlreiche Blogeinträge, beispielsweise \autocite{}, \autocite{} und \autocite{}.
+Zur Optimierung der Imagegröße existieren zahlreiche Blogeinträge, beispielsweise \autocite{smallest-docker-container:online}, \autocite{alpine-real-world:online} und \autocite{docker-imagesize-refactoring:online}.
 \subsubsection{Basis-Image}
 Zur Demonstration des Einflusses des Basis-Images auf die Imagegröße wird in \cref{lst:shell-startup} eine Shell in Ubuntu und Alpine gestartet.
 \begin{lstlisting}[caption=Starten einer Shell in unterschiedlichen Basis-Images, language=bash, label=lst:shell-startup]
@@ -239,8 +239,8 @@ $ docker run --rm -it ubuntu sh
 $ docker run --rm -it alpine sh
 \end{lstlisting}
 
-Das Starten der Container aus \cref{lst:shell-startup} bewirkt das Herunterladen der Images aus \cref{lst:shell-imagesize-comparison}. Anhand der Imagegröße ist der immense Unteschied zu erkennen, während Ubuntu beinahe 130 Megabyte Speicherplatz benötigt, kommt Alpine mit lediglich rund vier Megabyte aus.
-Alpine\footnote{\url{https://alpinelinux.org/}} ist eine sehr leichtewichtige Linux-Distribution, die sich aufgrund ihrer Größe ideal für die Verwendung in containerbasierten Systemen eignet.
+Das Starten der Container aus \cref{lst:shell-startup} bewirkt das Herunterladen der Images aus \cref{lst:shell-imagesize-comparison}. Anhand der Imagegröße ist der immense Unterschied zu erkennen, während Ubuntu beinahe 130 Megabyte Speicherplatz benötigt, kommt Alpine mit lediglich rund vier Megabyte aus.
+Alpine\footnote{\url{https://alpinelinux.org/}} ist eine sehr leichtgewichtige Linux-Distribution, die sich aufgrund ihrer Größe ideal für die Verwendung in containerbasierten Systemen eignet.
 Eine vollwertige Linux-Distribution wie Ubuntu oder Debian wird von beinahe keinem Container benötigt, wird allerdings aus geschichtlichen und Komfortgründen selbst in vielen offiziellen Images\footnote{\url{https://hub.docker.com/_/openjdk/}} noch verwendet.
 \begin{lstlisting}[caption=Vergleich der Basis-Imagegröße, language=bash, label=lst:shell-imagesize-comparison]
 $ docker images
@@ -250,8 +250,23 @@ alpine              latest         88e169ea8f46         3.98 MB
 \end{lstlisting}
 
 \subsubsection{Zusammenfassen der RUN-Kommandos}
+In \cref{lst:dockerfile-run-large} ist ein Dockerfile abgebildet, der auf den ersten Blick sehr gut geschrieben aussieht.
+Als Basis-Image wird die platzsparende Alpine-Linux-Distribution verwendet, danach werden make und gcc installiert, make wird getestet und zum Abschluss wird wieder zusammengeräumt, indem make und gcc wieder deinstalliert werden.
 
-\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:dockerfile-imagesize]
+\cref{lst:dockerfile-run-imagesize} zeigt allerdings, dass der Aufbau des Dockerfiles alles andere als optimal ist sowie die Vorteile der Schreibweise in \cref{lst:dockerfile-run-small}.
+Der dritte RUN-Befehl, der sich eigentlich um das Aufräumen kümmern sollte, verursacht noch zusätzlichen Speicherverbrauch des Containers.
+Dieses Problem ist auf das von Docker verwendete Union-Dateisystem (siehe \cref{sec:dateisystem}) zurückzuführen.
+Eine zusätzliche Schicht kann Dateien nur als gelöscht markieren, diese existieren allerdings in den unteren Schichten immer noch, wodurch das Image weiterwächst, anstatt wieder kleiner zu werden.
+
+Aus diesem Grund sollte das Aufräumen in einem Container immer im selben RUN-Befehl erfolgen.
+Dieser lässt sich wie in \cref{lst:dockerfile-run-small} in mehrere Zeilen aufteilen.
+Der Nachteil dieser Methode ist, dass kein Build-Caching mehr durchgeführt werden kann, denn sobald sich ein Teil des Kommandos ändert, wird die gesamte Schicht neu erstellt.
+Der resultierende Unterschied in der Imagegröße rechtfertigt allerdings die etwas längere Erstellungszeit des Images.
+\lstinputlisting[caption=Dockerfile mit suboptimalem RUN-Befehl,label={lst:dockerfile-run-large}]{listings/Dockerfile.image-large}
+\lstinputlisting[caption=Dockerfile mit korrigiertem RUN-Befehl,label={lst:dockerfile-run-small}]{listings/Dockerfile.image-small}
+
+\begin{lstlisting}[caption=Vergleich der Imagegröße nach Optimierung des RUN-Befehls, language=bash, label=lst:dockerfile-run-imagesize]
+# Building both images
 $ docker build -t image-large -f .\Dockerfile.image-large .
 $ docker build -t image-small -f .\Dockerfile.image-small .
 
@@ -266,15 +281,42 @@ IMAGE            CREATED BY                             SIZE
 56038a6ecc87     /bin/sh -c apk del make gcc            17.3 kB
 ffe18f5b76d9     /bin/sh -c make --help                 0 B
 188b3de5ec5d     /bin/sh -c apk update && apk add...    87.6 MB
-88e169ea8f46     /bin/sh -c #(nop) ADD file:92ab74...   3.98 MB
+88e169ea8f46     /bin/sh -c (nop) ADD file:92ab74...    3.98 MB
 
 $ docker history image-small
 IMAGE            CREATED BY                             SIZE
 114ccaf13bde     /bin/sh -c apk update && apk add...    1.04 MB
-88e169ea8f46     /bin/sh -c #(nop) ADD file:92ab7...    3.98 MB
+88e169ea8f46     /bin/sh -c (nop) ADD file:92ab7...     3.98 MB
 \end{lstlisting}
-\subsection{CMD vs. ENTRYPOINT}
-\label{sec:cmd-vs-entrypoint}
+
+\subsection{Festlegen des Container Start-Kommandos}
+\label{sec:container-startup-command}
+Ein wichtiger Aspekt beim Entwickeln von Docker-Images ist das Start-Kommando.
+Welche Anwendung der Container ausführt, beziehungsweise wie der Benutzer diese auswählen kann wird über die Befehle \texttt{ENTRYPOINT} und \texttt{CMD} im Dockerfile bestimmt.
+Ein besonders interessanter Aspekt daran ist die Kombination der beiden Befehle.
+Die folgenden Beispiele und Informationen stammen aus \autocite{dockerfile-cmd-vs-entrypoint:online}.
+
+Um dem Benutzer eine möglichst einfache Verwendung des Containers zu ermöglichen, lässt sich mit \texttt{ENTRYPOINT} das auszuführende Programm festlegen und mit \texttt{CMD} Standardparameter an dieses übergeben.
+
+\lstinputlisting[caption=Dockerfile für \texttt{ping} mit ENTRYPOINT und CMD,label={lst:dockerfile-entrypoint-cmd}]{listings/Dockerfile.cmd+entrypoint}
+In \cref{lst:dockerfile-entrypoint-cmd} ist ein Beispielcontainer für das Ping-Kommando dargestellt, der die beiden Befehle kombiniert.
+Als Basis-Image kommt Ubuntu zum Einsatz, danach wird mit \texttt{ENTRYPOINT} \texttt{ping} als auszuführendes Programm konfiguriert und mithilfe von \texttt{CMD} \emph{localhost} als Standardwert an \texttt{ping} übergeben.
+
+In \cref{lst:docker-run-cmd-entrypoint} ist die Verwendung des Containers dargestellt.
+Da das Docker \texttt{run}-Kommando als letzten Parameter optional den \texttt{CMD}-Befehl eines Containers überschreibt, wird nun beim Starten des Containers ohne Parameter der Standardwert \emph{localhost} verwendet.
+Wenn der Benutzer allerdings das Kommando überschreibt, wird dieses an den \texttt{ping}-Befehl übergeben und von diesem als Parameter verwendet.
+Diese Maßnahme steigert die Benutzerfreundlichkeit von Containern und ermöglicht ein sehr intuitives Arbeiten, da der Container auch ohne Konfiguration ein Standardverhalten aufweist.
+
+\begin{lstlisting}[caption=Verwendung des \texttt{ping}-Containers, language=bash, label=lst:docker-run-cmd-entrypoint]
+$ docker run ping
+PING localhost (127.0.0.1) 56(84) bytes of data.
+...
+
+$ docker run ping docker.io
+PING docker.io (162.242.195.84) 56(84) bytes of data.
+...
+\end{lstlisting}
+
 
 % - Layers
 % - ...
