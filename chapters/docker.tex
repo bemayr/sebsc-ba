@@ -39,7 +39,7 @@ Seit 2015 werden hauptsächlich Fehlerbehebungen und Verbesserungen an Docker se
 Die in diesem Kapitel gezeigten Beispiele und verwendeten Funktionen basieren auf der Docker-Version 1.13 vom 19. Jänner 2017.
 \section{Funktionsweise}
 \label{sec:docker-basics}
-Die Funktionsweise von Docker wird in ZITAT beschrieben und im folgenden Abschnitt zusammengefasst.
+Die Funktionsweise von Docker wird in \autocite{docker-overview:online} beschrieben und im folgenden Abschnitt zusammengefasst.
 \subsection{Komponenten am Beispiel der Bash}
 \label{sec:components-bash}
 Ein Basiswissen über die folgenden Komponenten des Docker-Systems ist für die Verwendung von Docker unerlässlich.
@@ -76,24 +76,48 @@ In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \label{fig:docker-architektur}
 \end{figure}
 \subsection{Dateisystem}
-\label{sec:filesystem}
+\label{sec:dateisystem}
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-filesystem}
     \caption{Docker-Dateisystem}
 \label{fig:docker-dateisystem}
 \end{figure}
-Networking
+
 \section{Plattformen}
 \label{sec:docker-platforms}
-\subsection{Docker Toolbox}
-\label{sec:docker-toolbox}
+Docker läuft nur auf Linux-Versionen nativ, deren Kernels zu Docker kompatibel sind.
+Auf allen anderen Systemen wird durch virtualisierte Umgebungen eine Möglichkeit geschaffen Docker auszuführen.
+Bei diesen Werkzeugen hat sich in den letzten Jahren sehr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS nun sehr stark vereinfacht wurde.
+
 \subsection{Docker for Windows}
 \label{sec:docker-windows}
+Docker for Windows nützt Hyper-V für die Erstellung einer virtuellen Linux-Maschine zur Ausführung von Docker \autocite{docker-for-windows:online}.
+Dazu werden die Client-Anwendungen für die Verwaltung dieses Hosts zur Verfügung gestellt.
+Nicht zu verwechseln ist Docker for Windows mit den Windows Containern, die sich noch in der Beta-Phase befinden.
+Zur Verwendung dieser gibt es auf der offiziellen Docker-Homepage eine Anleitung\footnote{\url{https://docs.docker.com/docker-for-windows/install/}}.
+Ein sehr nützliches Add-on für die Verwendung von Docker unter Windows ist \lstinline{posh-docker}\footnote{\url{https://github.com/samneirinck/posh-docker}}, welches die automatische Vervollständigung der Docker-Kommandos auf der Powershell ermöglicht.
+
 \subsection{Docker for Mac}
 \label{sec:docker-mac}
-\subsection{Docker for AWS/Azure}
-\label{sec:docker-cloud}
+Docker for Mac ist das Pendant zu Docker for Windows.
+Es nutzt die Virtualisierungslösung HyperKit, welche seit macOS 10.10 Yosemite nativ verfügbar ist \autocite{docker-for-mac:online}.
+Ebenso wie in der Windows-Version bietet die Mac-Version eine grafische Benutzeroberfläche zur Verwaltung der Anwendung.
+
+\subsection{Docker Toolbox}
+\label{sec:docker-toolbox}
+Die Docker Toolbox ist die älteste offizielle Möglichkeit Docker auf Windows oder macOS laufen zu lassen \autocite{docker-toolbox:online}.
+Sie wird von Docker \emph{nicht} mehr empfohlen, da es mit den nativen Lösungen nun zu wesentlich weniger Problemen und Overhead kommt.
+Docker Toolbox installiert die Docker Client Werkzeuge, sowie Oracle VM VirtualBox.
+Darin wird eine boot2docker virtuelle Maschine angelegt, auf der der Docker-Daemon läuft.
+Zusätzlich wird eine vorkonfigurierte git-Bash angeboten, die sich zu diesem Docker-Host verbindet.
+
+Der Hypervisor für die virtuelle Maschine lässt sich mit etwas Mühe austauschen\footnote{\url{https://github.com/pecigonzalo/docker-machine-vmwareworkstation}}, was aber zu zahlreichen Problemen führt.
+Wenn Docker for Windows und eine Virtualisierungslösung wie VMware oder VirtualBox gleichzeitig verwendet werden sollen, ergibt sich ein Konflikt zwischen den Hypervisorn und Hyper-V.
+Aufgrund von Problemen wie der fehlenden Möglichkeit Dateien zwischen dem Host und Docker zu teilen, sollte allerdings anstatt der Docker Toolbox diese Lösung \autocite{hanselman-vms:online} von Scott Hanselman in Betracht gezogen werden.
+Er erklärt im vorhin verwiesenen Blog-Eintrag eine Möglichkeit, mehrere Hypervisor durch unterschiedliche Systemkonfigurationen und Neustarts zu verwenden.
+Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen und die geringsten Einbußen.
 
 % - die Geschichte von Docker
 % - Docker Aufbau, LXC, usw...
