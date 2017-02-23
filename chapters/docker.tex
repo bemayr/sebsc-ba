@@ -355,6 +355,12 @@ PING docker.io (162.242.195.84) 56(84) bytes of data.
 Für das produktive Arbeiten mit Docker genügen lediglich ein paar Kommandos, von denen die wichtigsten in diesem Abschnitt vorgestellt werden.
 
 \subsection{Management-Kommandos}
+Mit der Weiterentwicklung von Docker, beinhaltet die Kommandozeilenschnittstelle mittlerweile über 40 Kommandos. Mit der Version 1.13 wurde die CLI nun neu strukturiert.
+In \autocite{docker-1.13:online} werden die neuen Management-Kommandos beschrieben.
+Bei einem Aufruf von Docker ohne Parameter wird eine Übersicht über die Kommandos geliefert.
+Diese Kommandos sind seit 1.13 ihren jeweiligen Komponenten im Docker-System zugewiesen und über diese erreichbar.
+Die neue Version für das Löschen eines Images schreibt sich nun \texttt{docker image rm <image>} und nicht mehr \texttt{docker rmi <image>}.
+Diese Benennung ist in der gesamten Anwendung einheitlich, wobei aus Kompatibilitätsgründen die alten Kommandos weiterhin existieren.
 \begin{verbatim}
 Management Commands:
   container   Manage containers
@@ -365,26 +371,46 @@ Management Commands:
 \end{verbatim}
 
 \subsection{Images erstellen}
+Das Erstellen eines Images bei vorhandenem Dockerfile wird folgendermaßen durchgeführt:
 \begin{verbatim}
 docker build [-t <tag>] [-f <dockerfile>] <context>
 \end{verbatim}
+Mit dem Parameter \texttt{-t} wird der Name angegeben und mit \texttt{-f} kann ein anderer Dockerfile angegeben werden.
+Standardmäßig wird die Datei namens \emph{Dockerfile} aus dem Kontext-Verzeichnis verwendet.
+Alle Dateien in diesem Verzeichnis können im Dockerfile verwendet werden, da dies die Umgebung darstellt, in der das Image erstellt wird.
+
+In \cref{lst:docker-build-example} wird ein Beispielkommando für das Erstellen des Dockerfiles aus \cref{lst:dockerfile-apache} angegeben.
+Das erstellte Image erhält den Namen \emph{kstaken/apache}.
 \begin{lstlisting}[caption=Docker-Build-Beispiel, language=bash, label=lst:docker-build-example]
 docker build -t kstaken/apache .
 \end{lstlisting}
 
 \subsection{Container starten}
+Die häufigste Aufgabe eines Entwicklers bei der Arbeit mit Docker ist das Starten eines Containers.
+Die wichtigsten Parameter für dieses Kommando sehen wie folgt aus:
 \begin{verbatim}
 docker run [--rm] [-it] [-v <volumes>] [-p <ports>] <image> [<command>]
 \end{verbatim}
+Der Parameter \texttt{--rm} gibt an, dass der Container gelöscht wird, nachdem er gestoppt wurde.
+Dadurch wird die Grundidee der "`verwerflichen"' Docker-Container unterstützt und das System sauber gehalten.
+Mit den Parametern \texttt{-i} und \texttt{-t} wird eine interaktive Konsole mit dem Container verbunden, die zum Beispiel bei der Verwendung einer Shell im Container Einsatz findet.
+\texttt{-v} ermöglicht unter anderem das Einbinden von Verzeichnissen des Hosts in den Container.
+Dieser Anwendungsfall ist gerade für Entwickler sehr nützlich, da so Quelltext im Container verwendet werden kann.
+Änderung des Quelltextes am Host werden auch in den Container weitergeleitet.
+Vom Container zur Verfügung gestellte Netzwerk-Ports können mit \texttt{-p} an den Host gebunden werden, um von dort aus mit \emph{localhost} auf den Container zuzugreifen.
+Bei beiden Parametern ist die Reihenfolge der angegebenen Werte \texttt{<host:container>}.
 \begin{lstlisting}[caption=Docker-Run-Beispiel, language=bash, label=lst:docker-run-example]
-docker run -d -v ${pwd}:/var/www -p 8080:80 kstaken/apache
 docker run -d --rm -v ${pwd}:/var/www -p 8080:80 kstaken/apache
 \end{lstlisting}
 
 \subsection{Docker aufräumen}
+Im Laufe der Verwendung von Docker fallen gestoppte Container, nicht verwendete Images und übriggebliebene Speicher-Volumes an.
+Seit Version 1.13 lassen sich diese mit Bordmitteln von Docker sehr einfach aufräumen.
+
+In \cref{lst:docker-prune-example} wird das Ergebnis dieser Kommandos dargestellt, nachdem ein gestoppter Docker-Container im System vorhanden war.
 \begin{verbatim}
-docker system df
-docker container|volume|image|system prune
+docker system df                               # Show docker disk usage
+docker container|volume|image|system prune     # Clean Resources
 \end{verbatim}
 \begin{lstlisting}[caption=Docker-Prune-Beispiel, language=bash, label=lst:docker-prune-example]
 $ docker system df
@@ -401,6 +427,6 @@ WARNING! This will remove:
         - all dangling images
 Are you sure you want to continue? [y/N] y
 Deleted Containers:
-019cfcc4e93ba4667c3387e2f9af442382d140c671619c548f5fddcc0795fb1a
+019cfcc4e93ba4667c3387e2f9af442382d140c671619c548f5fd
 Total reclaimed space: 484 B
 \end{lstlisting}
