@@ -6,9 +6,88 @@
 
 \chapter{Docker}
 \label{cha:docker}
-% - Warum ich Docker zur Containervirtualisierung gewählt habe?
-\section{Geschichte, Aufbau und Plattformen}
+Wie in \cref{sec:vollvirtualisierung} beschrieben, ermöglicht die Virtualisierung von IT-Systemen Abstraktion von der Hardware.
+Ressourcen lassen sich effizienter ausnützen, die Systeme werden jedoch nur suboptimal ausgenützt, da das gesamte Betriebssystem virtualisiert wird.
+Dies führt zu langen Startzeiten und einem hohen Speicherverbrauch.
+
+Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kernels.
+Dadurch entsteht die Möglichkeit Anwendungen mitsamt der benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
+Für einen Container wird lediglich die Laufzeitumgebung benötigt, ist diese installiert, ist garantiert, dass der Container funktioniert.
+Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) der Unternehmen eingesetzt, die auf Containervirtualisierung setzen \autocite{ContainerAdoption}.
+
+\section{Geschichte}
+\label{sec:docker-history}
+Der Blogeintrag \autocite{redhat-container-history:online} schildert die Geschichte der Containervirtualisierung.
+
+Im Jahr 2001 ermöglicht Jacques Gélinas mithilfe eines gepatchten Kernels zum ersten Mal das Ausführen mehrerer Linux-Server auf einem einzelnen Rechner, ohne auf Vollvirtualisierung zurückzugreifen.
+
+2006 folgt die Aufnahme von cgroups in den Linux-Kernel, worauf 2008 die Implementierung der namespaces folgen.
+Ebenfalls 2008 beginnt IBM mit der Entwicklung von LXC, wobei auf cgroups und namespaces aufgesetzt wird.
+% http://searchservervirtualization.techtarget.com/feature/A-brief-history-of-Docker-Containers-overnight-success
+% http://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016
+
+2013 wird Docker als Open-Source-Projekt der Platform-as-a-Service-Umgebung dotCloud vorgestellt.
+Docker führt nichts wesentlich Neues ein, sondern bietet lediglich für die bestehenden Technologien wie LXC eine sehr einfach zu verwendende Benutzerschnittstelle, die Container für eine breite Benutzergruppe zugänglich macht.
+
+2014 erscheint Docker in der Version 1.0, nachdem mit Version 0.9 LXC als Containerumgebung durch \emph{libcontainer\footnote{\url{https://github.com/opencontainers/runc/tree/master/libcontainer}}} ersetzt wird.
+libcontainer ist eine Eigenentwicklung von Docker, die in der Programmiersprache Go geschrieben ist und die Verwaltung und Ausführung von Containern ermöglicht.
+
+2015 tritt Docker der Open Container Initiative bei, wodurch die Quelltexte und Entwicklungen dem unter der Linux Foundation stehenden Projekt hinzugefügt werden.
+Dieser Schritt verstummt Kritiker, die eine Monopolstellung von Docker befürchtet haben.
+Seit 2015 werden hauptsächlich Fehlerbehebungen und Verbesserungen an Docker selbst durchgeführt, sowie das Docker-Ökosystem durch zahlreiche Werkzeuge erweitert (siehe \cref{sec:docker-products}).
+
+Die in diesem Kapitel gezeigten Beispiele und verwendeten Funktionen basieren auf der Docker-Version 1.13 vom 19. Jänner 2017.
+\section{Funktionsweise}
 \label{sec:docker-basics}
+Die Funktionsweise von Docker wird in ZITAT beschrieben und im folgenden Abschnitt zusammengefasst.
+\subsection{Komponenten am Beispiel der Bash}
+\label{sec:components-bash}
+Ein Basiswissen über die folgenden Komponenten des Docker-Systems ist für die Verwendung von Docker unerlässlich.
+\begin{description}
+    \item [daemon] Im Hintergrund von Docker läuft der Server-Prozess, genannt \texttt{daemon}, der sich um das Anlegen und Verwalten von \texttt{images}, \texttt{containern}, \texttt{networks} und \texttt{data volumes} kümmert.
+    Er läuft auf dem Host-System und nimmt Kommandos der \texttt{clients} über eine REST-Schnittstelle entgegen.
+    \item [client] Der \texttt{client} ist die Benutzeroberfläche von Docker, die in Form einer Kommandozeilenapplikation zur Verfügung gestellt wird.
+    Er nimmt Kommandos und Konfigurationen entgegen und sendet diese an einen Konfigurierten \texttt{daemon}.
+    \item [engine] Als \texttt{engine} wird die Kombination aus \texttt{daemon} und \texttt{client} bezeichnet, die den Kern von Docker bilden.
+    \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Es wird idealerweise über ein \cref{sec:dockerfiles} erstellt.
+    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden.
+    \item [registry]
+    \item [service]
+\end{description}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-architecture}
+    \caption{Docker-Architektur}
+\label{fig:docker-dateisystem}
+\end{figure}
+Das Zusammenspiel dieser Komponenten ist in \cref{fig:docker-architektur} zu sehen, wobei das Resultat von \cref{lst:docker-run-basics} zu sehen ist.
+\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
+$ docker run -i -t ubuntu /bin/bash
+\end{lstlisting}
+Das Kommando aus \cref{lst:docker-run-basics} führt zu folgenden Schritten:
+\begin{enumerate}
+    \item
+\end{enumerate}
+\subsection{Dateisystem}
+\label{sec:filesystem}
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-filesystem}
+    \caption{Docker-Dateisystem}
+\label{fig:docker-dateisystem}
+\end{figure}
+Networking
+\section{Plattformen}
+\label{sec:docker-platforms}
+\subsection{Docker Toolbox}
+\label{sec:docker-toolbox}
+\subsection{Docker for Windows}
+\label{sec:docker-windows}
+\subsection{Docker for Mac}
+\label{sec:docker-mac}
+\subsection{Docker for AWS/Azure}
+\label{sec:docker-cloud}
+
 % - die Geschichte von Docker
 % - Docker Aufbau, LXC, usw...
 % - https://youtu.be/9CuClvKMt04?t=1m12s
@@ -21,10 +100,21 @@
 %   - https://github.com/docker/for-win/issues/328
 %   - https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
 % - Clean up: https://lebkowski.name/docker-volumes/
-\section{Komponenten des Docker-Systems}
-\label{sec:docker-komponenten}
+\section{Weitere Produkte des Docker-Systems}
+\label{sec:docker-products}
+\subsection{Docker Hub}
+\label{sec:docker-hub}
+\subsection{Docker Machine}
+\label{sec:docker-machine}
+\subsection{Docker Compose}
+\label{sec:docker-compose}
+\subsection{Docker Swarm}
+\label{sec:docker-swarm}
+
+
 % - swarm
 % - compose
+% - stack
 % - cli
 % - machine
 % - ...
@@ -63,7 +153,7 @@
 %  - https://blog.nimbleci.com/2016/09/14/docker-stacks-and-why-we-need-them/
 %  - https://blog.couchbase.com/2016/july/docker-services-stack-distributed-application-bundle
 \section{Häufige Docker-Kommandos und deren Verwendung}
-\label{docker-verwendung}
+\label{docker-kommandos}
 % - http://jimhoskins.com/2013/07/27/remove-untagged-docker-images.html
 % - Scripting
 % - https://rominirani.com/docker-management-commands-e89a23c55908#.wlq1ixs5i

@@ -1,0 +1,28 @@
+https://docs.docker.com/engine/userguide/storagedriver/imagesandcontainers/
+https://www.dajobe.org/blog/2015/04/18/making-debian-docker-images-smaller/
+
+$ docker build -t imagesize-large -f .\Dockerfile.imagesize-large .
+$ docker build -t imagesize-small -f .\Dockerfile.imagesize-small .
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+alpine              3.5                 88e169ea8f46        8 weeks ago         3.98 MB
+imagesize-large     latest              56038a6ecc87        3 minutes ago       91.6 MB
+imagesize-small     latest              114ccaf13bde        2 minutes ago       5.02 MB
+
+$ docker history imagesize-large
+IMAGE               CREATED             CREATED BY                                      SIZE
+56038a6ecc87        3 minutes ago       /bin/sh -c apk del make gcc                     17.3 kB
+ffe18f5b76d9        3 minutes ago       /bin/sh -c make --help                          0 B
+188b3de5ec5d        3 minutes ago       /bin/sh -c apk update && apk add make gcc       87.6 MB
+88e169ea8f46        8 weeks ago         /bin/sh -c #(nop) ADD file:92ab746eb22dd3e...   3.98 MB
+
+$ docker history imagesize-small
+IMAGE               CREATED             CREATED BY                                      SIZE
+114ccaf13bde        2 minutes ago       /bin/sh -c apk update && apk add make gcc ...   1.04 MB
+88e169ea8f46        8 weeks ago         /bin/sh -c #(nop) ADD file:92ab746eb22dd3e...   3.98 MB
+
+$ docker images
+REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE
+ubuntu              latest              f49eec89601e        4 weeks ago         129 MB
+alpine              3.5                 88e169ea8f46        8 weeks ago         3.98 MB

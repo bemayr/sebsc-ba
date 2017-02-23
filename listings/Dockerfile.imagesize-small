@@ -1,0 +1,4 @@
+FROM alpine:3.5
+RUN apk update && apk add make gcc && \
+    make --help && \
+    apk del make gcc
