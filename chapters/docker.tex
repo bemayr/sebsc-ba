@@ -50,24 +50,31 @@ Ein Basiswissen über die folgenden Komponenten des Docker-Systems ist für die 
     Er nimmt Kommandos und Konfigurationen entgegen und sendet diese an einen Konfigurierten \texttt{daemon}.
     \item [engine] Als \texttt{engine} wird die Kombination aus \texttt{daemon} und \texttt{client} bezeichnet, die den Kern von Docker bilden.
     \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Es wird idealerweise über ein \cref{sec:dockerfiles} erstellt.
-    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden.
-    \item [registry]
-    \item [service]
+    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden. Er ist eine ausführbare Instanz eines \texttt{images}. \texttt{Container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen werden, oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
+    \item [registry] \texttt{Registrys} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar. Sie können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
+    \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet werden und die Basis für Multi-Container-Anwendungen (siehe \cref{sec:docker-multi-container-anwendungen}) darstellen. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
 \end{description}
+In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem die Bash ausgeführt wird.
+\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
+    $ docker run -i -t ubuntu /bin/bash
+\end{lstlisting}
+Dabei erledigt die Docker-Engine folgende Schritte:
+\begin{enumerate}
+    \item Das \texttt{ubuntu}-Docker-Image wird von der Docker-Registry heruntergeladen, falls dieses lokal noch nicht existiert.
+    \item Ein neuer Container wird auf Basis des Images erstellt und mit einem zufälligen Namen versehen.
+    \item Ein schreibfähiges Dateisystem wird zu dem eben erstellten Container hinzugefügt.
+    \item Für den Container wird eine Netzwerkverbindung geschaffen, die eine Kommunikation mit dem Host ermöglicht. Standardmäßig wird die \texttt{bridged}-Schnittstelle verwendet.
+    \item Der Container erhält eine IP-Adresse.
+    \item Das angegebene Programm wird ausgeführt. In diesem Fall ist das \lstinline{/bin/bash}.
+    \item Die Parameter \lstinline{-t} und \lstinline{-i} führen dazu, dass die Standardeingabe und Standardausgabe verbunden werden und der Container in einen interaktiven Modus geschaltet wird. Der Benutzer befindet sich nun in der Bash in Ubuntu in Docker.
+\end{enumerate}
+In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-architecture}
+    \includegraphics[width=0.9\linewidth,clip]{images/docker-architecture}
     \caption{Docker-Architektur}
-\label{fig:docker-dateisystem}
+\label{fig:docker-architektur}
 \end{figure}
-Das Zusammenspiel dieser Komponenten ist in \cref{fig:docker-architektur} zu sehen, wobei das Resultat von \cref{lst:docker-run-basics} zu sehen ist.
-\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
-$ docker run -i -t ubuntu /bin/bash
-\end{lstlisting}
-Das Kommando aus \cref{lst:docker-run-basics} führt zu folgenden Schritten:
-\begin{enumerate}
-    \item
-\end{enumerate}
 \subsection{Dateisystem}
 \label{sec:filesystem}
 \begin{figure}[htbp]
@@ -100,7 +107,7 @@ Networking
 %   - https://github.com/docker/for-win/issues/328
 %   - https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
 % - Clean up: https://lebkowski.name/docker-volumes/
-\section{Weitere Produkte des Docker-Systems}
+\section{Produkte}
 \label{sec:docker-products}
 \subsection{Docker Hub}
 \label{sec:docker-hub}
