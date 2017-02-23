@@ -12,12 +12,12 @@ Dies führt zu langen Startzeiten und einem hohen Speicherverbrauch.
 
 Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kernels.
 Dadurch entsteht die Möglichkeit, Anwendungen mitsamt den benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
-Für einen Container wird lediglich die Laufzeitumgebung benötigt, ist diese installiert, ist garantiert, dass der Container funktioniert.
+Für einen Container wird lediglich die Laufzeitumgebung benötigt. Ist diese installiert, ist garantiert, dass der Container funktioniert.
 Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) der Unternehmen eingesetzt, die auf Containervirtualisierung setzen \autocite{ContainerAdoption}.
 
 \section{Geschichte}
 \label{sec:docker-history}
-Der Blogeintrag \autocite{redhat-container-history:online} schildert die Geschichte der Containervirtualisierung.
+Der Blogeintrag \autocite{redhat-container-history:online} schildert die Geschichte der Containervirtualisierung. Folgende Darstellung ist eine Zusammenfassung dieses Eintrags.
 
 Im Jahr 2001 ermöglicht Jacques Gélinas mithilfe eines gepatchten Kernels zum ersten Mal das Ausführen mehrerer Linux-Server auf einem einzelnen Rechner, ohne auf Vollvirtualisierung zurückzugreifen.
 
@@ -34,26 +34,27 @@ libcontainer ist eine Eigenentwicklung von Docker, die in der Programmiersprache
 
 2015 tritt Docker der Open Container Initiative bei, wodurch die Quelltexte und Entwicklungen dem unter der Linux Foundation stehenden Projekt hinzugefügt werden.
 Dieser Schritt verstummt Kritiker, die eine Monopolstellung von Docker befürchtet haben.
-Seit 2015 werden hauptsächlich Fehlerbehebungen und Verbesserungen an Docker selbst durchgeführt, sowie das Docker-Ökosystem durch zahlreiche Werkzeuge erweitert (siehe \cref{sec:docker-products}).
+Seit 2015 werden hauptsächlich Fehlerbehebungen und Verbesserungen an Docker selbst durchgeführt sowie das Docker-Ökosystem durch zahlreiche Werkzeuge erweitert (siehe \cref{sec:docker-products}).
 
 Die in diesem Kapitel gezeigten Beispiele und verwendeten Funktionen basieren auf der Docker-Version 1.13 vom 19. Jänner 2017.
 \section{Funktionsweise}
 \label{sec:docker-basics}
-Die Funktionsweise von Docker wird in \autocite{docker-overview:online} beschrieben und im folgenden Abschnitt zusammengefasst.
+Die Funktionsweise von Docker ist in \autocite{docker-overview:online} beschrieben und wird im folgenden Abschnitt zusammengefasst.
 Docker basiert auf einer Vielzahl von Komponenten, die erst als Gesamtsystem eine Containervirtualisierung ermöglichen.
 Ein grundlegendes Wissen über diese Komponenten ist für die Verwendung von Docker unerlässlich.
+Folgende Komponenten sind essenziell:
 \begin{description}
-    \item [daemon] Im Hintergrund von Docker läuft der Server-Prozess, genannt \texttt{daemon}, der sich um das Anlegen und Verwalten von \texttt{images}, \texttt{containern}, \texttt{networks} und \texttt{data volumes} kümmert.
+    \item [daemon] Im Hintergrund von Docker läuft der Server-Prozess, genannt \texttt{daemon}, der sich um das Anlegen und Verwalten von \texttt{images}, \texttt{container}, \texttt{networks} und \texttt{data volumes} kümmert.
     Er läuft auf dem Host-System und nimmt Kommandos der \texttt{clients} über eine REST-Schnittstelle entgegen.
     \item [client] Der \texttt{client} ist die Benutzeroberfläche von Docker, die in Form einer Kommandozeilenanwendung zur Verfügung steht.
     Er nimmt Kommandos und Konfigurationen entgegen und sendet diese an einen zuvor festgelegten \texttt{daemon}.
     \item [engine] Als \texttt{engine} wird die Kombination aus \texttt{daemon} und \texttt{client} bezeichnet, die den Kern von Docker bildet.
-    \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Images sollten immer deklarativ mihilfe von Dockerfiles (siehe \cref{sec:dockerfiles}) erstellt werden.
-    \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden. Sie sind die ausführbare Instanz eines \texttt{images}. \texttt{Container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen werden, oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
-    \item [registry] \texttt{Registrys} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar und können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
+    \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden. Sie bilden die Basis zum Erstellen eines \texttt{containers}. Images sollten immer deklarativ mithilfe von Dockerfiles (siehe \cref{sec:dockerfiles}) erstellt werden.
+    \item [container] \texttt{container} sind jene Teile, die von Docker ausgeführt werden. Sie sind die ausführbare Instanz eines \texttt{images}. \texttt{container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
+    \item [registry] \texttt{registries} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar und können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
     \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet wird und die Basis für Multi-Container-Anwendungen darstellt. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
 \end{description}
-In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem die Bash gestarte wird.
+In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem sodann die Bash gestartet wird.
 \begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
     $ docker run -i -t ubuntu /bin/bash
 \end{lstlisting}
@@ -70,7 +71,7 @@ Dabei erledigt die Docker-Engine folgende Schritte:
 In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.9\linewidth,clip]{images/docker-architecture}
+    \includegraphics[width=0.75\linewidth,clip,trim=70 100 70 80]{images/docker-architecture}
     \caption{Docker-Architektur}
 \label{fig:docker-architektur}
 \end{figure}
@@ -80,15 +81,16 @@ In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 \label{sec:docker-platforms}
 Docker läuft nur auf Linux-Versionen nativ, deren Kernels zu Docker kompatibel sind.
 Auf allen anderen Systemen wird durch virtualisierte Umgebungen eine Möglichkeit geschaffen Docker auszuführen.
-Bei diesen Werkzeugen wurde im letzten Jahr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS stark vereinfacht wurde, momentan allerdings eine Vielzahl von Werkzeugen existiert.
+Bei diesen Werkzeugen wurde im letzten Jahr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS stark vereinfacht wurde, derzeit allerdings eine Vielzahl von Werkzeugen existiert. Nachfolgend wird ein kurzer Überblick gegeben.
 
 \subsection{Docker for Windows}
 \label{sec:docker-windows}
-Docker for Windows nützt Hyper-V für die Erstellung einer virtuellen Linux-Maschine zur Ausführung von Docker \autocite{docker-for-windows:online}.
-Dazu werden die Client-Anwendungen für die Verwaltung dieses Hosts zur Verfügung gestellt.
-Nicht zu verwechseln ist Docker for Windows mit den Windows Containern, die sich noch in der Beta-Phase befinden.
+Docker for Windows verwendet Hyper-V für die Erstellung einer virtuellen Linux-Maschine zur Ausführung von Docker \autocite{docker-for-windows:online}.
+Zusätzlich werden die Docker-Client-Anwendungen installiert.
+Nicht zu verwechseln ist Docker for Windows mit den Windows-Containern\footnote{\url{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}}, die sich noch in der Beta-Phase befinden.
 Zur Verwendung dieser gibt es auf der offiziellen Docker-Homepage eine Anleitung\footnote{\url{https://docs.docker.com/docker-for-windows/install/}}.
-Ein sehr nützliches Add-on für die Verwendung von Docker unter Windows ist \lstinline{posh-docker}\footnote{\url{https://github.com/samneirinck/posh-docker}}, welches die automatische Vervollständigung der Docker-Kommandos auf der Powershell ermöglicht.
+Ein sehr nützliches Add-on für die Verwendung von Docker unter Windows ist \texttt{posh-docker}\footnote{\url{https://github.com/samneirinck/posh-docker}}, welches die automatische Vervollständigung der Docker-Kommandos auf der Powershell ermöglicht.
+Vor allem durch die Integration des Port-Forwarding und der Möglichkeit, auch in Docker auf das gesamte Dateisystem zuzugreifen, fühlt sich die Verwendung von Docker for Windows beinahe nativ an.
 
 \subsection{Docker for Mac}
 \label{sec:docker-mac}
@@ -98,17 +100,19 @@ Ebenso wie in der Windows-Version bietet die Mac-Version eine grafische Benutzer
 
 \subsection{Docker Toolbox}
 \label{sec:docker-toolbox}
-Die Docker Toolbox ist die älteste offizielle Möglichkeit Docker auf Windows oder macOS laufen zu lassen \autocite{docker-toolbox:online}.
-Sie wird von Docker \emph{nicht} mehr empfohlen, da es mit den nativen Lösungen nun zu wesentlich weniger Problemen und Overhead kommt.
-Docker Toolbox installiert die Docker Client Werkzeuge, sowie Oracle VM VirtualBox.
-Darin wird eine boot2docker virtuelle Maschine angelegt, auf der der Docker-Daemon läuft.
-Zusätzlich wird eine vorkonfigurierte git-Bash angeboten, die sich zu diesem Docker-Host verbindet.
+Die Docker Toolbox war die erste offizielle Möglichkeit Docker auf Windows oder macOS laufen zu lassen \autocite{docker-toolbox:online}.
+Sie wird von Docker \emph{nicht} mehr empfohlen, da es mit den nativen Lösungen nun zu wesentlich weniger Problemen und einem geringeren Overhead kommt.
+Docker Toolbox installiert die Docker-Client-Werkzeuge sowie Oracle VM VirtualBox.
+Darin wird eine virtuelle Maschine "`boot2docker"' angelegt, auf der der Docker-Daemon läuft.
+Zusätzlich wird eine vorkonfigurierte git-Bash angeboten, die sich automatisch zu diesem Docker-Host verbindet.
 
 Der Hypervisor für die virtuelle Maschine lässt sich mit etwas Mühe austauschen\footnote{\url{https://github.com/pecigonzalo/docker-machine-vmwareworkstation}}, was aber zu zahlreichen Problemen führt.
-Wenn Docker for Windows und eine Virtualisierungslösung wie VMware oder VirtualBox gleichzeitig verwendet werden sollen, ergibt sich ein Konflikt zwischen den Hypervisorn und Hyper-V.
-Aufgrund von Problemen wie der fehlenden Möglichkeit Dateien zwischen dem Host und Docker zu teilen, sollte allerdings anstatt der Docker Toolbox diese Lösung \autocite{hanselman-vms:online} von Scott Hanselman in Betracht gezogen werden.
-Er erklärt im vorhin verwiesenen Blog-Eintrag eine Möglichkeit, mehrere Hypervisor durch unterschiedliche Systemkonfigurationen und Neustarts zu verwenden.
+Wenn Docker for Windows und eine Virtualisierungslösung wie VMware oder VirtualBox gleichzeitig verwendet werden sollen, ergibt sich ein Konflikt zwischen den Hypervisoren und Hyper-V.
+Aufgrund von Problemen wie der fehlenden Möglichkeit, Dateien zwischen dem Host und Docker zu teilen, sollte allerdings anstatt der Docker Toolbox die Lösung von Scott Hanselman \autocite{hanselman-vms:online} in Betracht gezogen werden.
+Er erklärt darin eine Möglichkeit, mehrere Hypervisoren und Hyper-V parallel zu verwenden.
+Dies ist allerdings nur durch einen Neustart des Systems möglich.
 Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen und die geringsten Einbußen.
+Derzeit (Februar 2017) gibt es keine bessere Lösung.
 
 % - die Geschichte von Docker
 % - Docker Aufbau, LXC, usw...
@@ -125,58 +129,108 @@ Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen
 
 \section{Produkte}
 \label{sec:docker-products}
-Das Docker-Ökosystem besteht mittlerweile aus zahlreichen Komponenten, die zusätzliche Werkzeuge zur Docker-Engine darstellen.
+Das Docker-Ökosystem besteht mittlerweile aus zahlreichen Komponenten, wobei die Docker-Engine um zusätzliche Werkzeuge erweitert wird.
 Die folgenden Informationen stammen aus \autocite{docker-engine:online}.
 \subsubsection{Docker Hub}
 \label{sec:docker-hub}
-Der Docker-Hub ist die offizielle Registry für Docker-Images. Dort werden offizielle Images wie Ubuntu, MySQL, Redis und zahlreiche weitere angeboten.
-Zusätzlich können im Docker-Hub eigene Images hochgeladen werden, für die auch die Möglichkeit des automatischen Erstellens angeboten wird.
-Der Docker-Hub ist auch eine exzellente Quelle zum Lernen von Best-Practices.
-Bei den meisten Images existieren Dockerfiles, die gelesen, studiert und nachgebaut werden können.
+Der \emph{Docker Hub} ist die offizielle Registry für Docker-Images. Dort werden offizielle Images wie Ubuntu, MySQL, Redis und zahlreiche weitere angeboten.
+Zusätzlich können im Docker Hub eigene Images hochgeladen werden, für die auch die Möglichkeit des automatischen Erstellens bei Änderungen in Github angeboten wird.
+Der Docker Hub ist auch eine exzellente Quelle zum Lernen von Best-Practices.
+Zu den meisten Images existieren Dockerfiles, die gelesen, studiert und nachgebaut werden können.
 \subsubsection{Docker Machine}
 \label{sec:docker-machine}
-Docker-Machine ist das Werkzeug zum Verwalten von Docker-Hosts.
-Dieses Kommandozeilenwerkzeug ermöglicht das Erstellen und Verwalten von virtuellen Hosts, auf denen Docker konfiguriert und einsatzbereit ist.
-Docker-Machine kann sowohl für die Konfiguration des Entwicklungsrechners verwendet werden, sowie für die Provisionierung von Docker-Hosts in der Cloud oder in Datencentern.
+\emph{Docker Machine} ist das Werkzeug zum Verwalten von Docker-Hosts.
+Dieses Kommandozeilenwerkzeug ermöglicht das Erstellen und Verwalten von virtuellen Hosts, auf denen Docker bereits konfiguriert und einsatzbereit ist.
+Docker Machine kann sowohl für die Konfiguration des Entwicklungsrechners verwendet werden als auch für die Provisionierung von Docker-Hosts in der Cloud oder in Datenzentren.
 \subsubsection{Docker Compose}
 \label{sec:docker-compose}
-Docker-Compose bietet die Grundlage für komplexere Anwendungen.
+\emph{Docker Compose} bietet die Grundlage für komplexe Anwendungen.
 Diese lassen sich nicht in einen Container verpacken, da sie aus zahlreichen Services bestehen.
-Mithilfe eines eigenen auf YAML basierenden Dateiformates lassen sich diese Services deklarativ beschreiben und an \texttt{docker-compose} übergeben, wodurch sie ausgeführt werden.
-Weiters ist durch Compose eine einfachere Verwaltung von verteilten Services möglich.
+Mithilfe eines eigenen auf YAML basierenden Dateiformates lassen sich diese Services deklarativ beschreiben und mithilfe von \texttt{docker-compose} ausführen und zentral verwalten.
 \subsubsection{Docker Swarm}
 \label{sec:docker-swarm}
-Docker-Swarm ist die Lösung von Docker selbst zur Verwendung von Docker in lastintensiveren Umgebungen.
-Mithilfe von Docker-Swarm lassen sich mehrere Hosts zu einem virtuellen Host zusammenfassen, gegen den in Folge die Docker-Kommandos ausgeführt werden können.
-Da die API ident ist, müssen keine Anpassungen durchgeführt werden und bestehende Docker-Kommandos können weiterverwendet werden, bieten aber nun den Vorteil der höheren Ausfallsicherheit und Leistung.
+\emph{Docker Swarm} ist die offizielle Lösung zum Betrieb von Docker in lastintensiven, kritischen und hochverfügbaren Umgebungen.
+Mithilfe von Docker Swarm lassen sich mehrere Hosts zu einem virtuellen Host zusammenfassen, der in Folge die Docker-Kommandos ausführt.
+Da die API ident ist, müssen keine Anpassungen durchgeführt werden, wodurch bestehende Docker-Kommandos weiterverwendet werden können.
+Allerdings bietet Docker Swarm eine wesentlich höhere Leistung und Ausfallsicherheit.
 
 
 \section{Dateisystem}
 \label{sec:dateisystem}
-Bevor es im nächsten Kapitel um das Erstellen von Containern mithilfe von Dockerfiles geht, ist es wichtig, die Konzepte rund um das von Docker verwendete Dateisystem zu verstehen.
-Diese sind aus \autocite{docker-filesystem:online} entnommen.
+Bevor im nächsten Kapitel das Erstellen von Containern mithilfe von Dockerfiles beschrieben wird, ist es wichtig, die Konzepte rund um das von Docker verwendete Dateisystem zu verstehen.
+Diese werden nachfolgend vorgestellt; sie sind aus \autocite{docker-filesystem:online} entnommen.
 In \cref{fig:docker-dateisystem} ist dargestellt, wie das Dateisystem von Docker arbeitet.
+
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-filesystem}
     \caption{Docker-Dateisystem}
 \label{fig:docker-dateisystem}
 \end{figure}
+
 Jedes Image besteht aus mehreren gestapelten Schichten.
 Die einzelnen Schichten merken dies allerdings nicht.
 Jede dieser Schichten bekommt eine kombinierte Sicht auf alle darunterliegenden.
 Sie kann selbst Dateien hinzufügen, ändern oder als gelöscht markieren, ändert allerdings die darunterliegenden Schichten nicht.
-Diese Idee eines Dateisystems wird Union File System genannt.
+Dieses Dateisystem-Konzept wird Union File System genannt.
 
-Genau dadurch wird Docker sehr speichereffizient, da idente Schichten nur einmal existieren.
-Ein Image, das auf einem anderen aufbaut, teilt sich dieselbe Basisschicht, welche durch einen eindeutigen Hash identifiziert, wiederverwendet werden kann.
-Dadurch wird auch beim Start von zahlreichen identen Containern beinahe kein Speicherplatz benötigt, denn die schreibgeschützte Image-Schicht ist bei jedem Container ident.
+Dadurch wird Docker sehr speichereffizient, da idente Schichten nur einmal existieren.
+Ein Image, das auf einem anderen aufbaut, teilt sich dieselbe Basisschicht, welche, durch einen eindeutigen Hash identifiziert, wiederverwendet werden kann.
+Dadurch wird auch beim Start von zahlreichen gleichen Containern beinahe kein Speicherplatz benötigt, denn die schreibgeschützte Image-Schicht wird von jedem Container wiederverwendet.
 
 
 \section{Dockerfiles}
 \label{sec:dockerfiles}
+Zum Erstellen von Images gibt es in Docker zwei Ansätze.
+Die erste Möglichkeit besteht darin, ein Basis-Image mit einer Shell zu starten und in dieser die benötigten Kommandos und Änderungen auszuführen.
+Nach allen ausgeführten Kommandos wird der Zustand dieses Containers eingefroren und in ein Image verwandelt.
+Dies führt allerdings dazu, dass dieser Prozess nur sehr schwer reproduzierbar ist.
+Aus diesem Grund gibt es die sogenannten \emph{Dockerfiles}.
+Sie stellen Bauanleitungen für ein Docker-Image dar, die an den Docker-Deamon übergeben werden, der auf Basis dieser das Image erstellt.
+Daraus resultiert ein reproduzierbarer und plattformunabhängiger Erstellungsprozess.
+
+\lstinputlisting[caption=Apache-Dockerfile von kstaken,label={lst:dockerfile-apache}]{listings/Dockerfile.apache}
+In \cref{lst:dockerfile-apache} wird ein Apache-Webserver auf einem Ubuntu-Linux aufgesetzt und für den Einsatz vorbereitet.
+Dieser Dockerfile\footnote{\url{https://github.com/kstaken/dockerfile-examples/blob/master/apache/Dockerfile}} wird von Kimbro Staken als quelltextoffenes Beispiel geführt und beinhaltet einige der wichtigsten Dockerfile-Instruktionen.
+Nachfolgend werden die verwendeten Instruktionen beschrieben, eine vollständige Übersicht bietet \autocite{docker-dockerfile:online}.
+\begin{description}
+    \item[FROM] Die \emph{FROM}-Anweisung spezifiziert das Basis-Image des Containers. Auf dieser Schicht wird der Container aufgebaut. Meistens wird dies ein offizielles Image des Docker-Hubs sein, das weiter parametrisiert und konfiguriert wird.
+    \item[LABEL] Die \emph{LABEL}-Anweisung ersetzt ältere Anweisungen wie zum Beispiel \emph{Maintainer}. Sie bietet die Möglichkeit Schlüssel-Wert-Paare zu einem Image zu speichern.
+    \item[RUN] \emph{RUN} ermöglicht das Ausführen von Befehlen zum Erstellen des Images. Jedes RUN erzeugt eine neue Schicht des Images. In diesem Fall wird RUN verwendet um mit dem Paketmanager \texttt{apt-get} Apache zu installieren und gleich im Anschluss das System wieder aufzuräumen.
+    \item[ENV] Mit dem \emph{ENV}-Befehl werden Umgebungsvariablen gesetzt.
+    \item[EXPOSE] \emph{EXPOSE} kennzeichnet die Netzwerk-Ports, auf denen der Container zur Laufzeit erreichbar ist. Die Ports werden lediglich als verfügbar gekennzeichnet. Ob und auf welchem Port der Container tatsächlich erreichbar ist, bestimmt der Anwender beim Starten des Containers.
+    \item[CMD] \emph{CMD} spezifiziert jene Anwendung, die standardmäßig beim Starten des Containers ausgeführt wird. Diese kann beim Starten des Containers überschrieben werden. Genauere Informationen dazu sind unter \cref{sec:cmd-vs-entrypoint} zu lesen.
+\end{description}
+
+Um aus diesem Dockerfile ein Image zu erstellen muss ein \texttt{docker build} ausgeführt werden.
+Dieses Kommando könnte beispielsweise wie in \cref{lst:dockerfile-build} aussehen.
+
+\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:dockerfile-build]
+    $ docker build -t kstaken/apache .
+\end{lstlisting}
+Der Parameter \texttt{-t} weist dem erstellten Image den Namen \texttt{kstaken/apache} zu.
+Dieser kann dann verwendet werden um einen Container auf Basis dieses Image zu starten.
+Der Punkt am Ende des Kommandos spezifiziert den Build-Kontext.
+Alle Dateien in diesem Pfad sind während des Docker-Builds verfügbar und können dem Image hinzugefügt werden.
+Standardmäßig sucht Docker nach einer Datei namens \texttt{Dockerfile} in dem angegebenen Kontext.
+Dies kann mit dem Parameter \texttt{-f} überschrieben werden.
+
+\subsection{Best Practices}
+\label{sec:dockerfile-best-practices}
+Für das Erstellen von Dockerfiles werden von Docker folgende Best-Practices vorgeschlagen \autocite{docker-dockerfile-best-practices:online}:
+\begin{itemize}
+    \item Container sollen per Definition "`flüchtig"' gestaltet werden. Damit ist gemeint, dass ein Container mit minimalem Aufwand gestoppt, gelöscht und neu gestartet werden kann. Der Container muss von seinem Zustand unabhängig sein. Dies bedeutet, dass Daten und Konfigurationen außerhalb des Containers existieren müssen.
+    \item Ein Container soll so klein wie möglich sein (siehe \cref{sec:minimize-imagesize}). Unnötige Pakete sollen vermieden werden. Ein Datenbankcontainer benötigt keinen Texteditor.
+    \item Jeder Container soll im Gesamtsystem lediglich \emph{eine} Aufgabe haben. Durch diese Aufteilung können Systeme wesentlich besser skalieren. Diese Regel besagt nicht, dass ein Container lediglich einen Prozess ausführen darf. Prozesse können auch Kindprozesse starten, allerdings soll damit nur eine Aufgabe gelöst werden.
+    \item Die Anzahl der Schichten eines Images soll möglichst gering gehalten werden. Alles in einen Befehl zu packen ist allerdings auch nicht der richtige Weg. Hier muss ein guter Mittelweg gefunden werden. Die offiziellen Images im Docker Hub bieten dafür sehr gute Lernressourcen.
+    \item Mehrzeilige Argumente sollen zur besseren Wartbarkeit alphabetisch sortiert werden.
+    \item Durch die Wiederverwendung von Schichten bietet Docker die Möglichkeit eines Build-Caches. Unveränderte Teile des Images müssen nicht neu erzeugt werden. Daher sollen die Schichten so gestaltet werden, dass sich häufig ändernde Module möglichst spät hinzugefügt werden, da dies die Geschwindigkeit beim Erzeugen eines Images erheblich beschleunigt.
+\end{itemize}
+
 \subsubsection{Reduktion der Imagegröße}
+\label{sec:minimize-imagesize}
 \subsubsection{CMD vs. ENTRYPOINT}
+\label{sec:cmd-vs-entrypoint}
 
 % - Layers
 % - ...
@@ -213,6 +267,6 @@ Dadurch wird auch beim Start von zahlreichen identen Containern beinahe kein Spe
 % - https://rominirani.com/docker-management-commands-e89a23c55908#.wlq1ixs5i
 
 % docker build
-% docker run --rm -it -v
+% docker run --rm -it -v -p
 % docker rmi (cleanup)
 % new docker command line
