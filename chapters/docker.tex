@@ -206,7 +206,7 @@ Um aus diesem Dockerfile ein Image zu erstellen muss ein \texttt{docker build} a
 Dieses Kommando könnte beispielsweise wie in \cref{lst:dockerfile-build} aussehen.
 
 \begin{lstlisting}[caption=Erstellen eines Images auf Basis eines Dockerfiles, language=bash, label=lst:dockerfile-build]
-    $ docker build -t kstaken/apache .
+$ docker build -t kstaken/apache .
 \end{lstlisting}
 Der Parameter \texttt{-t} weist dem erstellten Image den Namen \texttt{kstaken/apache} zu.
 Dieser kann dann verwendet werden um einen Container auf Basis dieses Image zu starten.
@@ -368,13 +368,39 @@ Management Commands:
 \begin{verbatim}
 docker build [-t <tag>] [-f <dockerfile>] <context>
 \end{verbatim}
+\begin{lstlisting}[caption=Docker-Build-Beispiel, language=bash, label=lst:docker-build-example]
+docker build -t kstaken/apache .
+\end{lstlisting}
 
 \subsection{Container starten}
 \begin{verbatim}
 docker run [--rm] [-it] [-v <volumes>] [-p <ports>] <image> [<command>]
 \end{verbatim}
+\begin{lstlisting}[caption=Docker-Run-Beispiel, language=bash, label=lst:docker-run-example]
+docker run -d -v ${pwd}:/var/www -p 8080:80 kstaken/apache
+docker run -d --rm -v ${pwd}:/var/www -p 8080:80 kstaken/apache
+\end{lstlisting}
 
 \subsection{Docker aufräumen}
 \begin{verbatim}
+docker system df
 docker container|volume|image|system prune
 \end{verbatim}
+\begin{lstlisting}[caption=Docker-Prune-Beispiel, language=bash, label=lst:docker-prune-example]
+$ docker system df
+TYPE             TOTAL    ACTIVE    SIZE         RECLAIMABLE
+Images           8        1         523.8 MB     477.1 MB (91%)
+Containers       1        0         484 B        484 B (100%)
+Local Volumes    0        0         0 B          0 B
+
+$ docker system prune
+WARNING! This will remove:
+        - all stopped containers
+        - all volumes not used by at least one container
+        - all networks not used by at least one container
+        - all dangling images
+Are you sure you want to continue? [y/N] y
+Deleted Containers:
+019cfcc4e93ba4667c3387e2f9af442382d140c671619c548f5fddcc0795fb1a
+Total reclaimed space: 484 B
+\end{lstlisting}
