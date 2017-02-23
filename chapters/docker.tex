@@ -351,8 +351,30 @@ PING docker.io (162.242.195.84) 56(84) bytes of data.
 % - http://jimhoskins.com/2013/07/27/remove-untagged-docker-images.html
 % - Scripting
 % - https://rominirani.com/docker-management-commands-e89a23c55908#.wlq1ixs5i
-
-% docker build
-% docker run --rm -it -v -p
-% docker rmi (cleanup)
 % new docker command line
+Für das produktive Arbeiten mit Docker genügen lediglich ein paar Kommandos, von denen die wichtigsten in diesem Abschnitt vorgestellt werden.
+
+\subsection{Management-Kommandos}
+\begin{verbatim}
+Management Commands:
+  container   Manage containers
+  image       Manage images
+  network     Manage networks
+  system      Manage Docker
+  ...
+\end{verbatim}
+
+\subsection{Images erstellen}
+\begin{verbatim}
+docker build [-t <tag>] [-f <dockerfile>] <context>
+\end{verbatim}
+
+\subsection{Container starten}
+\begin{verbatim}
+docker run [--rm] [-it] [-v <volumes>] [-p <ports>] <image> [<command>]
+\end{verbatim}
+
+\subsection{Docker aufräumen}
+\begin{verbatim}
+docker container|volume|image|system prune
+\end{verbatim}
