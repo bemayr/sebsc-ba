@@ -205,7 +205,7 @@ Nachfolgend werden die verwendeten Instruktionen beschrieben, eine vollständige
 Um aus diesem Dockerfile ein Image zu erstellen muss ein \texttt{docker build} ausgeführt werden.
 Dieses Kommando könnte beispielsweise wie in \cref{lst:dockerfile-build} aussehen.
 
-\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:dockerfile-build]
+\begin{lstlisting}[caption=Erstellen eines Images auf Basis eines Dockerfiles, language=bash, label=lst:dockerfile-build]
     $ docker build -t kstaken/apache .
 \end{lstlisting}
 Der Parameter \texttt{-t} weist dem erstellten Image den Namen \texttt{kstaken/apache} zu.
@@ -227,9 +227,53 @@ Für das Erstellen von Dockerfiles werden von Docker folgende Best-Practices vor
     \item Durch die Wiederverwendung von Schichten bietet Docker die Möglichkeit eines Build-Caches. Unveränderte Teile des Images müssen nicht neu erzeugt werden. Daher sollen die Schichten so gestaltet werden, dass sich häufig ändernde Module möglichst spät hinzugefügt werden, da dies die Geschwindigkeit beim Erzeugen eines Images erheblich beschleunigt.
 \end{itemize}
 
-\subsubsection{Reduktion der Imagegröße}
+\subsection{Reduktion der Imagegröße}
 \label{sec:minimize-imagesize}
-\subsubsection{CMD vs. ENTRYPOINT}
+Einer der wichtigsten Punkte beim Erstellen von Docker-Images ist die Größe des resultierenden Images.
+Diese wirkt enorm auf die Startgeschwindigkeit und den Speicherbedarf von Containern aus und spielt bei komplexen Systemen mit vielen unterschiedlichen Containern eine große Rolle.
+Zur Optimierung der Imagegröße existieren zahlreiche Blogeinträge, beispielsweise \autocite{}, \autocite{} und \autocite{}.
+\subsubsection{Basis-Image}
+Zur Demonstration des Einflusses des Basis-Images auf die Imagegröße wird in \cref{lst:shell-startup} eine Shell in Ubuntu und Alpine gestartet.
+\begin{lstlisting}[caption=Starten einer Shell in unterschiedlichen Basis-Images, language=bash, label=lst:shell-startup]
+$ docker run --rm -it ubuntu sh
+$ docker run --rm -it alpine sh
+\end{lstlisting}
+
+Das Starten der Container aus \cref{lst:shell-startup} bewirkt das Herunterladen der Images aus \cref{lst:shell-imagesize-comparison}. Anhand der Imagegröße ist der immense Unteschied zu erkennen, während Ubuntu beinahe 130 Megabyte Speicherplatz benötigt, kommt Alpine mit lediglich rund vier Megabyte aus.
+Alpine\footnote{\url{https://alpinelinux.org/}} ist eine sehr leichtewichtige Linux-Distribution, die sich aufgrund ihrer Größe ideal für die Verwendung in containerbasierten Systemen eignet.
+Eine vollwertige Linux-Distribution wie Ubuntu oder Debian wird von beinahe keinem Container benötigt, wird allerdings aus geschichtlichen und Komfortgründen selbst in vielen offiziellen Images\footnote{\url{https://hub.docker.com/_/openjdk/}} noch verwendet.
+\begin{lstlisting}[caption=Vergleich der Basis-Imagegröße, language=bash, label=lst:shell-imagesize-comparison]
+$ docker images
+REPOSITORY          TAG            IMAGE ID             SIZE
+ubuntu              latest         f49eec89601e         129 MB
+alpine              latest         88e169ea8f46         3.98 MB
+\end{lstlisting}
+
+\subsubsection{Zusammenfassen der RUN-Kommandos}
+
+\begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:dockerfile-imagesize]
+$ docker build -t image-large -f .\Dockerfile.image-large .
+$ docker build -t image-small -f .\Dockerfile.image-small .
+
+$ docker images
+REPOSITORY          TAG            IMAGE ID             SIZE
+alpine              latest         88e169ea8f46         3.98 MB
+image-large         latest         56038a6ecc87         91.6 MB
+image-small         latest         114ccaf13bde         5.02 MB
+
+$ docker history image-large
+IMAGE            CREATED BY                             SIZE
+56038a6ecc87     /bin/sh -c apk del make gcc            17.3 kB
+ffe18f5b76d9     /bin/sh -c make --help                 0 B
+188b3de5ec5d     /bin/sh -c apk update && apk add...    87.6 MB
+88e169ea8f46     /bin/sh -c #(nop) ADD file:92ab74...   3.98 MB
+
+$ docker history image-small
+IMAGE            CREATED BY                             SIZE
+114ccaf13bde     /bin/sh -c apk update && apk add...    1.04 MB
+88e169ea8f46     /bin/sh -c #(nop) ADD file:92ab7...    3.98 MB
+\end{lstlisting}
+\subsection{CMD vs. ENTRYPOINT}
 \label{sec:cmd-vs-entrypoint}
 
 % - Layers
