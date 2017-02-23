@@ -11,7 +11,7 @@ Ressourcen lassen sich effizienter ausnützen, die Systeme werden jedoch nur sub
 Dies führt zu langen Startzeiten und einem hohen Speicherverbrauch.
 
 Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kernels.
-Dadurch entsteht die Möglichkeit Anwendungen mitsamt der benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
+Dadurch entsteht die Möglichkeit Anwendungen mitsamt den benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
 Für einen Container wird lediglich die Laufzeitumgebung benötigt, ist diese installiert, ist garantiert, dass der Container funktioniert.
 Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) der Unternehmen eingesetzt, die auf Containervirtualisierung setzen \autocite{ContainerAdoption}.
 
@@ -40,9 +40,8 @@ Die in diesem Kapitel gezeigten Beispiele und verwendeten Funktionen basieren au
 \section{Funktionsweise}
 \label{sec:docker-basics}
 Die Funktionsweise von Docker wird in \autocite{docker-overview:online} beschrieben und im folgenden Abschnitt zusammengefasst.
-\subsection{Komponenten am Beispiel der Bash}
-\label{sec:components-bash}
-Ein Basiswissen über die folgenden Komponenten des Docker-Systems ist für die Verwendung von Docker unerlässlich.
+Docker basiert auf einer Vielzahl von Komponenten, die erst als Gesamtsystem eine Containervirtualisierung ermöglichen.
+Ein grundlegendes Wissen über diese Komponenten ist für die Verwendung von Docker unerlässlich.
 \begin{description}
     \item [daemon] Im Hintergrund von Docker läuft der Server-Prozess, genannt \texttt{daemon}, der sich um das Anlegen und Verwalten von \texttt{images}, \texttt{containern}, \texttt{networks} und \texttt{data volumes} kümmert.
     Er läuft auf dem Host-System und nimmt Kommandos der \texttt{clients} über eine REST-Schnittstelle entgegen.
@@ -52,7 +51,7 @@ Ein Basiswissen über die folgenden Komponenten des Docker-Systems ist für die 
     \item [image] Ein \texttt{image} ist eine Vorlage für das Erstellen eines \texttt{containers}. \texttt{Images} können erweitert und dadurch wiederverwendet werden und bilden die Basis zum Erstellen eines \texttt{containers}. Es wird idealerweise über ein \cref{sec:dockerfiles} erstellt.
     \item [container] \texttt{Container} sind jene Teile, die von Docker ausgeführt werden. Er ist eine ausführbare Instanz eines \texttt{images}. \texttt{Container} werden vom \texttt{daemon} gestartet, gestoppt, verschoben oder gelöscht, der die Anweisungen vom \texttt{client} enthält. Zusätzlich können \texttt{container} zur Inter-Container-Kommunikation Netzwerken zugewiesen werden, oder zur Datenpersistierung mit Speicherbereichen versorgt werden.
     \item [registry] \texttt{Registrys} dienen der Verteilung von \texttt{images}. Sie stellen eine Bibliothek dieser dar. Sie können entweder privat oder öffentlich zugänglich sein (siehe \cref{sec:docker-hub}).
-    \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet werden und die Basis für Multi-Container-Anwendungen (siehe \cref{sec:docker-multi-container-anwendungen}) darstellen. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
+    \item [service] Ein \texttt{service} ist eine Sammlung von Docker-Containern, welche durch einen Schwarmmanger (siehe \cref{sec:docker-swarm}) verwaltet werden und die Basis für Multi-Container-Anwendungen darstellen. Seit Docker 1.12 werden \texttt{services} in vollem Ausmaß unterstützt.
 \end{description}
 In \cref{lst:docker-run-basics} wird ein neuer Container auf Basis des Ubuntu-Images gestartet, in dem die Bash ausgeführt wird.
 \begin{lstlisting}[caption=Ubuntu-Bash in Docker, language=bash, label=lst:docker-run-basics]
@@ -75,15 +74,7 @@ In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
     \caption{Docker-Architektur}
 \label{fig:docker-architektur}
 \end{figure}
-\subsection{Dateisystem}
-\label{sec:dateisystem}
 
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-filesystem}
-    \caption{Docker-Dateisystem}
-\label{fig:docker-dateisystem}
-\end{figure}
 
 \section{Plattformen}
 \label{sec:docker-platforms}
@@ -131,28 +122,60 @@ Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen
 %   - https://github.com/docker/for-win/issues/328
 %   - https://rominirani.com/docker-on-windows-mounting-host-directories-d96f3f056a2c
 % - Clean up: https://lebkowski.name/docker-volumes/
+
 \section{Produkte}
 \label{sec:docker-products}
-\subsection{Docker Hub}
+Das Docker-Ökosystem besteht mittlerweile aus zahlreichen Komponenten, die zusätzliche Werkzeuge zur Docker-Engine darstellen.
+Die folgenden Informationen stammen aus \autocite{docker-engine:online}.
+\subsubsection{Docker Hub}
 \label{sec:docker-hub}
-\subsection{Docker Machine}
+Der Docker-Hub ist die offizielle Registry für Docker-Images. Dort werden offizielle Images wie Ubuntu, MySQL, Redis und zahlreiche weitere angeboten.
+Zusätzlich können im Docker-Hub eigene Images hochgeladen werden, für die auch die Möglichkeit des automatischen Erstellens angeboten wird.
+Der Docker-Hub ist auch eine exzellente Quelle zum Lernen von Best-Practices.
+Bei den meisten Images existieren Dockerfiles, die gelesen, studiert und nachgebaut werden können.
+\subsubsection{Docker Machine}
 \label{sec:docker-machine}
-\subsection{Docker Compose}
+Docker-Machine ist das Werkzeug zum Verwalten von Docker-Hosts.
+Dieses Kommandozeilenwerkzeug ermöglicht das Erstellen und Verwalten von virtuellen Hosts, auf denen Docker konfiguriert und einsatzbereit ist.
+Docker-Machine kann sowohl für die Konfiguration des Entwicklungsrechners verwendet werden, sowie für die Provisionierung von Docker-Hosts in der Cloud oder in Datencentern.
+\subsubsection{Docker Compose}
 \label{sec:docker-compose}
-\subsection{Docker Swarm}
+Docker-Compose bietet die Grundlage für komplexere Anwendungen.
+Diese lassen sich nicht in einen Container verpacken, da sie aus zahlreichen Services bestehen.
+Mithilfe eines eigenen auf YAML basierenden Dateiformates lassen sich diese Services deklarativ beschreiben und an \texttt{docker-compose} übergeben, wodurch sie ausgeführt werden.
+Weiters ist durch Compose eine einfachere Verwaltung von verteilten Services möglich.
+\subsubsection{Docker Swarm}
 \label{sec:docker-swarm}
+Docker-Swarm ist die Lösung von Docker selbst zur Verwendung von Docker in lastintensiveren Umgebungen.
+Mithilfe von Docker-Swarm lassen sich mehrere Hosts zu einem virtuellen Host zusammenfassen, gegen den in Folge die Docker-Kommandos ausgeführt werden können.
+Da die API ident ist, müssen keine Anpassungen durchgeführt werden und bestehende Docker-Kommandos können weiterverwendet werden, bieten aber nun den Vorteil der höheren Ausfallsicherheit und Leistung.
 
 
-% - swarm
-% - compose
-% - stack
-% - cli
-% - machine
-% - ...
-% - http://portainer.io/portainer-comparison.html
-% - https://media-glass.es/portainer-the-ui-for-docker-d067f6335f23#.yuokl7w7n
+\section{Dateisystem}
+\label{sec:dateisystem}
+Bevor es im nächsten Kapitel um das Erstellen von Containern mithilfe von Dockerfiles geht, ist es wichtig, die Konzepte rund um das von Docker verwendete Dateisystem zu verstehen.
+Diese sind aus \autocite{docker-filesystem:online} entnommen.
+In \cref{fig:docker-dateisystem} ist dargestellt, wie das Dateisystem von Docker arbeitet.
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth,clip,trim=130 130 130 110]{images/docker-filesystem}
+    \caption{Docker-Dateisystem}
+\label{fig:docker-dateisystem}
+\end{figure}
+Jedes Image besteht aus mehreren gestapelten Schichten.
+Die einzelnen Schichten merken dies allerdings nicht.
+Jede dieser Schichten bekommt eine kombinierte Sicht auf alle darunterliegenden.
+Sie kann selbst Dateien hinzufügen, ändern oder als gelöscht markieren, ändert allerdings die darunterliegenden Schichten nicht.
+Diese Idee eines Dateisystems wird Union File System genannt.
+
+Genau dadurch wird Docker sehr speichereffizient, da idente Schichten nur einmal existieren.
+Ein Image, das auf einem anderen aufbaut, teilt sich dieselbe Basisschicht, welche durch einen eindeutigen Hash identifiziert, wiederverwendet werden kann.
+Dadurch wird auch beim Start von zahlreichen identen Containern beinahe kein Speicherplatz benötigt, denn die schreibgeschützte Image-Schicht ist bei jedem Container ident.
+
+
 \section{Dockerfiles}
 \label{sec:dockerfiles}
+\subsubsection{Reduktion der Imagegröße}
 \subsubsection{CMD vs. ENTRYPOINT}
 
 % - Layers
@@ -170,8 +193,8 @@ Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen
 % - https://www.ctl.io/developers/blog/post/dockerfile-entrypoint-vs-cmd/
 % - http://goinbigdata.com/docker-run-vs-cmd-vs-entrypoint/
 % - http://www.projectatomic.io/docs/docker-image-author-guidance/
-\section{Multi-Container-Anwendungen} % - Namen überdenken!!!
-\label{sec:docker-multi-container-anwendungen}
+% \section{Multi-Container-Anwendungen} % - Namen überdenken!!!
+% \label{sec:docker-multi-container-anwendungen}
 % - fig vs. docker-compose
 % - Bash-Skripte vs. docker-compose
 % - bei größeren Systemen auf Kapitel 1 (Orchestration) verweisen
@@ -183,8 +206,13 @@ Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen
 %  - https://docs.docker.com/docker-cloud/apps/stacks/
 %  - https://blog.nimbleci.com/2016/09/14/docker-stacks-and-why-we-need-them/
 %  - https://blog.couchbase.com/2016/july/docker-services-stack-distributed-application-bundle
-\section{Häufige Docker-Kommandos und deren Verwendung}
+\section{Häufig benötigte Docker-Kommandos}
 \label{docker-kommandos}
 % - http://jimhoskins.com/2013/07/27/remove-untagged-docker-images.html
 % - Scripting
 % - https://rominirani.com/docker-management-commands-e89a23c55908#.wlq1ixs5i
+
+% docker build
+% docker run --rm -it -v
+% docker rmi (cleanup)
+% new docker command line
