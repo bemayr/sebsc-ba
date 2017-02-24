@@ -106,19 +106,50 @@ baf40e071063: Pull complete
 \end{lstlisting}
 
 
-\section{Integrationstests mithilfe von Containern}
-\label{sec:containerbasiertes-testen}
+\section{Containerbasierte Integrationstests}
+\label{sec:containerbasiertes-integrationstests}
 % - https://hharnisc.github.io/2016/06/19/integration-testing-with-docker-compose.html
 % - https://engineering.gosquared.com/testing-with-docker
 
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
 \subsubsection{Beispiel: gcc}
+\begin{lstlisting}[caption=Docker-Kommando zum Übersetzen eines C-Programmes mit gcc, language=bash, label=lst:docker-run-gcc]
+docker run --rm -v ${pwd}:/usr/src -w /usr/src frolvlad/alpine-gcc gcc -o greet greet.c
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth,clip]{images/greet-output}
+    \caption{Hello-World-Ausgabe unter Linux}
+\label{fig:greet-output}
+\end{figure}
+
 https://github.com/dockcross/dockcross
+
+\begin{lstlisting}[caption=Kommandos zum Kompilieren mit dockcross, language=bash, label=lst:dockercross-arm-greet]
+cd ~/src/dockcross
+docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7
+chmod +x ./dockcross-linux-armv7
+./dockcross-linux-armv7 bash -c '$CC test/C/greet.c -o greet_arm'
+\end{lstlisting}
 
 \section{IDE as a Container}
 \label{sec:ideasacontainer}
 https://github.com/JAremko
+
+\subsubsection{Beispiel: vim (jare/vim-bundle)}
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von vim, language=bash, label=lst:docker-run-vim]
+$ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth,clip]{images/vim-demo}
+    \caption{vim als Docker-Container}
+\label{fig:vim-demo}
+\end{figure}
+
 \subsubsection{Beispiel: Eclipse Che}
 \begin{lstlisting}[caption=Docker-Kommando zum Starten von Eclipse Che, language=bash, label=lst:docker-run-eclipse-che]
 $ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/data eclipse/che start
@@ -137,19 +168,6 @@ INFO: (che start): API: http://10.0.75.2:8080/swagger
     \caption{Eclipse Che als Docker-Container}
 \label{fig:eclipse-che-demo}
 \end{figure}
-
-\subsubsection{Beispiel: vim (jare/vim-bundle)}
-\begin{lstlisting}[caption=Docker-Kommando zum Starten von vim, language=bash, label=lst:docker-run-vim]
-$ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
-\end{lstlisting}
-
-\begin{figure}[htbp]
-    \centering
-    \includegraphics[width=0.8\linewidth,clip]{images/vim-demo}
-    \caption{vim als Docker-Container}
-\label{fig:vim-demo}
-\end{figure}
-
 
 % (- https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4#.dh1mcvvqx)
 
