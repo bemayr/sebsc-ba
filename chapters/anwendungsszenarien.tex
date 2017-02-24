@@ -20,7 +20,6 @@ In \autocite{smashing-local-devenv-docker:online} werden die bestehenden Lösung
     Allerdings ist die Notwendigkeit einer virtuellen Maschine pro Projekt sehr ressourcen- und wartungsintensiv.
     Ein weiterer Nachteil ist, dass Vagrant auf Entwicklerrechner ausgelegt ist und dadurch nicht garantiert werden kann, dass die entwickelte Software auch auf dem Produktionssystem läuft \autocite{laradock-docs:online}.
 \end{itemize}
-
 Docker bietet eine Abstraktion des Betriebssystems und die Möglichkeit die benötigten Komponenten einer Anwendung deklarativ zu beschreiben.
 Dadurch ist es möglich, die Laufzeitumgebung und benötigten Komponenten der Anwendung gemeinsam mit dieser im Versionsverwaltungssystem aufzubewahren.
 Danach ist lediglich Docker die Voraussetzung dafür, dass mit einem plattformübergreifenden Kommando mit der Entwicklung von Software begonnen werden kann.
@@ -44,7 +43,7 @@ Ein sehr mühsamer Aspekt dieser Tätigkeit ist das Einarbeiten und Verstehen de
 Außerdem werden oftmals unnatürliche Standardpfade (beispielsweise \verb$C:\xampp$ bei der Installation der PHP-Umgebung xampp\footnote{\url{https://www.apachefriends.org/}}) gewählt, oder die Deinstallation von getesteten Werkzeugen hinterlässt Spuren am Rechner des Softwareentwicklers.
 Ein weiteres Problem können fehlende Benutzerrechte darstellen, wodurch die Evaluierung bestimmter Werkzeuge gar nicht möglich ist.
 
-\subsubsection{ArangoDB\protect\footnote{\url{https://www.arangodb.com/}}}
+\subsubsection{Beispiel: ArangoDB\protect\footnote{\url{https://www.arangodb.com/}}}
 Docker ermöglich ein sehr schnelles Testen von Datenbanken, Anwendungsservern und anderen Werkzeugen.
 Außerdem wird beim Löschen eines Containers das System automatisch wieder auf einen "`sauberen"' Ausgangszustand zurückgesetzt.
 Diese Möglichkeit kann sogar zu Marketingzwecken verwendet werden, wie auf der Homepage von ArangoDB in \cref{fig:arangodb-docker-marketing} dargestellt.
@@ -76,17 +75,35 @@ docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
 \label{fig:arangodb-result}
 \end{figure}
 
-
-
 \section{Plattformunabhängige (CLI)-Anwendungen}
 \label{sec:cross-platform-applications}
 % - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
 
-\subsubsection{Jekyll\protect\footnote{\url{https://jekyllrb.com/}}}
+\subsubsection{Beispiel: Jekyll\protect\footnote{\url{https://jekyllrb.com/}}}
 
 Jekyll wird durch das Verpacken in einen Docker-Container eine plattformunabhängige CLI-Anwendung wie in \cref{sec:cross-platform-applications} beschrieben.
 
-\subsubsection{mdp\protect\footnote{\url{https://github.com/visit1985/mdp}}}
+\subsubsection{Beispiel: mdp\protect\footnote{\url{https://github.com/visit1985/mdp}}}
+
+\lstinputlisting[caption=Docker-Image für mdp,label={lst:dockerfile-mdp}]{listings/Dockerfile.mdp}
+
+
+\subsubsection{Aufruf aus der Powershell}
+
+\begin{lstlisting}[caption=Powershell-Funktionen für Docker-Kommandos, language=bash, label=lst:powershell-functions]
+$ jekyll
+function jekyll { docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/bin/jekyll ${args} }
+function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
+\end{lstlisting}
+
+\begin{lstlisting}[caption=Automatische Installation der Docker-basierten CLI-Anwendungen, language=bash, label=lst:docker-auto-install-cli]
+$ jekyll
+Unable to find image 'jekyll/jekyll:latest' locally
+latest: Pulling from jekyll/jekyll
+baf40e071063: Pull complete
+70acac711d95: Downloading [======>       ] 11.33 MB/91.37 MB
+...
+\end{lstlisting}
 
 
 \section{Integrationstests mithilfe von Containern}
