@@ -15,7 +15,7 @@
 
 
 -> "Docker als unterstützendes Werkzeug <-
--> für Software-Entwickler" <-
+-> für Softwareentwickler" <-
 
 
 

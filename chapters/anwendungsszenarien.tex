@@ -1,17 +1,89 @@
-\chapter{Docker-Anwendungsszenarien für den Software-Entwickler}
+\chapter{Docker-Anwendungsszenarien für den Softwareentwickler}
 \label{cha:szenarien}
-https://medium.com/iron-io-blog/why-and-how-to-use-docker-for-development-a156c1de3b24#15c1
-https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#what-is-the-problem-with-local-development-environments
-https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#approaches-for-multi-project-development-environments
-https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#the-future
-http://laradock.io/#why-docker-not-vagrant
-Schneller Einstieg für Entwickler
+Im Titel dieser Arbeit wird Docker als Werkzeug für den Softwareentwickler bezeichnet.
+Dieses Kapitel zeigt exemplarisch mögliche Anwendungsfälle, und wie diese Softwareentwickler bei ihren alltäglichen Tätigkeiten unterstützen können.
+
+Das Entwickeln von Software erfordert die Installation zahlreiche Werkzeuge.
+Wenn sich diese auf lediglich ein Projekt beschränkt stellt dies kein Problem dar, da es zu keinen Versionsinkompatibilitäten kommt und die Werkzeuge sich nicht ständig ändern.
+Werden allerdings mehrere Projekte parallel entwickelt und zusätzlich noch Beiträge zu Open-Source-Projekten gemacht, wird dieses Unterfangen erheblich komplizierter.
+Unterschiedliche Laufzeitumgebungen, Compiler-Versionen, Build-Werkzeuge und Frameworks führen sehr schnell zu einem unüberschaubaren und instabilen System \autocite{smashing-local-devenv-docker:online}.
+
+In \autocite{smashing-local-devenv-docker:online} werden die bestehenden Lösungen für die auftretenden Probleme gelistet:
+\begin{itemize}
+    \item Anstatt Abhängigkeiten auf Systemebene zu installieren werden diese von \emph{Paketmanagern} auf Projektebene verwaltet.
+    Vertreter davon sind zum Beispiel npm\footnote{\url{https://www.npmjs.com/}} für JavaScript, Maven\footnote{url{https://maven.apache.org/}} für Java oder NuGet\footnote{\url{https://www.nuget.org/}} für .NET.
+    \item Zusätzlich zu Paketen müssen allerdings auch die Laufzeitumgebungen verwaltet werden.
+    Bei unterschiedlichen Projekten können unterschiedliche Versionen dieser benötigt werden, wodurch Werkzeuge wie der Node Version Manager (nvm\footnote{\url{https://github.com/creationix/nvm}}) oder der Ruby Version Manager (RVM\footnote{\url{https://rvm.io/}}) entstanden sind.
+    Diese müssen allerdings auf dem Entwicklerrechner verwaltet werden und erschweren den schnellen Wechsel zwischen unterschiedlichen Projekten.
+    Bei sehr alten Legacy-Systeme ist eine Unterstützung durch diese Werkzeuge außerdem nicht garantiert.
+    \item Mit dem Aufschwung der Virtualisierung und Werkzeugen wie Vagrant wurden viele dieser Probleme gelöst.
+    Allerdings ist die Notwendigkeit einer virtuellen Maschine pro Projekt sehr ressourcen- und wartungsintensiv.
+    Ein weiterer Nachteil ist, dass Vagrant auf Entwicklerrechner ausgelegt ist und dadurch nicht garantiert werden kann, dass die entwickelte Software auch auf dem Produktionssystem läuft \autocite{laradock-docs:online}.
+\end{itemize}
+
+Docker bietet eine Abstraktion des Betriebssystems und die Möglichkeit die benötigten Komponenten einer Anwendung deklarativ zu beschreiben.
+Dadurch ist es möglich, die Laufzeitumgebung und benötigten Komponenten der Anwendung gemeinsam mit dieser im Versionsverwaltungssystem aufzubewahren.
+Danach ist lediglich Docker die Voraussetzung dafür, dass mit einem plattformübergreifenden Kommando mit der Entwicklung von Software begonnen werden kann.
+
+Travis Reeder liefert in seinem Blogeintrag über die Entwicklung mit Docker (\autocite{why-docker-for-development:online}) folgende Gründe für die Verwendung von Docker für Softwareentwickler:
+\begin{itemize}
+    \item Die Entwicklungsumgebung ist nicht vom Betriebssystem oder dessen Version abhängig. Unterschiedliche Personen im Team können problemlos auf Windows, macOS und Linux gemeinsam an einem Produkt arbeiten. Dieser Aspekt ist besonders bei der Entwicklung von Open-Source-Projekten wichtig, da dort unzählige Entwickler ohne zentrale Verwaltung zu einem Produkt beitragen.
+    \item Die Entwicklungs- und Produktionsumgebung werden vereinheitlicht. Quelltext der in der Entwicklungsumgebung getestet ist, funktioniert automatisch auch auf dem Produktivsystem.
+    \item Komplizierte Build-Prozesse können abstrahiert werden, sodass die Entwickler diesen nicht versehen müssen. Außerdem kann dieser Prozess separat entwickelt und getestet, oder sogar wiederverwendet werden.
+    \item Unterschiedliche Laufzeitumgebungen haben keinen Einfluss auf das Hostsystem des Entwicklers. Besonders die Entwicklung von Java, Ruby, Python und Node wird dadurch stark vereinfacht. Zusätzlich ist es beispielsweise möglich, die Software kurz mit einer anderen Compiler-Version zu erstellen, um zu überprüfen, ob diese kompatibel ist.
+    \item Das Veröffentlichen der Software wird einfacher. Es muss lediglich ein Container der Anwendung erstellt werden, der nun auf jedem Docker-Host lauffähig ist.
+    \item Es muss keine besondere IDE verwendet, oder Kommandos über SSH auf einer virtuellen Maschine ausgeführt werden. Der Container wird in das Host-System integriert und ist beinahe nicht sichtbar.
+    \item Entwicklern wird ein schnellerer und einfacher Einstieg in ein Projekt ermöglicht, da große Teile des Entwicklungsprozesses abstrahiert werden. Diese muss der Entwickler anfangs nicht verstehen, wodurch die Lernkurve und dadurch auch die Einarbeitungszeit sinken.
+\end{itemize}
+
 
 \section{Softwareevaluierung}
 \label{sec:softwareevaluierung}
-arangodb
-jekyll (+ Windows Installation + Überleitung)
+Die Evaluierung und Auswahl von Werkzeugen, Frameworks und Komponenten eines Softwaresystems ist eine wichtige Aufgabe des Softwareentwicklers.
+Ein sehr mühsamer Aspekt dieser Tätigkeit ist das Einarbeiten und Verstehen der Installation und Konfiguration der zu evaluierenden Werkzeuge.
+Außerdem werden oftmals unnatürliche Standardpfade (beispielsweise \verb$C:\xampp$ bei der Installation der PHP-Umgebung xampp\footnote{\url{https://www.apachefriends.org/}}) gewählt, oder die Deinstallation von getesteten Werkzeugen hinterlässt Spuren am Rechner des Softwareentwicklers.
+Ein weiteres Problem können fehlende Benutzerrechte darstellen, wodurch die Evaluierung bestimmter Werkzeuge gar nicht möglich ist.
+
+\subsubsection{ArangoDB\protect\footnote{\url{https://www.arangodb.com/}}}
+Docker ermöglich ein sehr schnelles Testen von Datenbanken, Anwendungsservern und anderen Werkzeugen.
+Außerdem wird beim Löschen eines Containers das System automatisch wieder auf einen "`sauberen"' Ausgangszustand zurückgesetzt.
+Diese Möglichkeit kann sogar zu Marketingzwecken verwendet werden, wie auf der Homepage von ArangoDB in \cref{fig:arangodb-docker-marketing} dargestellt.
+
+Das dort verwendete Kommando ist aus Marketinggründen allerdings etwas zu einfach gehalten.
+Würde der Container auf diese Weise gestartet werden, wäre der Netzwerk-Port auf dem Host-System nicht sichtbar und es kann kein Zugriff auf die Datenbank stattfinden.
+In \cref{lst:docker-run-arangodb} ist das komplette Startkommando dargestellt.
+\cref{fig:arangodb-result} zeigt die Administrationsoberfläche der gestarteten Datenbank.
+
+Sobald der Container gestoppt wird, wird er durch \texttt{--rm} wieder gelöscht und es verbleiben keine Reste aus der Evaluierungsphase auf dem Host-System.
+Ein zusätzlicher Vorteil an der Verwendung von Docker ist, dass genau derselbe Container auch im Produktivsystem verwendet werden kann.
+Dies ermöglicht beispielsweise die rasche Weiterentwicklung von Prototypen.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth,clip]{images/arangodb-docker-marketing}
+    \caption{Docker als Marketinginstrument bei ArangoDB}
+\label{fig:arangodb-docker-marketing}
+\end{figure}
+
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von ArangoDB, language=bash, label=lst:docker-run-arangodb]
+docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth,clip]{images/arangodb-demo}
+    \caption{ArangoDB als Docker-Container}
+\label{fig:arangodb-result}
+\end{figure}
+
+
+
 \section{Plattformunabhängige (CLI)-Anwendungen}
+\label{sec:cross-platform-applications}
+
+\subsubsection{Jekyll\protect\footnote{\url{https://jekyllrb.com/}}}
+
+Jekyll wird durch das Verpacken in einen Docker-Container eine plattformunabhängige CLI-Anwendung wie in \cref{sec:cross-platform-applications} beschrieben.
 % - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
 mdp
 travis
@@ -41,7 +113,8 @@ drone.io
 % (- https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4#.dh1mcvvqx)
 \section{Docker als Unterstützung zur Entwicklungsumgebung}
 \label{sec:docker-assistance}
-evtl. SWK6-Umgebung in Docker nachbauen % Java, Gradle: http://endoflineblog.com/optimizing-development-with-docker
+evtl. SWK6-Umgebung in Docker nachbauen
+% Java, Gradle: http://endoflineblog.com/optimizing-development-with-docker
 https://blog.nimbleci.com/2016/11/17/whats-coming-in-docker-1-13/
 
 % - http://www.masterzendframework.com/docker-development-environment/
