@@ -1,35 +1,27 @@
-% - Docker for Development
-% - https://www.google.at/search?q=docker+in+development&ie=&oe=#q=docker+in+development&start=10
-% - https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/
-% - http://endoflineblog.com/optimizing-development-with-docker
-% - http://paislee.io/the-ultimate-nodejs-development-setup-with-docker/
-% - https://github.com/laradock/laradock
-% - http://stackoverflow.com/questions/29966924/cross-platform-command-line-script-e-g-bat-and-sh
-% - https://github.com/BYVoid/Batsh
-% - https://github.com/micahhausler/container-transform
-% - https://spin.atomicobject.com/2015/10/12/docker-for-development/
-
 \chapter{Docker-Anwendungsszenarien für den Software-Entwickler}
 \label{cha:szenarien}
-% - https://www.google.at/search?q=why+and+how+to+use+docker+for+development&ie=&oe=
-% - https://medium.com/iron-io-blog/why-and-how-to-use-docker-for-development-a156c1de3b24#.dr5tx5bsv
-% - https://www.youtube.com/watch?v=SK0sqfVn7ls
-% - https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4#.7wqq93blj
-% - https://serversforhackers.com/docker-for-gulp-build-tasks
-% - http://vuetips.com/use-docker-containers
-% (- https://ybycode.com/posts/docker-apps)
-% TODO: Naming
-
-% \section{Distribution von Anwendungen}
-% - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
+https://medium.com/iron-io-blog/why-and-how-to-use-docker-for-development-a156c1de3b24#15c1
+https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#what-is-the-problem-with-local-development-environments
+https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#approaches-for-multi-project-development-environments
+https://www.smashingmagazine.com/2016/04/stop-installing-your-webdev-environment-locally-with-docker/#the-future
+http://laradock.io/#why-docker-not-vagrant
+Schneller Einstieg für Entwickler
 
 \section{Softwareevaluierung}
 \label{sec:softwareevaluierung}
+arangodb
+jekyll (+ Windows Installation + Überleitung)
 \section{Plattformunabhängige (CLI)-Anwendungen}
+% - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
+mdp
+travis
 \section{Verbesserung des Build-Prozesses}
 \label{sec:build-prozess-verbesserung}
 % - https://www.fpcomplete.com/blog/2015/12/docker-split-images
 % - https://medium.com/@alexeiled/docker-pattern-the-build-container-b0d0e86ad601#.kwhx1m2ov
+% - https://github.com/docker/docker/issues/31067
+
+% - http://vuetips.com/use-docker-containers
 \section{Testen mithilfe von Containern}
 \label{sec:containerbasiertes-testen}
 % - https://engineering.gosquared.com/testing-with-docker
@@ -37,14 +29,21 @@
 % - https://github.com/avajs/ava/blob/master/docs/common-pitfalls.md#ava-in-docker
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
-% - https://github.com/dockcross/dockcross
+gcc
+https://github.com/dockcross/dockcross
 \section{IDE as a Container}
 \label{sec:ideasacontainer}
-% - https://github.com/JAremko
+https://github.com/JAremko
+Eclipse Che
 \section{Replikation der Produktionsumgebung}
 \label{sec:replikation-produktionsumgebung}
+drone.io
+% (- https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4#.dh1mcvvqx)
 \section{Docker als Unterstützung zur Entwicklungsumgebung}
 \label{sec:docker-assistance}
+evtl. SWK6-Umgebung in Docker nachbauen % Java, Gradle: http://endoflineblog.com/optimizing-development-with-docker
+https://blog.nimbleci.com/2016/11/17/whats-coming-in-docker-1-13/
+
 % - http://www.masterzendframework.com/docker-development-environment/
 % - http://www.masterzendframework.com/how-to-build-a-docker-test-environment/
 % - http://tech.osteel.me/posts/2015/12/18/from-vagrant-to-docker-how-to-use-docker-for-local-web-development.html
@@ -58,3 +57,6 @@
 
 % - Jekyll
 % - Start Environment with one command: Tomcat, HSQL, Maven, ...
+
+
+% Combine https://medium.com/statuscode/golang-docker-for-development-and-production-ce3ad4e69673#.qwam6n4ji (COPY + WORKDIR) and two-step-build-phase for identical dev and prod containers <3
