@@ -50,7 +50,7 @@ Diese Möglichkeit kann sogar zu Marketingzwecken verwendet werden, wie auf der 
 Das dort verwendete Kommando ist aus Marketinggründen allerdings etwas zu einfach gehalten.
 Würde der Container auf diese Weise gestartet werden, wäre der Netzwerk-Port auf dem Host-System nicht sichtbar und es kann kein Zugriff auf die Datenbank stattfinden.
 In \cref{lst:docker-run-arangodb} ist das komplette Startkommando dargestellt.
-\cref{fig:arangodb-result} zeigt die Administrationsoberfläche der gestarteten Datenbank.
+\cref{fig:arangodb-demo} zeigt die Administrationsoberfläche der gestarteten Datenbank.
 
 Sobald der Container gestoppt wird, wird er durch \texttt{--rm} wieder gelöscht und es verbleiben keine Reste aus der Evaluierungsphase auf dem Host-System.
 Ein zusätzlicher Vorteil der Verwendung von Docker ist, dass genau derselbe Container auch im Produktivsystem verwendet werden kann.
@@ -71,11 +71,12 @@ docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
     \centering
     \includegraphics[width=0.8\linewidth,clip]{images/arangodb-demo}
     \caption{ArangoDB als Docker-Container}
-\label{fig:arangodb-result}
+\label{fig:arangodb-demo}
 \end{figure}
 
 \section{Plattformunabhängige (CLI)-Anwendungen}
 \label{sec:cross-platform-applications}
+\autocite{docker-cli-tools:online}
 % - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
 
 \subsubsection{Beispiel: Jekyll\protect\footnote{\url{https://jekyllrb.com/}}}
@@ -112,13 +113,44 @@ baf40e071063: Pull complete
 
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
-gcc
+\subsubsection{Beispiel: gcc}
 https://github.com/dockcross/dockcross
 
 \section{IDE as a Container}
 \label{sec:ideasacontainer}
 https://github.com/JAremko
-Eclipse Che
+\subsubsection{Beispiel: Eclipse Che}
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von Eclipse Che, language=bash, label=lst:docker-run-eclipse-che]
+$ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/data eclipse/che start
+WARN: Bound 'eclipse/che' to 'eclipse/che:5.3.1'
+WARN: Did not detect TTY - interactive mode disabled
+INFO: (che cli): 5.3.1 - using docker 1.13.1 / docker4windows
+INFO: (che start): Booted and reachable
+INFO: (che start): Ver: 5.3.1
+INFO: (che start): Use: http://10.0.75.2:8080
+INFO: (che start): API: http://10.0.75.2:8080/swagger
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth,clip]{images/eclipse-che-demo}
+    \caption{Eclipse Che als Docker-Container}
+\label{fig:eclipse-che-demo}
+\end{figure}
+
+\subsubsection{Beispiel: vim (jare/vim-bundle)}
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von vim, language=bash, label=lst:docker-run-vim]
+$ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
+\end{lstlisting}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\linewidth,clip]{images/vim-demo}
+    \caption{vim als Docker-Container}
+\label{fig:vim-demo}
+\end{figure}
+
+
 % (- https://medium.com/@andyccs/webpack-and-docker-for-development-and-deployment-ae0e73243db4#.dh1mcvvqx)
 
 
