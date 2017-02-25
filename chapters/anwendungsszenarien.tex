@@ -77,10 +77,10 @@ docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
 \section{Plattformunabhängige CLI-Anwendungen}
 \label{sec:cross-platform-applications}
 In \autocite{docker-cli-tools:online} beschreibt Mike English die Möglichkeit Docker als Laufzeitumgebung für Kommandozeilenwerkzeuge zu verwenden.
-Durch die Bündelung der Abhängigkeiten und des Werkzeugs werden bei der Verwendung von Docker keine Laufzeitsysteme auf dem Host benötigt.
+Durch die Kombination des Werkzeuges mitsamt seinen Abhängigkeiten bei der Verwendung von Docker keine Laufzeitsysteme auf dem Host benötigt.
 Dies führt besonders bei Python und Ruby zur Vermeidung von Versionsproblemen und der einfacheren Verwendung auf Windows.
-Außerdem bietet der Docker Hub eine sehr angenehme Möglichkeit für die Veröffentlichung des Werkzeuges.
-Dem gegenüber stehen die Systemvoraussetzung Docker und die damit verbundene Imagegröße aufgrund der Docker-Basisimages.
+Außerdem bietet Docker mit dem Docker Hub eine sehr angenehme Möglichkeit für die Veröffentlichung und Verbreitung.
+Dem gegenüber stehen die Nachteile der Systemvoraussetzung Docker und die damit verbundene Imagegröße aufgrund der Docker-Basisimages.
 
 \subsubsection{Beispiel: Jekyll}
 Jekyll\footnote{\url{https://jekyllrb.com/}} ist ein in Ruby geschriebener Generator für statische Webseiten.
@@ -90,7 +90,7 @@ In der offiziellen Dokumentation ist beschrieben, dass Windows keine offiziell u
     \item Installieren von Ruby mit Chocolatey: \texttt{choco install ruby -y}.
     \item Installieren von Jekyll: \texttt{gem install jekyll}.
 \end{enumerate}
-Für die Installation eines Werkzeuges werden also zwei weitere Abhängigkeiten benötigt, wobei die Plattform weiterhin als "`nicht offiziell unterstützt"' wird.
+Für die Installation eines Werkzeuges werden also zwei weitere Abhängigkeiten benötigt, wobei die Plattform weiterhin als "`nicht offiziell unterstützt"' gilt.
 
 Allerdings bietet Jekyll auch ein vorgefertigtes offizielles Docker-Image\footnote{\url{https://hub.docker.com/r/jekyll/jekyll/}} an, welches mit dem in \cref{lst:docker-run-jekyll} beschriebenen Kommando Jekyll im aktuellen Ordner startet.
 Danach ist die Webseite unter \url{http://localhost:4000} erreichbar.
@@ -102,14 +102,14 @@ docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/
 \end{lstlisting}
 
 \subsubsection{Beispiel: mdp}
-Im vorigen Beispiel wurde ein bereits verwendetes Docker-Image als plattformunabhängiges Werkzeug verwendet.
-Da allerdings nicht für jedes Werkzeug ein Docker-Image besteht, ist in \cref{lst:dockerfile-mdp} ein Dockerfile abgebildet, das die Portierung eines existierenden Werkzeuges für Docker zeigt.
+Im vorigen Beispiel diente ein bereits existierendes Docker-Image als Basis für ein plattformunabhängiges Werkzeug.
+Da allerdings nicht für jedes Werkzeug ein Docker-Image existiert, ist in \cref{lst:dockerfile-mdp} ein Dockerfile abgebildet, das die Portierung eines existierenden Werkzeuges für Docker zeigt.
 In diesem Fall handelt es sich dabei um mdp\footnote{\url{https://github.com/visit1985/mdp}}, dieses Verfahren kann aber auf jedes Linux-Kommandozeilenwerkzeug angewendet werden.
 
-mdp ist ein C Programm, das aus Markdown-Dateien Folien für die Kommandozeile erstellt.
-Im Dockerfile werden wie in der offiziellen Dokumentation die Übersetzung und Installation make durchgeführt.
-Das Startkommando ist für eine möglichst intuitive Verwendung wie in \cref{sec:container-startup-command} beschrieben definiert.
-Wird keine Präsentation übergeben, startet der Container mit einer Demo-Präsentation, die die Verwendung von mdp erklärt.
+mdp ist ein C-Programm, das aus Markdown-Dateien Folien für die Kommandozeile erstellt.
+Im Dockerfile werden, wie in der offiziellen Dokumentation beschrieben, die Übersetzung und Installation mit \texttt{make} durchgeführt.
+Das Startkommando ist auf eine möglichst intuitive Verwendung ausgelegt (vgl. \cref{sec:container-startup-command}).
+Wird keine Präsentationsdatei übergeben, startet der Container mit einer Demo-Präsentation, die die Verwendung von mdp erklärt.
 
 \lstinputlisting[caption=Docker-Image für mdp,label={lst:dockerfile-mdp}]{listings/Dockerfile.mdp}
 
@@ -117,12 +117,12 @@ Wird keine Präsentation übergeben, startet der Container mit einer Demo-Präse
 Die Abstraktion von Kommandozeilenanwendungen mit Docker bietet, wie in den beiden Beispielen gesehen, zahlreiche Vorteile.
 Doch ein komplettes Docker-Run-Kommando zum Starten einer Anwendung ist nicht nur sehr umständlich und fehleranfällig, sondern verlangt auch bei jedem Start die Konfiguration zahlreicher Parameter.
 
-Mithilfe von Shell-Aliasen oder Powershell-Funktionen lässt sich dieses Problem allerdings sehr einfach lösen.
+Dieses Problem lässt sich unter der Verwendung von Shell-Aliasen oder Powershell-Funktionen lösen.
 In \cref{lst:powershell-functions} sind die zwei Funktionen zum vereinfachten Starten von Jekyll und mdp aufgelistet.
 \texttt{-v \$\{pwd\}:<container-path>} ermöglicht dem Container das Arbeiten mit dem aktuellen Ordner, indem es diesen an den Container bindet.
-Mithilfe von \texttt{\$\{args\}} werden die Parameter des Funktionsaufrufes an den Docker-Container weitergeleitet.
+Mithilfe von \texttt{\$\{args\}} werden die Parameter des Funktionsaufrufes an das Docker-Run-Kommando weitergeleitet.
 
-Der Aufruf der Werkzeuge erfolgt nun wie gewohnt, wobei die Ausführung in einem Docker-Container für den Anwender unsichtbar wird.
+Der Aufruf der Werkzeuge erfolgt nun wie gewohnt, wobei die Ausführung in einem Docker-Container für den Anwender unsichtbar ist.
 
 \begin{lstlisting}[caption=Powershell-Funktionen für Docker-Kommandos, language=bash, label=lst:powershell-functions]
 $ jekyll
@@ -130,8 +130,8 @@ function jekyll { docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/
 function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
 \end{lstlisting}
 Ein besonders netter Vorteil bei dieser Shell-Integration ist in \cref{lst:docker-auto-install-cli} dargestellt.
-Das Docker-Run-Kommando lädt nicht vorhandene Images vor dem Starten automatisch herunter, wodurch in diesem Fall eine automatische Installation der benötigten Werkzeuge entsteht.
-Beim Wechsel oder der Neuinstallation des Systems genügt die Mitnahme der Shell-Konfiguration um das gesamte Werkzeugset auch auf dem neuen System verwenden zu können.
+Das Docker-Run-Kommando lädt nicht vorhandene Images vor dem Starten automatisch herunter, wodurch in diesem Fall eine vollautomatische Installation der benötigten Werkzeuge entsteht.
+Beim Wechsel oder der Neuinstallation des Host-Systems genügt die Mitnahme der Shell-Konfiguration um das gesamte Werkzeugset auch auf dem neuen System verwenden zu können.
 Eine einfachere Verwaltung der benötigten Werkzeuge ist nicht möglich.
 
 \begin{lstlisting}[caption=Automatische Installation der Docker-basierten CLI-Anwendungen, language=bash, label=lst:docker-auto-install-cli]
@@ -143,11 +143,11 @@ baf40e071063: Pull complete
 ...
 \end{lstlisting}
 
-
 \section{Containerbasierte Integrationstests}
 \label{sec:containerbasiertes-integrationstests}
 % - https://hharnisc.github.io/2016/06/19/integration-testing-with-docker-compose.html
 % - https://engineering.gosquared.com/testing-with-docker
+zu müde, mache ich am frühen Vormittag
 
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
@@ -156,11 +156,11 @@ Durch die Möglichkeit Linux-Anwendungen in Docker-Containern zu starten, könne
 
 \subsubsection{Beispiel: gcc}
 In \cref{lst:greet.c} ist ein übliches Hello-World-Programm in der Programmiersprache C abgebildet.
-Um dieses nun auf einem Windows-Host auch auf Linux zu testen genügt der in \cref{lst:docker-run-gcc} dargestellte Befehl.
+Um dieses nun auf einem Windows-Host auch auf Linux zu testen, genügt der in \cref{lst:docker-run-gcc} dargestellte Befehl.
 Darin wird ein gcc\footnote{\url{https://gcc.gnu.org/}}-Container auf Basis des kleinen alpine-Images zur Übersetzung des C-Programmes verwendet.
-In \cref{fig:greet-output} ist das Resultat des Programmes zu sehen, nachdem es wieder in diesem Linux-Container ausgeführt wurde.
+In \cref{fig:greet-output} ist das Resultat des Programmes zu sehen, nachdem es in Linux ausgeführt wurde.
 
-Diese schnelle Möglichkeit des Cross-Compilings ermöglicht ein schnelles Testen der Plattformunabhängigkeit des Quelltextes.
+Diese Möglichkeit des Cross-Compilings ermöglicht ein schnelles Testen der Plattformunabhängigkeit des Quelltextes.
 
 \lstinputlisting[caption=Hello-World C-Programm,label={lst:greet.c}]{listings/greet.c}
 
@@ -176,12 +176,12 @@ docker run --rm -v ${pwd}:/usr/src -w /usr/src frolvlad/alpine-gcc gcc -o greet 
 \end{figure}
 
 \subsubsection{Beispiel: dockcross}
-Für die plattformübergreifende Übersetzung existieren bereits zahlreiche fertige Docker-Images.
-dockcross\footnote{\url{https://github.com/dockcross/dockcross}} ist eine Sammlung an Docker-Images für das Cross-Compiling.
+Für die plattformübergreifende Übersetzung existieren bereits zahlreiche fertige Docker-Images wie beispielsweise dockcross\footnote{\url{https://github.com/dockcross/dockcross}}.
 
-In \cref{lst:dockercross-arm-greet} sind die notwendigen Kommandos dargestellt, die zum Erstellen des Hello-World-Programms aus \cref{lst:greet.c} gegen die armv7-Plattform notwendig sind.
+In \cref{lst:dockercross-arm-greet} sind die notwendigen Kommandos dargestellt, die zum Erstellen des Hello-World-Programms aus \cref{lst:greet.c} für die armv7-Plattform notwendig sind.
 In dockcross werden die Container nicht händisch, sondern von einem aus dem Container erzeugbaren Skript ausgeführt.
 Dieses Skript wird in Zeile 1 aus dem Container erzeugt, in Zeile 2 werden die notwendigen Berechtigungen gesetzt.
+
 Das Problem dieser Lösung unter Windows ist die fehlende Interpretation der Bash-Kommandos, weshalb die vorgestellten Kommandos unter Docker for Windows in der Powershell nicht ausgeführt werden können.
 
 \begin{lstlisting}[caption=Kommandos zum Kompilieren mit dockcross, language=bash, label=lst:dockercross-arm-greet]
@@ -190,11 +190,27 @@ chmod +x ./dockcross-linux-armv7
 ./dockcross-linux-armv7 bash -c '$CC test/C/greet.c -o greet_arm'
 \end{lstlisting}
 
-\section{IDE as a Container}
-\label{sec:ideasacontainer}
-https://github.com/JAremko
+\section{IDE in a Container}
+\label{sec:ideinacontainer}
+Der Google-Entwickler Ray Tsang hat die Idee der Entwicklungsumgebung in einem Container\footnote{\url{https://github.com/saturnism/go-ide}} erstmals 2015 vorgestellt \autocite{go-ide-in-a-container:online}.
+Der Einsatzzweck seines Containers liegt in der Go-Entwicklung.
+Seine Voraussetzungen waren Syntax-Highlighting, Autocompletion sowie der Zugriff auf die Informationen der Frameworkdokumentation.
+Ray Tsang stellt klar, dass seine Idee lediglich ein Experiment sei, definiert jedoch folgende Vorteile einer containerbasierten Entwicklungsumgebung:
+\begin{enumerate}
+    \item Die Installation der Entwicklungsumgebung dokumentiert sich selbst. Jede Konfiguration wird im Dockerfile festgehalten.
+    \item Abhängigkeiten müssen nicht am Host-System, sondern können im Container installiert werden.
+    \item Die Entwicklungsumgebung ist portabel. \texttt{docker run ...} genügt zum Start der IDE auf jedem beliebigen System mit installiertem Docker.
+    \item Jeder Entwickler kann seine Anpassungen selbst vornehmen, indem er die deklarative Beschreibung (Dockerfile) des Images ändert.
+\end{enumerate}
+Ein weiterer Vorteil ist die Möglichkeit der Versionierung der IDE mit dem Projekt.
+Dadurch wird Entwicklern ein sehr einfacher Einstieg in ein Projekt ermöglicht.
+Außerdem muss für Patches und Fehlerbehebungen in Legacy-Systemen keine eigene alte IDE-Version auf dem Entwicklerrechner behalten werden.
 
 \subsubsection{Beispiel: vim (jare/vim-bundle)}
+Eugene Yaremenko\footnote{\url{https://github.com/JAremko}} bietet mit seinen IDE-Containern \emph{jare/vim-bundle}, \emph{jare/drop-in} und \emph{jare/spacemacs} vorkonfigurierte Entwicklungsumgebungen in Docker an.
+\cref{fig:vim-demo} zeigt vim\footnote{\url{http://www.vim.org/}} in Docker, das mit dem Kommando in \cref{lst:docker-run-vim} gestartet wird.
+Für Entwickler die sich auf der Kommandozeile wohlfühlen bietet diese Möglichkeit eine sehr portable Entwicklungsumgebung.
+
 \begin{lstlisting}[caption=Docker-Kommando zum Starten von vim, language=bash, label=lst:docker-run-vim]
 $ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
 \end{lstlisting}
@@ -207,8 +223,17 @@ $ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
 \end{figure}
 
 \subsubsection{Beispiel: Eclipse Che}
+Einen fundamental anderen Ansatz verfolgt die neue Cloud-IDE Eclipse Che\footnote{\url{http://www.eclipse.org/che/}}.
+Deren Grundidee ist die Entwicklung von Software ohne der Installation von Werkzeugen.
+Die IDE selbst läuft als Webanwendung und wird über den Browser bedient.
+Das gesamte Plug-in-System baut auf Docker-Containern auf, die lediglich kleine Teilaufgaben der Entwicklungsumgebung übernehmen.
+
+In \cref{lst:docker-run-eclipse-che} ist der Startvorgang der von Eclipse Che zu sehen.
+Dem Container wird der Docker-Socket des Host-Systems übergeben, sodass dieser selbst Container starten und verwalten kann.
+Die gestartete IDE ist in \cref{fig:eclipse-che-demo} zu sehen.
+
 \begin{lstlisting}[caption=Docker-Kommando zum Starten von Eclipse Che, language=bash, label=lst:docker-run-eclipse-che]
-$ docker run --rm -v /var/run/docker.sock:/var/run/docker.sock -v ${pwd}:/data eclipse/che start
+$ docker run --rm -v /var/run/docker.sock\\:/var/run/docker.sock -v ${pwd}:/data eclipse/che start
 WARN: Bound 'eclipse/che' to 'eclipse/che:5.3.1'
 WARN: Did not detect TTY - interactive mode disabled
 INFO: (che cli): 5.3.1 - using docker 1.13.1 / docker4windows
