@@ -147,7 +147,60 @@ baf40e071063: Pull complete
 \label{sec:containerbasiertes-integrationstests}
 % - https://hharnisc.github.io/2016/06/19/integration-testing-with-docker-compose.html
 % - https://engineering.gosquared.com/testing-with-docker
-zu müde, mache ich am frühen Vormittag
+Containerbasiertes Testen profitiert von der Eigenschaft, dass Container flüchtig sind.
+Auf das Ausführen von Unit-Tests hat dies allerdings keinen Einfluss.
+Dabei bietet die Verwendung von Containern den lediglich Vorteil einer definierten Umgebung in Form der Version der Laufzeitumgebung und des Test-Runners.
+
+Einen wesentlich größeren Einfluss haben flüchtige Container auf die Ausführung von Integrationstests.
+Integrationstests haben aufgrund der zu testenden Komponenten sehr viele Abhängigkeiten wie externe Services, Werkzeuge zum Validieren der Tests (CURL), Datenbanken und deren Testdaten.
+Die Datenbanken müssen vor jedem Testlauf neu mit Testdaten befüllt werden.
+Durch das Wegwerfen der Container in containerbasierten Systemen wird jeder Testlauf mit konsistenten Testdaten durchgeführt.
+Zusätzlich können externe Services sehr einfach durch zusätzliche Container zur Verfügung gestellt werden.
+
+Das folgende Beispiel ist aus \autocite{docker-integration-testing:online}, einem Blogeintrag zum Aufbau eines containerbasierten Integrationstestsystems, entnommen. Die Architektur dessen ist in \cref{fig:containerbasierte-integrationstests} dargestellt.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\linewidth,clip,trim=100 30 100 30]{images/containerbasierte-integrationstests}
+    \caption{Architektur der containerbasierten Integrationstests}
+\label{fig:containerbasierte-integrationstests}
+\end{figure}
+Das zu testenden System wird von einem weiteren Container, dem "`Integration-Tester"' gesteuert.
+Dieser führt die Testfälle am Service durch und Überprüft deren Korrektheit mithilfe von Datenbankabfragen.
+Dadurch kann das gesamte System getestet werden, ohne dass Änderungen an diesem oder der Architektur durchgeführt werden müssen.
+Dazu muss der Integration-Tester Zugriff auf das Service und die Datenbank haben.
+Für den Aufbau dieser Architektur kommt Docker Compose (siehe \cref{sec:docker-compose}) zum Einsatz.
+Die Definition der Container ist in \cref{lst:docker-compose-integrationstests} dargestellt.
+
+\begin{lstlisting}[caption=Servicedefinition zum Integrationstesten (docker-compose-yml), label=lst:docker-compose-integrationstests]
+version: '2'
+
+services:
+  integration-tester:
+    build: ./integration-tester
+    links:
+      - my-service
+  my-service:
+    build: ./my-service
+    command: npm start
+    links:
+      - rethinkdb
+    ports:
+      - "8080:8080"
+  rethinkdb:
+    image: rethinkdb
+    expose:
+      - "28015"
+\end{lstlisting}
+Docker-Compose-Dateien definieren im YAML-Format die Parameter, die Docker zum Starten der Container erhält.
+In diesem Beispiel werden die in \cref{fig:containerbasierte-integrationstests} Container erstellt und über den \texttt{links}-Parameter miteinander verbunden.
+Der Start der Integrationstests mit \texttt{docker-compose up} führt zu folgendem Ablauf:
+\begin{enumerate}
+    \item Die Images \emph{my-service} und \emph{integration-tester} werden erstellt.
+    \item Die Container \emph{my-service}, \emph{rethinkdb} und \emph{integration-tester} werden gestartet und miteinander verknüpft.
+    \item Der Integration-Tester führt die Testfälle aus.
+    \item Nach der Fertigstellung der Integrationstests werden die Container gestoppt.
+\end{enumerate}
 
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
