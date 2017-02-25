@@ -46,9 +46,12 @@
 %%% ----- graphics ----- %%%
 \usepackage{graphicx}
 
-%%% ----- circled numbers (http://tex.stackexchange.com/a/7045) ----- %%%
+%%% ----- custom commands ----- %%%
+% - circled numbers (http://tex.stackexchange.com/a/7045)
 \usepackage{tikz}
 \newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+% - z.B. (http://latex.hpfsc.de/content/latex_tipps_und_tricks/eigene_kommandos/)
+\newcommand{\zB}{z.\,B. }
 
 
 %%% ---------- Document Data ----------
