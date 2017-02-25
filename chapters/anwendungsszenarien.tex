@@ -69,7 +69,7 @@ docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\linewidth,clip]{images/arangodb-demo}
+    \includegraphics[width=0.9\linewidth,clip]{images/arangodb-demo}
     \caption{ArangoDB als Docker-Container}
 \label{fig:arangodb-demo}
 \end{figure}
@@ -119,7 +119,7 @@ Doch ein komplettes Docker-Run-Kommando zum Starten einer Anwendung ist nicht nu
 
 Mithilfe von Shell-Aliasen oder Powershell-Funktionen lässt sich dieses Problem allerdings sehr einfach lösen.
 In \cref{lst:powershell-functions} sind die zwei Funktionen zum vereinfachten Starten von Jekyll und mdp aufgelistet.
-\texttt{-v \$\{pwd\}:...} ermöglicht dem Container das Arbeiten mit dem aktuellen Ordner, indem es diesen an den Container bindet.
+\texttt{-v \$\{pwd\}:<container-path>} ermöglicht dem Container das Arbeiten mit dem aktuellen Ordner, indem es diesen an den Container bindet.
 Mithilfe von \texttt{\$\{args\}} werden die Parameter des Funktionsaufrufes an den Docker-Container weitergeleitet.
 
 Der Aufruf der Werkzeuge erfolgt nun wie gewohnt, wobei die Ausführung in einem Docker-Container für den Anwender unsichtbar wird.
@@ -129,13 +129,17 @@ $ jekyll
 function jekyll { docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/bin/jekyll ${args} }
 function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
 \end{lstlisting}
+Ein besonders netter Vorteil bei dieser Shell-Integration ist in \cref{lst:docker-auto-install-cli} dargestellt.
+Das Docker-Run-Kommando lädt nicht vorhandene Images vor dem Starten automatisch herunter, wodurch in diesem Fall eine automatische Installation der benötigten Werkzeuge entsteht.
+Beim Wechsel oder der Neuinstallation des Systems genügt die Mitnahme der Shell-Konfiguraion um das gesamte Werkzeugset auch auf dem neuen System verwenden zu können.
+Eine einfachere Verwaltung der benötigten Werkzeuge ist nicht möglich.
 
 \begin{lstlisting}[caption=Automatische Installation der Docker-basierten CLI-Anwendungen, language=bash, label=lst:docker-auto-install-cli]
 $ jekyll
 Unable to find image 'jekyll/jekyll:latest' locally
 latest: Pulling from jekyll/jekyll
 baf40e071063: Pull complete
-70acac711d95: Downloading [======>       ] 11.33 MB/91.37 MB
+70acac711d95: Downloading [======>          ] 11.33 MB/91.37 MB
 ...
 \end{lstlisting}
 
@@ -179,7 +183,7 @@ $ docker run -it --rm -v ${pwd}:/home/developer/workspace jare/vim-bundle
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\linewidth,clip]{images/vim-demo}
+    \includegraphics[width=0.9\linewidth,clip]{images/vim-demo}
     \caption{vim als Docker-Container}
 \label{fig:vim-demo}
 \end{figure}
@@ -198,7 +202,7 @@ INFO: (che start): API: http://10.0.75.2:8080/swagger
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.8\linewidth,clip]{images/eclipse-che-demo}
+    \includegraphics[width=0.9\linewidth,clip]{images/eclipse-che-demo}
     \caption{Eclipse Che als Docker-Container}
 \label{fig:eclipse-che-demo}
 \end{figure}
