@@ -74,21 +74,55 @@ docker run --rm -d -e ARANGO_NO_AUTH=1 -p 8529:8529 arangodb
 \label{fig:arangodb-demo}
 \end{figure}
 
-\section{Plattformunabhängige (CLI)-Anwendungen}
+\section{Plattformunabhängige CLI-Anwendungen}
 \label{sec:cross-platform-applications}
-\autocite{docker-cli-tools:online}
-% - CLI-Anwendungen: https://spin.atomicobject.com/2015/11/30/command-line-tools-docker/
+In \autocite{docker-cli-tools:online} beschreibt Mike English die Möglichkeit Docker als Laufzeitumgebung für Kommandozeilenwerkzeuge zu verwenden.
+Durch die Bündelung der Abhängigkeiten und des Werkzeugs werden bei der Verwendung von Docker keine Laufzeitsysteme auf dem Host benötigt.
+Dies führt besonders bei Python und Ruby zur Vermeidung von Versionsproblemen und der einfacheren Verwendung auf Windows.
+Außerdem bietet der Docker Hub eine sehr angenehme Möglichkeit für die Veröffentlichung des Werkzeuges.
+Dem gegenüber stehen die Systemvoraussetzung Docker und die damit verbundene Imagegröße aufgrund der Docker-Basisimages.
 
-\subsubsection{Beispiel: Jekyll\protect\footnote{\url{https://jekyllrb.com/}}}
+\subsubsection{Beispiel: Jekyll}
+Jekyll\footnote{\url{https://jekyllrb.com/}} ist ein in Ruby geschriebener Generator für statische Webseiten.
+In der offiziellen Dokumentation ist beschrieben, dass Windows keine offiziell unterstützte Plattform sei, es aber trotzdem folgende Möglichkeit zur Installation gibt \autocite{jekyll-windows:online}:
+\begin{enumerate}
+    \item Installieren eines Paketmanagers wie beispielsweise Chocolatey\footnote{\url{https://chocolatey.org/}}.
+    \item Installieren von Ruby mit Chocolatey: \texttt{choco install ruby -y}.
+    \item Installieren von Jekyll: \texttt{gem install jekyll}.
+\end{enumerate}
+Für die Installation eines Werkzeuges werden also zwei weitere Abhängigkeiten benötigt, wobei die Plattform weiterhin als "`nicht offiziell unterstützt"' wird.
 
-Jekyll wird durch das Verpacken in einen Docker-Container eine plattformunabhängige CLI-Anwendung wie in \cref{sec:cross-platform-applications} beschrieben.
+Allerdings bietet Jekyll auch ein vorgefertigtes offizielles Docker-Image\footnote{\url{https://hub.docker.com/r/jekyll/jekyll/}} an, welches mit dem in \cref{lst:docker-run-jekyll} beschriebenen Kommando Jekyll im aktuellen Ordner startet.
+Danach ist die Webseite unter \url{http://localhost:4000} erreichbar.
 
-\subsubsection{Beispiel: mdp\protect\footnote{\url{https://github.com/visit1985/mdp}}}
+Die Verwendung von Jekyll konnte auf diese Weise anstatt der dreistufigen Installation auf das Starten eines Containers reduziert werden.
+
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von Jekyll, language=bash, label=lst:docker-run-jekyll]
+docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/bin/jekyll serve
+\end{lstlisting}
+
+\subsubsection{Beispiel: mdp}
+Im vorigen Beispiel wurde ein bereits verwendetes Docker-Image als plattformunabhängiges Werkzeug verwendet.
+Da allerdings nicht für jedes Werkzeug ein Docker-Image besteht, ist in \cref{lst:dockerfile-mdp} ein Dockerfile abgebildet, das die Portierung eines existierenden Werkzeuges für Docker zeigt.
+In diesem Fall handelt es sich dabei um mdp\footnote{\url{https://github.com/visit1985/mdp}}, dieses Verfahren kann aber auf jedes Linux-Kommandozeilenwerkzeug angewendet werden.
+
+mdp ist ein C Programm, das aus Markdown-Dateien Folien für die Kommandozeile erstellt.
+Im Dockerfile werden wie in der offiziellen Dokumentation die Übersetzung und Installation make durchgeführt.
+Das Startkommando ist für eine möglichst intuitive Verwendung wie in \cref{sec:container-startup-command} beschrieben definiert.
+Wird keine Präsentation übergeben, startet der Container mit einer Demo-Präsentation, die die Verwendung von mdp erklärt.
 
 \lstinputlisting[caption=Docker-Image für mdp,label={lst:dockerfile-mdp}]{listings/Dockerfile.mdp}
 
-
 \subsubsection{Aufruf aus der Powershell}
+Die Abstraktion von Kommandozeilenanwendungen mit Docker bietet, wie in den beiden Beispielen gesehen, zahlreiche Vorteile.
+Doch ein komplettes Docker-Run-Kommando zum Starten einer Anwendung ist nicht nur sehr umständlich und fehleranfällig, sondern verlangt auch bei jedem Start die Konfiguration zahlreicher Parameter.
+
+Mithilfe von Shell-Aliasen oder Powershell-Funktionen lässt sich dieses Problem allerdings sehr einfach lösen.
+In \cref{lst:powershell-functions} sind die zwei Funktionen zum vereinfachten Starten von Jekyll und mdp aufgelistet.
+\texttt{-v \$\{pwd\}:...} ermöglicht dem Container das Arbeiten mit dem aktuellen Ordner, indem es diesen an den Container bindet.
+Mithilfe von \texttt{\$\{args\}} werden die Parameter des Funktionsaufrufes an den Docker-Container weitergeleitet.
+
+Der Aufruf der Werkzeuge erfolgt nun wie gewohnt, wobei die Ausführung in einem Docker-Container für den Anwender unsichtbar wird.
 
 \begin{lstlisting}[caption=Powershell-Funktionen für Docker-Kommandos, language=bash, label=lst:powershell-functions]
 $ jekyll
