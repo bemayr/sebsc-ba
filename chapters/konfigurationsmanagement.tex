@@ -182,7 +182,7 @@ Bei npm wird nun das von Packer erstellte Basis-Image von Terraform verwendet, u
 \label{fig:configurationtools-npm}
 \end{figure}
 
-Danach wird Ansible mit einem Playbook aufgerufen \circled{2}, das die benötigten Services installiert und startet, Webhooks konfiguriert und zum Start der npm-Services die Deployment-Skripte ausführt \circled{3}.
+\noindent Danach wird Ansible mit einem Playbook aufgerufen \circled{2}, das die benötigten Services installiert und startet, Webhooks konfiguriert und zum Start der npm-Services die Deployment-Skripte ausführt \circled{3}.
 npm verwendet dazu keine externen Werkzeuge, sondern Bash-Skripte, die auch händisch gestartet werden können.
 Zur Konfiguration wird etcd\footnote{\url{https://github.com/coreos/etcd}} als Datenbank verwendet.
 Ein weiterer Grund gegen ein Werkzeug ist im Fall von npm die Einbindung in den internen Slack-Bot, über den der gesamte Deployment-Prozess beobachtet und angestoßen werden kann.
