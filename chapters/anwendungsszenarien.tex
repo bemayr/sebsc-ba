@@ -145,29 +145,28 @@ baf40e071063: Pull complete
 
 \section{Containerbasierte Integrationstests}
 \label{sec:containerbasiertes-integrationstests}
-% - https://hharnisc.github.io/2016/06/19/integration-testing-with-docker-compose.html
-% - https://engineering.gosquared.com/testing-with-docker
-Containerbasiertes Testen profitiert von der Eigenschaft, dass Container flüchtig sind.
-Auf das Ausführen von Unit-Tests hat dies allerdings keinen Einfluss.
-Dabei bietet die Verwendung von Containern den lediglich Vorteil einer definierten Umgebung in Form der Version der Laufzeitumgebung und des Test-Runners.
+Der große Vorteil bei der Verwendung von Containern zum Testen ist ihre Flüchtigkeit.
+Durch einen Neustart kann der Ursprungszustand schnell und einfach wiederhergestellt werden.
+Unit-Tests profitieren davon allerdings nicht, doch die Verwendung von Containern verschafft ihnen eine reproduzierbare und einheitliche Ausführungsumgebung.
+Dadurch werden Versionsinkompatibilitäten vermieden und Abhängigkeiten reduziert.
 
 Einen wesentlich größeren Einfluss haben flüchtige Container auf die Ausführung von Integrationstests.
-Integrationstests haben aufgrund der zu testenden Komponenten sehr viele Abhängigkeiten wie externe Services, Werkzeuge zum Validieren der Tests (CURL), Datenbanken und deren Testdaten.
-Die Datenbanken müssen vor jedem Testlauf neu mit Testdaten befüllt werden.
-Durch das Wegwerfen der Container in containerbasierten Systemen wird jeder Testlauf mit konsistenten Testdaten durchgeführt.
-Zusätzlich können externe Services sehr einfach durch zusätzliche Container zur Verfügung gestellt werden.
+Diese haben aufgrund der zu testenden Komponenten sehr viele Abhängigkeiten wie externe Services, Werkzeuge zum Validieren der Tests (CURL) oder Datenbanken und deren Testdaten.
+Um konsistente Testdaten zu erhalten müssen die Datenbanken vor jedem Testlauf mit diesen neu initialisiert werden.
+In containerbasierten Systemen werden die Testdaten automatisch nach jedem Testlauf verworfen, wodurch keine Probleme durch alte Daten auftreten können.
+Weiters können externe Services sehr einfach durch zusätzliche Container in das System integriert werden.
 
-Das folgende Beispiel ist aus \autocite{docker-integration-testing:online}, einem Blogeintrag zum Aufbau eines containerbasierten Integrationstestsystems, entnommen. Die Architektur dessen ist in \cref{fig:containerbasierte-integrationstests} dargestellt.
+Das folgende Beispiel stammt aus \autocite{docker-integration-testing:online}, einem Blogeintrag zum Aufbau eines containerbasierten Integrationstestsystems. Die Architektur dessen ist in \cref{fig:containerbasierte-integrationstests} dargestellt.
 
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.7\linewidth,clip,trim=100 30 100 30]{images/containerbasierte-integrationstests}
-    \caption{Architektur der containerbasierten Integrationstests}
+    \caption{Architektur der containerbasierten Integrationstestsystems}
 \label{fig:containerbasierte-integrationstests}
 \end{figure}
-Das zu testenden System wird von einem weiteren Container, dem "`Integration-Tester"' gesteuert.
+Das zu testende System wird von einem weiteren Container, dem "`Integration-Tester"' gesteuert.
 Dieser führt die Testfälle am Service durch und Überprüft deren Korrektheit mithilfe von Datenbankabfragen.
-Dadurch kann das gesamte System getestet werden, ohne dass Änderungen an diesem oder der Architektur durchgeführt werden müssen.
+Dadurch kann das gesamte System getestet werden, ohne dass Änderungen an diesem oder der dessen Architektur durchgeführt werden müssen.
 Dazu muss der Integration-Tester Zugriff auf das Service und die Datenbank haben.
 Für den Aufbau dieser Architektur kommt Docker Compose (siehe \cref{sec:docker-compose}) zum Einsatz.
 Die Definition der Container ist in \cref{lst:docker-compose-integrationstests} dargestellt.
@@ -193,7 +192,7 @@ services:
       - "28015"
 \end{lstlisting}
 Docker-Compose-Dateien definieren im YAML-Format die Parameter, die Docker zum Starten der Container erhält.
-In diesem Beispiel werden die in \cref{fig:containerbasierte-integrationstests} Container erstellt und über den \texttt{links}-Parameter miteinander verbunden.
+In diesem Beispiel werden die in \cref{fig:containerbasierte-integrationstests} definierten Container erstellt und über die Konfigurationsoption \texttt{links} miteinander verbunden.
 Der Start der Integrationstests mit \texttt{docker-compose up} führt zu folgendem Ablauf:
 \begin{enumerate}
     \item Die Images \emph{my-service} und \emph{integration-tester} werden erstellt.
