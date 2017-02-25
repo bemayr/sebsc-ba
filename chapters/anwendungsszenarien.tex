@@ -131,7 +131,7 @@ function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
 \end{lstlisting}
 Ein besonders netter Vorteil bei dieser Shell-Integration ist in \cref{lst:docker-auto-install-cli} dargestellt.
 Das Docker-Run-Kommando lädt nicht vorhandene Images vor dem Starten automatisch herunter, wodurch in diesem Fall eine automatische Installation der benötigten Werkzeuge entsteht.
-Beim Wechsel oder der Neuinstallation des Systems genügt die Mitnahme der Shell-Konfiguraion um das gesamte Werkzeugset auch auf dem neuen System verwenden zu können.
+Beim Wechsel oder der Neuinstallation des Systems genügt die Mitnahme der Shell-Konfiguration um das gesamte Werkzeugset auch auf dem neuen System verwenden zu können.
 Eine einfachere Verwaltung der benötigten Werkzeuge ist nicht möglich.
 
 \begin{lstlisting}[caption=Automatische Installation der Docker-basierten CLI-Anwendungen, language=bash, label=lst:docker-auto-install-cli]
@@ -151,7 +151,19 @@ baf40e071063: Pull complete
 
 \section{Plattformübergreifende Übersetzung}
 \label{sec:plattformuebergreifende-uebersetzung}
+Plattformübergreifende Übersetzung ist durch die Idee aus \cref{sec:cross-platform-applications} möglich.
+Durch die Möglichkeit Linux-Anwendungen in Docker-Containern zu starten, können diese sehr nahtlos in Windows eingebunden werden.
+
 \subsubsection{Beispiel: gcc}
+In \cref{lst:greet.c} ist ein übliches Hello-World-Programm in der Programmiersprache C abgebildet.
+Um dieses nun auf einem Windows-Host auch auf Linux zu testen genügt der in \cref{lst:docker-run-gcc} dargestellte Befehl.
+Darin wird ein gcc\footnote{\url{https://gcc.gnu.org/}}-Container auf Basis des kleinen alpine-Images zur Übersetzung des C-Programmes verwendet.
+In \cref{fig:greet-output} ist das Resultat des Programmes zu sehen, nachdem es wieder in diesem Linux-Container ausgeführt wurde.
+
+Diese schnelle Möglichkeit des Cross-Compilings ermöglicht ein schnelles Testen der Plattformunabhängigkeit des Quelltextes.
+
+\lstinputlisting[caption=Hello-World C-Programm,label={lst:greet.c}]{listings/greet.c}
+
 \begin{lstlisting}[caption=Docker-Kommando zum Übersetzen eines C-Programmes mit gcc, language=bash, label=lst:docker-run-gcc]
 docker run --rm -v ${pwd}:/usr/src -w /usr/src frolvlad/alpine-gcc gcc -o greet greet.c
 \end{lstlisting}
@@ -163,10 +175,16 @@ docker run --rm -v ${pwd}:/usr/src -w /usr/src frolvlad/alpine-gcc gcc -o greet 
 \label{fig:greet-output}
 \end{figure}
 
-https://github.com/dockcross/dockcross
+\subsubsection{Beispiel: dockcross}
+Für die plattformübergreifende Übersetzung existieren bereits zahlreiche fertige Docker-Images.
+dockcross\footnote{\url{https://github.com/dockcross/dockcross}} ist eine Sammlung an Docker-Images für das Cross-Compiling.
+
+In \cref{lst:dockercross-arm-greet} sind die notwendigen Kommandos dargestellt, die zum Erstellen des Hello-World-Programms aus \cref{lst:greet.c} gegen die armv7-Plattform notwendig sind.
+In dockcross werden die Container nicht händisch, sondern von einem aus dem Container erzeugbaren Skript ausgeführt.
+Dieses Skript wird in Zeile 1 aus dem Container erzeugt, in Zeile 2 werden die notwendigen Berechtigungen gesetzt.
+Das Problem dieser Lösung unter Windows ist die fehlende Interpretation der Bash-Kommandos, weshalb die vorgestellten Kommandos unter Docker for Windows in der Powershell nicht ausgeführt werden können.
 
 \begin{lstlisting}[caption=Kommandos zum Kompilieren mit dockcross, language=bash, label=lst:dockercross-arm-greet]
-cd ~/src/dockcross
 docker run --rm dockcross/linux-armv7 > ./dockcross-linux-armv7
 chmod +x ./dockcross-linux-armv7
 ./dockcross-linux-armv7 bash -c '$CC test/C/greet.c -o greet_arm'
