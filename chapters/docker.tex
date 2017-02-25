@@ -195,7 +195,7 @@ In \cref{lst:dockerfile-apache} wird ein Apache-Webserver auf einem Ubuntu-Linux
 Dieser Dockerfile wird von Kimbro Staken als quelltextoffenes Beispiel\footnote{\url{https://github.com/kstaken/dockerfile-examples/blob/master/apache/Dockerfile}} geführt und beinhaltet einige der wichtigsten Dockerfile-Instruktionen.
 Nachfolgend werden die verwendeten Instruktionen beschrieben, eine vollständige Übersicht bietet \autocite{docker-dockerfile:online}.
 \begin{description}
-    \item[FROM] Die \emph{FROM}-Anweisung spezifiziert das Basis-Image des Containers. Auf dieser Schicht wird der Container aufgebaut. Meistens wird dies ein offizielles Image des Docker-Hubs sein, das weiter parametrisiert und konfiguriert wird.
+    \item[FROM] Die \emph{FROM}-Anweisung spezifiziert das Basis-Image des Containers. Auf dieser Schicht wird der Container aufgebaut. Meistens wird dies ein offizielles Image des Docker Hubs sein, das weiter parametrisiert und konfiguriert wird.
     \item[LABEL] Die \emph{LABEL}-Anweisung ersetzt ältere Anweisungen wie zum Beispiel \emph{MAINTAINER}. Sie bietet die Möglichkeit, Schlüssel-Wert-Paare zu einem Image zu speichern.
     \item[RUN] \emph{RUN} ermöglicht das Ausführen von Befehlen zum Erstellen des Images. Jedes RUN erzeugt eine neue Schicht des Images. In diesem Fall wird RUN verwendet, um mit dem Paketmanager \texttt{apt-get} Apache zu installieren und gleich im Anschluss das System wieder aufzuräumen.
     \item[ENV] Mit dem \emph{ENV}-Befehl werden Umgebungsvariablen gesetzt.
