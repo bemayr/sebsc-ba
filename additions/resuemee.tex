@@ -1,23 +1,31 @@
-%%% --- TODO ---
-%% Erkenntnisse
-%% Resumee
-%% - Zusammenfassung
-%% - Ausblick
-%%%
-
 \chapter{Resümee}
 \section{Zusammenfassung}
+Docker hat es geschafft, Containervirtualisierung soweit zu vereinfachen, dass sie sowohl zum Betrieb von hochperformanten Anwendungen in Cloud-Clustern, als auch zur Unterstützung im Entwicklungsprozess verwendet werden kann.
+Dies wird erst durch den erheblichen Unterschied zwischen traditionellen Virtualisierungsansätzen und der Containervirtualisierung ermöglicht.
+
+Die Verwendung von Konfigurationsmanagementwerkzeugen war auch vor Docker schon die Grundlage für einen stabilen und skalierbaren Entwicklungsprozess.
+Docker ermöglicht allerdings eine wesentlich elegantere und leichtgewichtigere Lösung vieler dieser Probleme.
+
+Um saubere Docker-Images zu erstellen ist ein fundiertes Wissen über Docker notwendig, das aufgrund der sehr schnellen Entwicklung ständig aktualisiert werden muss.
+Durch den großen Anteil an Open-Source-Beispielen und Ideen für die Anwendung von Docker, entstehen allerdings sehr zeit- und ressourcensparende Problemlösungen in vielen Teilen des Softwareentwicklungsprozesses.
 
 \section{Erkenntnisse}
-\textbf{Notizen}
-Welche Vorteile Containervirtualisierung mit sich bringt. Nicht nur im Bereich der Servervirtualisierung, sondern auch für den Entwicklungsprozess.
-Unglaubliche Anzahl an Tools, wobei nur wichtig ist, dass man weiß, dass es schon ein Tool für den Anwendungsfall gibt.
-Ein Problem wie in den Anwendungsszenarien zu sehen, ist das inkonsistente Starten eines Containers (Jekyll), sowie die zerstreute Dokumentation (Docker Hub, Github-README, Github-Wiki, proprietär)
-Polyglot Programming
+Viele der vorgestellten Probleme können auch mit bestehenden Werkzeugen Vagrant und Chef gelöst werden, Docker bietet lediglich eine modernere und leichtgewichtigere Lösung an.
+Ohne ein Grundverständnis von Docker ist die Anwendung dessen für Softwareentwickler eine Herausforderung.
+
+Nur durch ein tieferes Verständnis können Container so erstellt und abstrahiert werden, dass dem Anwender kaum auffällt, dass er eigentlich mit Docker arbeitet.
+Dadurch ist Docker nicht so leicht einsetzbar, als dass Softwareentwickler ohne Docker-Erfahrung dieses ohne großen Mehraufwand einsetzen können.
+
+Werden die Docker-Kommandos allerdings abstrahiert und beinahe unsichtbar in die bestehende Werkzeugkette integriert, entsteht dank Containervirtualisierung ein plattformübergreifender, stabiler und sich selbst dokumentierender Entwicklungsprozess.
+
 
 \section{Ausblick}
-\textbf{Notizen}
-Der Leser dieser Arbeit hat nun gesehen welche Probleme sich mit Docker einfacher lösen lassen. Außerdem wurde ihm das Verständnis vermittelt, wie Docker funktioniert, weshalb der nächste Schritt der ist, sich selbst zu überlegen welche Anwendungsfälle mit Docker einfach umsetzbar sind.
-- Windows Container? (https://stefanscherer.github.io/run-linux-and-windows-containers-on-windows-10/)
-- Bash on Windows on Linux
-- Standards, Reduzierung der Technologien
+Dem Leser wurde in der Arbeit vermittelt, welche Arten von Problemen sehr einfach mithilfe von Docker lösbar sind.
+Nun ist es die Aufgabe des Lesers sich weitere Anwendungsfälle für Docker und Optimierungen der Aufgaben eines Softwareentwicklers einfallen zu lassen.
+
+Die von Neal Ford und Martin Fowler eingeführten Konzepte des \emph{Polyglot Programmings\footnote{\url{http://memeagora.blogspot.co.at/2006/12/polyglot-programming.html}}} und der \emph{Polyglot Persistance\footnote{\url{https://martinfowler.com/bliki/PolyglotPersistence.html}}} sind mithilfe von containerbasierten Lösungen wesentlich einfacher umzusetzen.
+Auch einer der wohl aktuellsten Trends \emph{DevOps} (Entwicklung und Produktion von Anwendungen verschmelzen) wird durch die Verwendung Container vereinfacht.
+Bei DevOps ist es besonders wichtig, bereits zur Entwicklungszeit mit Containern zu arbeiten, da dadurch der Unterschied zwischen Entwicklung und Produktion verschwindet.
+
+Microsoft entwickelt mit den \emph{Windows Containern\footnote{\url{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}}} eine native Containerlösung für Windows und mit dem \emph{Windows Subsystem for Linux\footnote{\url{https://msdn.microsoft.com/en-us/commandline/wsl/about}}} eine bessere Interoperabilität zu den Linux-Entwicklerwerkzeugen.
+Diese beiden Projekte werden Containervirtualisierung weiter vorantreiben und völlig neue Möglichkeiten für die Verwendung von Docker auf Windows bieten.
