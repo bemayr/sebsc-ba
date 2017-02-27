@@ -10,7 +10,7 @@ Wie in \cref{sec:vollvirtualisierung} beschrieben, ermöglicht die Virtualisieru
 Ressourcen lassen sich effizienter nutzen, die Systeme werden jedoch nicht optimal ausgenützt, da das gesamte Betriebssystem virtualisiert wird.
 Dies führt zu langen Startzeiten und einem hohen Speicherverbrauch.
 
-Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kernels.
+Containervirtualisierung (siehe \cref{sec:containervirtualisierung}) löst diese Probleme durch die Wiederverwendung des Kerns.
 Dadurch entsteht die Möglichkeit, Anwendungen mitsamt den benötigten Systemressourcen zu verpacken und die Abhängigkeiten für den Betrieb zu reduzieren.
 Für einen Container wird lediglich die Laufzeitumgebung benötigt. Ist diese installiert, ist garantiert, dass der Container funktioniert.
 Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) der Unternehmen eingesetzt, die auf Containervirtualisierung setzen \autocite{ContainerAdoption}.
@@ -19,9 +19,9 @@ Docker\footnote{\url{https://www.docker.com/}} wird in 94\% (Stand Juni 2016) de
 \label{sec:docker-history}
 Der Blogeintrag \autocite{redhat-container-history:online} schildert die Geschichte der Containervirtualisierung. Folgende Darstellung ist eine Zusammenfassung dieses Eintrags.
 
-Im Jahr 2001 ermöglicht Jacques Gélinas mithilfe eines gepatchten Kernels zum ersten Mal das Ausführen mehrerer Linux-Server auf einem einzelnen Rechner, ohne auf Vollvirtualisierung zurückzugreifen.
+Im Jahr 2001 ermöglicht Jacques Gélinas mithilfe eines gepatchten Kerns zum ersten Mal das Ausführen mehrerer Linux-Server auf einem einzelnen Rechner, ohne auf Vollvirtualisierung zurückzugreifen.
 
-2006 folgt die Aufnahme von cgroups in den Linux-Kernel, worauf 2008 die Implementierung der namespaces folgt.
+2006 folgt die Aufnahme von cgroups in den Linux-Kern, worauf 2008 die Implementierung der namespaces folgt.
 Ebenfalls 2008 beginnt IBM mit der Entwicklung von LXC, wobei auf cgroups und namespaces aufgesetzt wird.
 % http://searchservervirtualization.techtarget.com/feature/A-brief-history-of-Docker-Containers-overnight-success
 % http://blog.aquasec.com/a-brief-history-of-containers-from-1970s-chroot-to-docker-2016
@@ -33,7 +33,7 @@ Docker führt nichts wesentlich Neues ein, sondern bietet lediglich für die bes
 libcontainer ist eine Eigenentwicklung von Docker, die in der Programmiersprache Go geschrieben ist und die Verwaltung und Ausführung von Containern ermöglicht.
 
 2015 tritt Docker der Open Container Initiative bei, wodurch die Quelltexte und Entwicklungen dem unter der Linux Foundation stehenden Projekt hinzugefügt werden.
-Dieser Schritt verstummt Kritiker, die eine Monopolstellung von Docker befürchtet haben.
+Dieser Schritt lässt Kritiker verstummen, die eine Monopolstellung von Docker befürchtet haben.
 Seit 2015 werden hauptsächlich Fehlerbehebungen und Verbesserungen an Docker selbst durchgeführt sowie das Docker-Ökosystem durch zahlreiche Werkzeuge erweitert (siehe \cref{sec:docker-products}).
 
 Die in diesem Kapitel gezeigten Beispiele und verwendeten Funktionen basieren auf der Docker-Version 1.13 vom 19. Jänner 2017.
@@ -79,9 +79,9 @@ In \cref{fig:docker-architektur} ist dieser Ablauf grafisch dargestellt.
 
 \section{Plattformen}
 \label{sec:docker-platforms}
-Docker läuft nur auf Linux-Versionen nativ, deren Kernels zu Docker kompatibel sind.
-Auf allen anderen Systemen wird durch virtualisierte Umgebungen eine Möglichkeit geschaffen Docker auszuführen.
-Bei diesen Werkzeugen wurde im letzten Jahr viel geändert, wodurch die Verwendung von Docker unter Windows und macOS stark vereinfacht wurde, derzeit allerdings eine Vielzahl von Werkzeugen existiert. Nachfolgend wird ein kurzer Überblick gegeben.
+Docker läuft nur auf Linux-Versionen nativ, deren Kerne zu Docker kompatibel sind.
+Auf allen anderen Systemen wird durch virtualisierte Umgebungen eine Möglichkeit geschaffen, Docker auszuführen.
+Die Werkzeuge für diese Systeme wurden im letzten Jahr stark verbessert, wodurch die Verwendung von Docker unter Windows und macOS stark vereinfacht wurde, derzeit allerdings eine Vielzahl von Werkzeugen existiert. Nachfolgend wird ein kurzer Überblick gegeben.
 
 \subsection{Docker for Windows}
 \label{sec:docker-windows}
@@ -89,8 +89,8 @@ Docker for Windows verwendet Hyper-V für die Erstellung einer virtuellen Linux-
 Zusätzlich werden die Docker-Client-Anwendungen installiert.
 Nicht zu verwechseln ist Docker for Windows mit den Windows-Containern\footnote{\url{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}}, die sich noch in der Beta-Phase befinden.
 Zur Verwendung dieser gibt es auf der offiziellen Docker-Homepage eine Anleitung\footnote{\url{https://docs.docker.com/docker-for-windows/install/}}.
-Ein sehr nützliches Add-on für die Verwendung von Docker unter Windows ist \texttt{posh-docker}\footnote{\url{https://github.com/samneirinck/posh-docker}}, welches die automatische Vervollständigung der Docker-Kommandos auf der Powershell ermöglicht.
-Vor allem durch die Integration des Port-Forwarding und der Möglichkeit, auch in Docker auf das gesamte Dateisystem zuzugreifen, fühlt sich die Verwendung von Docker for Windows beinahe nativ an.
+Eine sehr nützliche Erweiterung für die Verwendung von Docker unter Windows ist \texttt{posh-docker}\footnote{\url{https://github.com/samneirinck/posh-docker}}, welches die automatische Vervollständigung der Docker-Kommandos auf der Powershell ermöglicht.
+Vor allem durch die Integration des Port-Forwarding und der Möglichkeit, auch in Docker auf das gesamte Dateisystem zuzugreifen, fühlt sich die Verwendung von Docker for Windows beinahe so wie unter Linux an.
 
 \subsection{Docker for Mac}
 \label{sec:docker-mac}
@@ -107,11 +107,11 @@ Darin wird eine virtuelle Maschine "`boot2docker"' angelegt, auf der der Docker-
 Zusätzlich wird eine vorkonfigurierte git-Bash angeboten, die sich automatisch zu diesem Docker-Host verbindet.
 
 Der Hypervisor für die virtuelle Maschine lässt sich mit etwas Mühe austauschen\footnote{\url{https://github.com/pecigonzalo/docker-machine-vmwareworkstation}}, was aber zu zahlreichen Problemen führt.
-Wenn Docker for Windows und eine Virtualisierungslösung wie VMware oder VirtualBox gleichzeitig verwendet werden sollen, ergibt sich ein Konflikt zwischen den Hypervisoren und Hyper-V.
+Wenn Docker for Windows und eine Virtualisierungslösung wie VMware oder VirtualBox gleichzeitig verwendet werden sollen, ergibt sich ein Konflikt zwischen diesen Hypervisoren und Hyper-V.
 Aufgrund von Problemen wie der fehlenden Möglichkeit, Dateien zwischen dem Host und Docker zu teilen, sollte allerdings anstatt der Docker Toolbox die Lösung von Scott Hanselman \autocite{hanselman-vms:online} in Betracht gezogen werden.
-Er erklärt darin eine Möglichkeit, mehrere Hypervisoren und Hyper-V parallel zu verwenden.
+Er erklärt darin eine Möglichkeit, mehrere Hypervisoren und Hyper-V auf einem System zu verwenden.
 Dies ist allerdings nur durch einen Neustart des Systems möglich.
-Diese Lösung ist zwar etwas umständlich, bietet aber die aktuellsten Versionen und die geringsten Einbußen.
+Diese Lösung ist zwar etwas umständlich, ermöglicht allerdings die Verwendung der aktuellsten Docker-Version und die geringsten Einbußen.
 Derzeit (Februar 2017) gibt es keine bessere Lösung.
 
 % - die Geschichte von Docker
@@ -145,7 +145,7 @@ Docker Machine kann sowohl für die Konfiguration des Entwicklungsrechners verwe
 \subsubsection{Docker Compose}
 \label{sec:docker-compose}
 \emph{Docker Compose} bietet die Grundlage für komplexe Anwendungen.
-Diese lassen sich nicht in einen Container verpacken, da sie aus zahlreichen Services bestehen.
+Diese lassen sich oft nicht oder nur schwer in einen Container verpacken, da sie aus zahlreichen Services bestehen.
 Mithilfe eines eigenen auf YAML basierenden Dateiformates lassen sich diese Services deklarativ beschreiben und mithilfe von \texttt{docker-compose} ausführen und zentral verwalten.
 \subsubsection{Docker Swarm}
 \label{sec:docker-swarm}
@@ -199,12 +199,12 @@ Nachfolgend werden die verwendeten Instruktionen beschrieben, eine vollständige
     \item[LABEL] Die \emph{LABEL}-Anweisung ersetzt ältere Anweisungen wie zum Beispiel \emph{MAINTAINER}. Sie bietet die Möglichkeit, Schlüssel-Wert-Paare zu einem Image zu speichern.
     \item[RUN] \emph{RUN} ermöglicht das Ausführen von Befehlen zum Erstellen des Images. Jedes RUN erzeugt eine neue Schicht des Images. In diesem Fall wird RUN verwendet, um mit dem Paketmanager \texttt{apt-get} Apache zu installieren und gleich im Anschluss das System wieder aufzuräumen.
     \item[ENV] Mit dem \emph{ENV}-Befehl werden Umgebungsvariablen gesetzt.
-    \item[EXPOSE] \emph{EXPOSE} kennzeichnet die Netzwerk-Ports, auf denen der Container zur Laufzeit erreichbar ist. Die Ports werden lediglich als verfügbar gekennzeichnet und nicht an den Host gebunden. Ob und auf welchem Port der Container tatsächlich erreichbar ist, bestimmt der Anwender beim Starten des dessen.
+    \item[EXPOSE] \emph{EXPOSE} kennzeichnet die Netzwerk-Ports, auf denen der Container zur Laufzeit erreichbar ist. Die Ports werden lediglich als verfügbar gekennzeichnet und nicht an den Host gebunden. Ob und auf welchem Port der Container tatsächlich erreichbar ist, bestimmt der Anwender beim Starten dessen.
     \item[CMD] \emph{CMD} spezifiziert jene Anwendung, die standardmäßig beim Starten des Containers ausgeführt wird. Diese kann beim Starten des Containers überschrieben werden. Genauere Informationen sind in \cref{sec:container-startup-command} beschrieben.
 \end{description}
 
 \lstinputlisting[caption=Apache-Dockerfile von Kimbro Staken,label={lst:dockerfile-apache}]{listings/Dockerfile.apache}
-Um aus diesem Dockerfile ein Image zu erstellen, muss ein \texttt{docker build} ausgeführt werden.
+Um aus diesem Dockerfile ein Image zu erstellen, muss \texttt{docker build} ausgeführt werden.
 Dieses Kommando kann beispielsweise wie in \cref{lst:dockerfile-build} verwendet werden.
 
 \begin{lstlisting}[caption=Erstellen eines Images auf Basis eines Dockerfiles, language=bash, label=lst:dockerfile-build]
@@ -225,7 +225,7 @@ Für das Erstellen von Dockerfiles werden von Docker folgende Best-Practices vor
     \item Ein Container soll so klein wie möglich sein (siehe \cref{sec:minimize-imagesize}). Unnötige Pakete sollen vermieden werden. Ein Datenbankcontainer benötigt beispielsweise keinen Texteditor.
     \item Jeder Container soll im Gesamtsystem lediglich \emph{eine} Aufgabe haben. Durch diese Aufteilung können Systeme wesentlich besser skalieren. Diese Regel besagt nicht, dass ein Container lediglich einen Prozess ausführen darf. Prozesse können auch Kindprozesse starten, allerdings soll damit nur eine Aufgabe gelöst werden.
     \item Die Anzahl der Schichten eines Images soll möglichst geringgehalten werden. Alles in einen Befehl zu packen ist allerdings auch nicht der richtige Weg. Hier muss ein guter Mittelweg gefunden werden. Die offiziellen Images im Docker Hub bieten dafür sehr gute Lernressourcen.
-    \item Mehrzeilige Argumente sollen zur besseren Wartbarkeit alphabetisch sortiert werden.
+    \item Die Argumente sehr langer Parameter sollen zur besseren Wartbarkeit alphabetisch sortiert werden.
     \item Durch die Wiederverwendung von Schichten bietet Docker die Möglichkeit eines Build-Caches. Unveränderte Teile des Images müssen nicht neu erzeugt werden. Daher sollen die Schichten so gestaltet werden, dass sich häufig ändernde Module möglichst spät hinzugefügt werden, da dies die Geschwindigkeit beim Erzeugen eines Images erheblich beschleunigt.
 \end{itemize}
 
@@ -291,7 +291,7 @@ IMAGE            CREATED BY                             SIZE
 88e169ea8f46     /bin/sh -c (nop) ADD file:92ab7...     3.98 MB
 \end{lstlisting}
 
-\subsection{Festlegen des Container Start-Kommandos}
+\subsection{Festlegen des Start-Kommandos für den Container}
 \label{sec:container-startup-command}
 Ein wichtiger Aspekt beim Entwickeln von Docker-Images ist das Start-Kommando.
 Welche Anwendung der Container ausführt beziehungsweise wie der Benutzer diese konfigurieren kann, wird über die Befehle \texttt{ENTRYPOINT} und \texttt{CMD} im Dockerfile bestimmt.
@@ -421,7 +421,6 @@ WARNING! This will remove:
         - all networks not used by at least one container
         - all dangling images
 Are you sure you want to continue? [y/N] y
-Deleted Containers:
-019cfcc4e93ba4667c3387e2f9af442382d140c671619c548f5fd
+Deleted Containers: 7c3387e2f9af442382d140c671619c548f5fd
 Total reclaimed space: 484 B
 \end{lstlisting}

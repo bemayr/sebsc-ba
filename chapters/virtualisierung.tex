@@ -12,8 +12,8 @@ Im Folgenden wird die Geschichte der Virtualisierung auf Basis von \autocite{Bau
 In den 1960er-Jahren begann IBM mit dem Einsatz von Großrechnern, sogenannten Mainframes~\autocite{IBM1981}.
 Da die Kosten für derartige Computersysteme den Einsatz eines Rechners für ein einzelnes System nicht rechtfertigen konnten, wurden auf einem Main\-frame mehrere Systeme parallel virtuell betrieben.
 Dadurch konnten die Rechenleistung effizienter ausgenutzt sowie Versionsinkompatibilitäten durch den parallelen Betrieb alter und neuer Main\-frames vermieden werden.
-Als im Laufe der 80er-Jahre die x86-Architektur den Aufschwung erlebte, stand die Virtualisierung still.
-Der günstige Preis und die fehlende Virtualisierungsunterstützung machten es unnötig und unmöglich Endgeräte zu virtualisieren.
+Als im Laufe der 80er-Jahre die x86-Architektur ihren Aufschwung erlebte, stand die Virtualisierung still.
+Der günstige Preis und die fehlende Virtualisierungsunterstützung machten es unnötig und unmöglich, Endgeräte zu virtualisieren.
 
 Erst mit der steigenden Rechenleistung und dem Erscheinen von Mehrkernprozessoren hat die IT-Virtualisierung wieder an Traktion gewonnen.
 In den letzten Jahren werden besonders durch Cloud-Angebote viele Teile der IT nur mehr virtuell betrieben.
@@ -25,15 +25,15 @@ Auch das Testen von Infrastrukturen wurde durch Virtualisierung ermöglicht.
 Es ist nicht mehr notwendig, ein gesamtes IT-System temporär lediglich zu Testzwecken zur Verfügung zu stellen oder sogar ein solches eigens anzuschaffen.
 Stattdessen können die benötigten Ressourcen in der Cloud für den benötigten Zeitraum angemietet werden.
 
-Zahlreiche Vorteile der Virtualisierung führten im Gegensatz zu den wenigen Nachteilen zur großen Adaption und Verbreitung.
+Zahlreiche Vorteile der Virtualisierung führten im Gegensatz zu den wenigen Nachteilen zur großen Verbreitung.
 
 \subsubsection{Vorteile der Virtualisierung}
-Folgende Vorteile der Virtualisierung werden in \autocite{Baun2009} angeführt.
+Die nachfolgend besprochenen Vorteile der Virtualisierung werden in \autocite{Baun2009} angeführt.
 Der kostensparendste Aspekt der Virtualisierung ist die Konsolidierung von Servern.
 
 Server, die nicht unter voller Last laufen, benötigen trotzdem Strom, Kühlung, Wartung und Infrastruktur.
 Durch Konsolidierung können ungenutzte Ressourcen genutzt werden, die zuvor lediglich Kosten verursachten.
-Virtualisierte Server bieten sind außerdem erheblich einfacher zu provisionieren.
+Virtualisierte Server sind außerdem erheblich einfacher zu provisionieren.
 Wird ein neuer Server benötigt, können dazu bestehende, freie Ressourcen genützt werden, anstatt dass weitere Hardware angeschafft werden muss.
 
 Wartungsaufgaben werden stark vereinfacht, da durch diverse Managementwerkzeuge viele Aufgaben automatisiert sowie ohne Änderung an den physischen Systemen durchgeführt werden können.
@@ -42,45 +42,46 @@ Diese können dadurch für den Endanwender unterbrechungsfrei und daher unbemerk
 So wird Wartung an der Hardware ermöglicht, ohne dass sich ein Ausfall für die Benutzer ergibt.
 Voraussetzung dafür ist allerdings, dass Ressourcen im Rechenzentrum frei sind, auf die Systeme (temporär) migriert werden können.
 
-Durch Virtualisierung wird auch die Dimensionierung der Ressourcen erheblich vereinfacht, da lediglich eine ungefähre Menge an Rechenleistung initial zu schätzen ist und diese sich im Betrieb umverteilen lässt.
+Durch Virtualisierung wird auch die Dimensionierung der Ressourcen erheblich vereinfacht, da initial lediglich die ungefähr benötigte Rechenleistung zu schätzen ist und diese sich im Betrieb umverteilen lässt.
 So können Systeme, die ihre Leistungsgrenzen erreicht haben oder bei weitem nicht nützen, im laufenden Betrieb neu dimensioniert werden.
 Dazu kommt die vorhin beschriebene Live-Migration zum Einsatz.
+Dies führt zu einer gleichmäßigeren Auslastung der Rechenzeit der Hostsysteme, ohne die virtuellen Maschinen dabei zu beeinflussen.
 Laut \autocite{Hantelmann2008} können die Rechenzentrumskosten um 50\% reduziert werden, wohingegen die Anschaffungskosten neuer Hardware um bis zu 70\% verringert werden können.
 \autocite{Azure-Scaling:online} beschreibt Möglichkeiten zur automatischen Skalierung von Ressourcen in der Microsoft-Azure-Cloud.
 Dabei spielt Virtualisierung eine essenzielle Rolle, da alle bei Azure gemieteten Ressourcen virtualisiert laufen.
-So kann in diesem Fall allerdings eine für den Systemadministrator angenehme Version der Dimensionierung erreicht werden, da die Azure-Cloud automatisch die Leistung der Ressourcen an die aktuelle Auslastung anpasst.
+So kann in diesem Fall eine für den Systemadministrator angenehme Version der Dimensionierung erreicht werden, da die Azure-Cloud automatisch die Leistung der Ressourcen an die aktuelle Auslastung anpasst.
 
 Nicht nur durch Features wie die Live-Migration wird die Flexibilität in virtualisierten Rechenzentren erhöht.
-Virtuelle Maschinen bestehen aus wenigen Dateien, von denen sehr einfach Klone zum Backup erstellt werden können.
-Zusätzlich gibt es die Funktion von Snapshots, dabei wird ein Abbild einer virtuellen Maschine erstellt, das jederzeit wieder hergestellt werden kann.
+Virtuelle Maschinen bestehen aus wenigen Dateien, von denen sehr einfach Backups erstellt werden können.
+Zusätzlich gibt es die Funktion von Snapshots, dabei wird ein Abbild einer virtuellen Maschine erstellt, das jederzeit gestartet werden kann.
 Dies ist besonders hilfreich, wenn es Snapshots von fertig konfigurierten, jedoch unbenutzten Systemen gibt, da damit fehlerhafte Maschinen sehr schnell wieder hergestellt werden können.
 
-Durch die Abschottung der virtuellen Maschinen gegeneinander kann trotz der Virtualisierung hohe Servicequalität erreicht werden, da der Ausfall einer Maschine lediglich diese betrifft, aber das Hostsystem intakt bleibt.
-In einem Hochverfügbarkeitsszenario besteht auch die Möglichkeit, dass ein überwachendes System (Supervisor) den Ausfall erkennt und das betroffene System auf einem anderen Knoten neu startet.
+Durch die starke Isolierung der virtuellen Maschinen kann aufgrund der Virtualisierung hohe Servicequalität erreicht werden, da der Ausfall einer Maschine lediglich diese betrifft, aber das Hostsystem intakt bleibt.
+In einem Hochverfügbarkeitsszenario besteht die Möglichkeit, dass ein überwachendes System (Supervisor) den Ausfall erkennt und das betroffene System auf einem anderen Knoten neu startet.
+Des weiteren wird durch diese Isolierung die Systemsicherheit erhöht, da sich die virtuellen Maschinen gegenseitig nicht beeinflussen.
 
 \subsubsection{Nachteile der Virtualisierung}
 Folgende Nachteile der Virtualisierung werden in \autocite{Baun2009} angeführt.
 
-Da bei virtualisierten Systemen die Instruktionen vom virtuellen auf das Hostsystem umgesetzt werden müssen, ergibt sich ein Leistungsverlust.
+Da bei virtualisierten Systemen die Instruktionen vom virtuellen auf das Hostsystem übersetzt werden müssen, ergibt sich ein Leistungsverlust.
 Dieser wird allerdings mit leistungsfähigeren Mehrkernprozessoren und durch Prozessorvirtualisierung wie Intel VT\footnote{\url{http://www.intel.de/content/www/de/de/virtualization/virtualization-technology/intel-virtualization-technology.html}} verschwindend gering.
-Die Prozessoren bieten native Virtualisierungstechniken an, bei denen die Befehle nicht mehr umgesetzt werden müssen, wodurch die Verringerung der Leistung auf unter 10\% sinkt~\autocite{Hardt2005}.
+Die Prozessoren bieten native Virtualisierungstechniken an, bei denen die Befehle nicht mehr übersetzt werden müssen, wodurch die Verringerung der Leistung auf unter 10\% sinkt~\autocite{Hardt2005}.
 
 Ein wesentlich größeres Problem in der Virtualisierung stellen besondere Hardwareanforderungen dar.
 Authentifizierung über Hardware-Dongles oder die Ansteuerung von Legacy-Hardware ist in virtualisierten Umgebungen durch den fehlenden Direktzugriff auf die Hardware sehr schwierig bis nicht möglich.
 
-Besondere Vorsicht muss außerdem der Infrastruktur in den Rechenzentren zukommen, da bei einem Hostausfall in virtualisierten Umgebungen zahlreiche Systeme betroffen sind.
+Besondere Vorsicht verlangt der Aufbau der Infrastruktur von Rechenzentren, da bei einem Hostausfall in virtualisierten Umgebungen zahlreiche Systeme betroffen sind.
 Dieses Problem lässt sich durch redundante Installationen und gut durchdachte Ausfallkonzepte lösen, wobei hier die Vermeidung eines \emph{Single Point of Failures} (SPOF) höchste Priorität genießen muss.
-Damit ein redundantes System im Fehlerfall Wirkung zeigen kann, muss dieses vollredundant sein.
 Die Konzeption, Installation und der Betrieb eines solchen Systems erfordern eine hochwertige Infrastruktur und zusäzliches Detailwissen.
 
 
 \section{Vollvirtualisierung}
 \label{sec:vollvirtualisierung}
-\autocite{Baun2009} stellt dar, dass die Vollvirtualisierung Gastsystemen eine gesamte virtuelle Umgebung zur Verfügung stellt.
+\autocite{Baun2009} stellt dar, dass die Vollvirtualisierung Gastsystemen ein gesamtes virtuelles Betriebssystem zur Verfügung stellt.
 Weiters wird darin das Zusammenspiel der einzelnen Komponenten folgendermaßen beschrieben.
-Der \emph{Virtuelle Maschinenmonitor} (VMM) läuft auf dem Host-System und ist jene Komponente, die die virtuelle Umgebung zur Verfügung stellt.
+Der Hypervisor läuft auf dem Host-System und ist jene Komponente, die die virtuelle Umgebung zur Verfügung stellt.
 Dieses vollwertige System beinhaltet ein BIOS sowie eine Abstraktion der gesamten Hardware, wodurch die Gast-Systeme nicht merken, dass sie virtualisiert werden.
-Zugriffe auf die Hardware werden vom VMM intelligent auf die Hardware des Hosts verteilt oder über Hardware-Emulation zugänglich gemacht.
+Zugriffe auf die Hardware werden vom Hypervisor intelligent auf die Hardware des Hosts verteilt oder über Hardware-Emulation zugänglich gemacht.
 Dieser Aufbau ist in \cref{fig:architektur-vollvirtualisierung} zu sehen.
 \begin{figure}[htbp]
     \centering
@@ -90,7 +91,7 @@ Dieser Aufbau ist in \cref{fig:architektur-vollvirtualisierung} zu sehen.
 \end{figure}
 Einerseits zeigt die Abbildung, dass Anwendungen ohne Problem parallel zu den virtualisierten Systemen laufen können.
 Andererseits wird verdeutlicht, dass jedes virtuelle System ein gesamtes Betriebssystem (Gast-OS) beinhaltet.
-Jegliche Kommunikation eines Gastsystems mit den Systemresourcen des Hosts läuft über den VMM, wodurch gewährleistet wird, dass dieser Zugriff kontrolliert werden kann.
+Jegliche Kommunikation eines Gastsystems mit den Systemresourcen des Hosts läuft über den Hypervisor, wodurch gewährleistet wird, dass dieser Zugriff kontrolliert werden kann.
 Dies stellt sicher, dass die virtuellen Maschinen voneinander abgeschottet sind und ein Ausfall eines Gastsystems die anderen nicht beeinflusst.
 
 Aus dieser hohen Abstraktion folgt, dass am Gastsystem keine Änderungen durchgeführt werden müssen und unterschiedliche Kernels parallel virtualisiert werden können.
@@ -101,8 +102,8 @@ Außerdem können vorgefertigte \emph{Basissysteme} (Snapshots) für die Entwick
 Folgende Probleme treten hingegen in einer virtualisierten Entwicklungsumgebung auf:
 \begin{itemize}
 \item Updates müssen entweder doppelt durchgeführt werden oder die Entwickler werden periodisch mit neuen Snapshots versorgt.
-\item Für die Daten und Konfigurationen der Entwickler muss ein Platz außerhalb der virtuellen Maschine gefunden werden. Besonders bei einem Snapshot-basierten Updateverfahren gehen durch die Verwendung eines neuen Snapshots alle Daten in der VM verloren. Die Konfiguration der Entwicklungsumgebung können idealerweise auf Netzwerklaufwerke verlegt werden und die Quelltexte sollten sich in einem Versionsverwaltungssystem befinden.
-\item Ein weiters Problem mit den Daten betrifft die Authentifizierung. Für SSH-Schlüssel für Versionsverwaltungssysteme und andere Zugangsdaten muss ebenfalls eine Möglichkeit geschaffen werden, diese in die virtuellen Maschinen zu bringen.
+\item Für die Daten und Einstellungen der Entwickler muss ein Platz außerhalb der virtuellen Maschine gefunden werden. Besonders bei einem Snapshot-basierten Updateverfahren gehen durch die Verwendung eines neuen Snapshots alle Daten in der VM verloren. Die Konfiguration der Entwicklungsumgebung können idealerweise auf Netzwerklaufwerke verlegt werden und die Quelltexte sollten sich in einem Versionsverwaltungssystem befinden.
+\item Ein weiteres Problem im Zusammenhang mit den Konfigurationsdateien betrifft die Authentifizierung. Für SSH-Schlüssel für Versionsverwaltungssysteme und andere Zugangsdaten muss ebenfalls eine Möglichkeit geschaffen werden, diese in die virtuellen Maschinen zu bringen.
 \item Entwicklungsumgebungen gelangen bei virtualisierten Systemen schnell an die Performancegrenzen, wodurch die Produktivität der Mitarbeiter sinkt.
 \item Bei mehreren parallelen Projekten und damit verbundenen virtuellen Maschinen kann der Speicherplatz auf dem Host-System sehr knapp werden, da für jede VM das gesamte Betriebssystem gespeichert werden muss.
 \end{itemize}
@@ -120,12 +121,13 @@ In \cref{fig:architektur-containervirtualisierung} ist die wesentlich schlankere
     \centering
     \includegraphics[width=0.9\linewidth,clip]{images/containervirtualisierung}
     \caption{Architektur der Containervirtualisierung}
-    \label{fig:architektur-containervirtualisierung}
+ \label{fig:architektur-containervirtualisierung}
 \end{figure}
 Darin fällt auf, dass es zwischen dem Host-Betriebssystem und den Containern keine Zwischenschicht gibt.
-Im Fall der Containervirtualisierung ist der Host gleichzeitig VMM, wodurch eine Virtualisierung mit einem wesentlich geringeren Overhead entsteht.
+Im Fall der Containervirtualisierung ist der Host gleichzeitig der Hypervisor, wodurch eine Virtualisierung mit einem wesentlich geringeren Overhead entsteht.
 In manchen Grafiken zur Containervirtualisierung existiert eine Schicht zwischen dem Host und den Containern, welche allerdings lediglich darstellt, dass die Container irgendwie gestartet werden müssen.
 Tatsächlich wird eine abgeschottete Instanz des Host-Betriebssystems erzeugt, aus der die Anwendungen nicht ausbrechen können.
+Sie erhalten lediglich Leserechte auf die mit dem Host-Betriebssystem geteilten Ressourcen wie Libraries und Binaries.
 Ein weit verbreitetes Synonym ist \emph{Jails}, basierend auf dem Namen dieser Funktion in BSD\footnote{\url{https://www.freebsd.org/doc/de_DE.ISO8859-1/books/handbook/jails.html}}.
 
 Diese Funktionsweise wird in \autocite{Diedrich2016} beschrieben.
@@ -140,20 +142,20 @@ Für diese abgeschottete Instanz des Betriebssystems sind folgende zwei Funktion
 \end{enumerate}
 Das oft erwähnte \emph{LXC\footnote{\url{https://linuxcontainers.org/}}} (Linux Containers) \autocite{rkt-comparison:online} verwendet \texttt{namespaces} und \texttt{cgroups} zum Erstellen und Verwalten von Containern. Es wurde früher vom Container-Marktführer Docker verwendet, zwischenzeitlich allerdings durch \texttt{libcontainer} ersetzt und nun durch \texttt{runc\footnote{\url{https://runc.io/}}} abgelöst.
 \texttt{runc} ist nun in der \emph{Open Container Initiative} (OCI, siehe \cref{sec:open-container-initiative}) standardisiert.
-Die in diesem Kapitel beschriebene Containervirtualisierung trifft lediglich auf die Linux-Container zu. Microsoft arbeitet gerade an einer ersten Version der Windows Container\footnote{\url{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}}, leitet diesen Artikel allerdings mit "`This is preliminary content and subject to change."' ein, weshalb diese Technologie aufgrund des Erscheinungsdatums aus dieser Arbeit ausgeklammert wurde.
+Die in diesem Kapitel beschriebene Containervirtualisierung trifft lediglich auf die Linux-Container zu. Microsoft arbeitet gerade an einer ersten Version der Windows Container\footnote{\url{https://docs.microsoft.com/en-us/virtualization/windowscontainers/about/}}, deren Dokumentation allerdings mit "`This is preliminary content and subject to change."' eingeleitet wird, weshalb diese Technologie aufgrund des Erscheinungsdatums aus dieser Arbeit ausgeklammert wurde.
 
 % - https://semaphoreci.com/community/tutorials/how-to-deploy-a-go-web-application-with-docker
 
 \subsection{Implementierungen von Containervirtualisierungslösungen}
 \label{sec:container-solutions}
-Für das Verwalten und Starten von Containern gibt es zahlreiche Lösungen, wobei \autocite{rkt-comparison:online} einen Vergleich dieser bietet.
+Für das Verwalten und Starten von Containern gibt es zahlreiche Lösungen, wobei \autocite{rkt-comparison:online} einen Vergleich dieser Ansätze bietet.
 Im Folgenden werden die wichtigsten dieser Lösungen charakterisiert.
 \begin{description}
     \item [Docker] Da Docker die in dieser Arbeit verwendete Technologie darstellt, wird sie in \cref{cha:docker} ausführlich behandelt und die Verwendung exemplarisch gezeigt.
     \item [rkt] \texttt{rkt} (ausgesprochen: rocket) ist ein Container-Manager des quelloffenen Unix-Systems CoreOS. Im Gegensatz zu Docker ist es lediglich ein einzelnes ausführbares Programm ohne Hintergrundprozess (Deamon).
     Die Images der Container werden über HTTPS verteilt. Durch den fehlenden Deamon kann \texttt{rkt} sehr einfach in bestehende Systeme wie \texttt{systemd} und \texttt{Kubernetes} integriert werden. \texttt{rkt} baut auf dem standardisierten Containerformat appc\footnote{\url{https://github.com/appc/spec/}} auf.
-    \item [runc] \texttt{runc} ist eine sehr systemnahe Möglichkeit Container zu starten und zu verwalten. Sie bietet allerdings keine Möglichkeit Images herunterzuladen und erfordert hohe Detailkenntnisse des Betriebssystems und dessen Konfiguration.
-    \item [containerd] \texttt{containerd} ist ein Deamon für \texttt{runc}. Auch hier ist keine Möglichkeit für den Download von Images vorhanden. containerd und runc bieten die Basis für Docker seit der Version 1.11.0.
+    \item [runc] \texttt{runc} ist eine sehr systemnahe Möglichkeit, Container zu starten und zu verwalten. Sie bietet allerdings keine Möglichkeit, Images herunterzuladen und erfordert hohe Detailkenntnisse des Betriebssystems und dessen Konfiguration.
+    \item [containerd] \texttt{containerd} ist ein Deamon für \texttt{runc}. Auch hier ist keine Möglichkeit für den Download von Images vorhanden. \texttt{containerd} und \texttt{runc} bieten die Basis für Docker seit der Version 1.11.0.
     \item [LXC] Der primäre Einsatzzweck von \texttt{LXC} ist das Starten einer kompletten Linux-Version parallel zum Host-System. Anwendungscontainer können auch verwaltet werden, erfordern allerdings mehr Wissen als zum Beispiel mit Docker oder \texttt{rkt}.
 \end{description}
 % - file:///D:/download/Realitaetscheck-Brauchen-wir-Docker-wirklich_Nils-Magnus_inovex-GmbH.pdf
@@ -170,7 +172,7 @@ Der OCI sind mittlerweile zahlreiche große Unternehmen beigetreten, um Containe
 \subsection{Orchestrierungssysteme}
 \label{sec:orchestrierungssysteme}
 Im Folgenden werden kurz die aktuell wichtigsten Orchestrierungssysteme für Container \autocite{ix-orchestrierung-2017} und deren Zweck beschrieben.
-Softwareentwickler werden diese weder lokal zur Entwicklung benötigen noch aktiv in der Produktion einsetzen.
+Softwareentwickler werden diese weder am Entwicklungsrechner benötigen noch aktiv in der Produktion einsetzen.
 Jedoch sollten die Entwickler zumindest wissen, was Orchestrierung ist und warum sie notwendig ist.
 Ein Basiswissen dazu genügt, um zu entscheiden, ob das vorgeschlagene Werkzeug im konkreten Problemfall wirklich relevant ist.
 Die Funktionsweise und Philosophie der Containerorchestrierung sollte schon im Entwicklungsprozess bedacht werden, da die Architektur von Anwendungen davon stark beeinflusst wird.
@@ -186,14 +188,14 @@ Die Folge dieser Strategie ist, dass das Softwaresystem so gebaut werden muss, d
 
 \autocite{ix-orchestrierung-2017} liefert einen Überblick über die aktuell am meisten verwendeten Werkzeuge zur Containerorchestrierung. Diese werden nachfolgend vorgestellt:
 \begin{description}
-    \item [Kubernetes] Wenn es um die Verwaltung von sehr vielen Containern (mehrere Tausende) geht, dann ist der Cluster-Manager Kubernetes\footnote{\url{https://kubernetes.io/}} von Google das Richtige.
+    \item [Kubernetes] Wenn es um die Verwaltung von sehr vielen Containern (mehrere tausend) geht, dann ist der Cluster-Manager Kubernetes\footnote{\url{https://kubernetes.io/}} von Google das Richtige.
     Die Architektur ist nach dem Master/Slave-Schema aufgebaut. Der Master verteilt die Arbeit auf zahlreiche Knoten, die Slaves.
     Die Container werden abstrahiert, indem sie zu sogenannten Pods zusammengefasst werden.
     Kubernetes wird über die Kommandozeile konfiguriert, wodurch es Einsteiger mit einer sehr steilen Lernkurve konfrontiert.
     \item [DC/OS] DC/OS\footnote{\url{https://dcos.io/}} ist ein Cluster-Manager, der nicht nur Container verwalten kann, sondern auch benutzerdefinierte Pakete.
     Durch diese Flexibilität ist DC/OS sehr komplex, verfügt jedoch über eine automatische Installation und eine grafische Benutzeroberfläche.
     Zu großer Verwirrung können die verwendeten Namen führen. DC/OS steht für "`Datacenter Operating System"'.
-    Ein Teil von DC/OS heißt Mesos und die Software selbst ist von der Firma Mesosphere.
+    Ein Teil von DC/OS heißt Mesos und die Software selbst wurde von der Firma Mesosphere entwickelt.
     \item [Rancher] Rancher\footnote{\url{http://rancher.com/rancher/}} ist ein Orchestrierungsprodukt der Firma RancherOS.
     Wie Kubernetes ist die Architektur aufgeteilt in einen Master und mehrere Knoten, hier Agenten genannt.
     Rancher selbst ist ein Docker-Container, der beim Starten privilegierte Rechte erhält, um selbst wieder Container starten zu können.

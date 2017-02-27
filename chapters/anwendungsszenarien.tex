@@ -1,25 +1,25 @@
 \chapter{Docker-Anwendungsszenarien für den Softwareentwickler}
 \label{cha:szenarien}
-Dieses Kapitel zeigt exemplarisch mögliche Anwendungsfälle für die Verwendung von Docker als Werkzeug für Softwareentwickler und wie diese bei ihren alltäglichen Tätigkeiten unterstützen werden können.
+Dieses Kapitel zeigt exemplarisch mögliche Anwendungsfälle für die Verwendung von Docker als Werkzeug für Softwareentwickler und wie diese bei ihren alltäglichen Tätigkeiten unterstützt werden können.
 
 Das Entwickeln von Software erfordert die Installation zahlreicher Werkzeuge.
 Wenn sich diese auf lediglich ein Projekt beschränkt, stellt dies kein Problem dar, da es zu keinen Versionsinkompatibilitäten kommt und die Werkzeuge nicht laufend gewechselt werden müssen.
 Werden allerdings mehrere Projekte parallel entwickelt und zusätzlich noch Beiträge zu Open-Source-Projekten geleistet, wird dieses Unterfangen erheblich komplizierter.
 Unterschiedliche Laufzeitumgebungen, Compiler-Versionen, Build-Werkzeuge und Frameworks führen sehr schnell zu einem unüberschaubaren und instabilen System \autocite{smashing-local-devenv-docker:online}.
 
-In \autocite{smashing-local-devenv-docker:online} werden die bestehenden Lösungen für die auftretenden Probleme aufgelistet:
+In \autocite{smashing-local-devenv-docker:online} werden bestehende Lösungen für die auftretenden Probleme aufgelistet:
 \begin{itemize}
-    \item Anstatt Abhängigkeiten auf Systemebene zu installieren werden diese von \emph{Paketmanagern} auf Projektebene verwaltet.
+    \item Anstatt Abhängigkeiten auf Systemebene zu installieren, werden diese von \emph{Paketmanagern} auf Projektebene verwaltet.
     Vertreter davon sind zum Beispiel npm\footnote{\url{https://www.npmjs.com/}} für JavaScript, Maven\footnote{url{https://maven.apache.org/}} für Java oder NuGet\footnote{\url{https://www.nuget.org/}} für .NET.
     \item Zusätzlich zu Paketen müssen allerdings auch die Laufzeitumgebungen verwaltet werden.
     Bei unterschiedlichen Projekten können unterschiedliche Versionen dieser benötigt werden, wodurch Werkzeuge wie der Node Version Manager (nvm\footnote{\url{https://github.com/creationix/nvm}}) oder der Ruby Version Manager (RVM\footnote{\url{https://rvm.io/}}) entstanden sind.
     Diese müssen allerdings auf dem Entwicklerrechner verwaltet werden und erschweren den schnellen Wechsel zwischen unterschiedlichen Projekten.
-    Bei alten Legacy-Systeme ist eine Unterstützung durch diese Werkzeuge außerdem nicht garantiert.
-    \item Mit dem Aufschwung der Virtualisierung und Werkzeugen wie Vagrant wurden viele dieser Probleme gelöst.
+    Bei alten Legacy-Systemen ist eine Unterstützung durch diese Werkzeuge außerdem nicht garantiert.
+    \item Mit dem Aufschwung der Virtualisierung und Werkzeugen wie Vagrant (siehe \cref{sub:vagrant}) wurden viele dieser Probleme gelöst.
     Allerdings ist die Notwendigkeit einer virtuellen Maschine pro Projekt sehr ressourcen- und wartungsintensiv.
     Ein weiterer Nachteil ist, dass Vagrant auf Entwicklerrechner ausgelegt ist und dadurch nicht garantiert werden kann, dass die entwickelte Software auch auf dem Produktionssystem läuft \autocite{laradock-docs:online}.
 \end{itemize}
-Docker bietet eine Abstraktion des Betriebssystems und die Möglichkeit, die benötigten Komponenten einer Anwendung deklarativ zu beschreiben.
+Docker bietet eine Abstraktion des Betriebssystems und die Möglichkeit, die benötigten Komponenten einer Anwendung maschinenlesbar zu beschreiben.
 Dadurch ist es möglich, die Laufzeitumgebung und die benötigten Komponenten der Anwendung gemeinsam mit dieser im Versionsverwaltungssystem aufzubewahren.
 Danach ist lediglich Docker die Voraussetzung dafür, dass mit einem plattformübergreifenden Kommando mit der Entwicklung von Software begonnen werden kann.
 
@@ -30,7 +30,7 @@ Travis Reeder liefert in seinem Blogeintrag über die Entwicklung mit Docker (\a
     \item Komplizierte Build-Prozesse können abstrahiert werden, sodass die Entwickler diesen nicht verstehen müssen. Außerdem kann dieser Prozess separat entwickelt und getestet oder sogar wiederverwendet werden.
     \item Unterschiedliche Laufzeitumgebungen haben keinen Einfluss auf das Hostsystem des Entwicklers. Besonders die Entwicklung von Java, Ruby, Python und Node wird dadurch stark vereinfacht. Zusätzlich ist es beispielsweise einfach möglich, die Software mit einer anderen Compiler-Version zu übersetzen, um zu überprüfen, ob diese kompatibel ist.
     \item Das Veröffentlichen der Software wird einfacher. Es muss lediglich ein Container der Anwendung erstellt werden, der nun auf jedem Docker-Host lauffähig ist.
-    \item Es müssen keine besondere IDE verwendet oder Kommandos über SSH auf einer virtuellen Maschine ausgeführt werden. Der Container wird in das Host-System integriert und ist beinahe nicht sichtbar.
+    \item Es müssen keine besonderen Entwicklungsumgebungen verwendet oder Kommandos über SSH auf einer virtuellen Maschine ausgeführt werden. Der Container wird in das Host-System integriert und ist beinahe nicht sichtbar.
     \item Entwicklern wird ein schnellerer und einfacher Einstieg in ein Projekt ermöglicht, da große Teile des Entwicklungsprozesses abstrahiert werden. Diese muss der Entwickler anfangs nicht verstehen, wodurch die Lernkurve und dadurch auch die Einarbeitungszeit sinken.
 \end{itemize}
 
@@ -97,7 +97,7 @@ Danach ist die Webseite unter \url{http://localhost:4000} erreichbar.
 
 Die Verwendung von Jekyll kann auf diese Weise anstatt der dreistufigen Installation auf das Starten eines Containers reduziert werden.
 
-\begin{lstlisting}[caption=Docker-Kommando zum Starten von Jekyll, language=bash, label=lst:docker-run-jekyll]
+\begin{lstlisting}[caption=Docker-Kommando zum Starten von Jekyll, label=lst:docker-run-jekyll]
 docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/bin/jekyll serve
 \end{lstlisting}
 
@@ -106,7 +106,8 @@ Im vorigen Beispiel (Jekyll) diente ein bereits existierendes Docker-Image als B
 Da allerdings nicht für jedes Werkzeug ein Docker-Image existiert, ist in \cref{lst:dockerfile-mdp} ein Dockerfile abgebildet, der die Portierung eines existierenden Werkzeuges für Docker zeigt.
 
 \lstinputlisting[caption=Docker-Image für mdp,label={lst:dockerfile-mdp}]{listings/Dockerfile.mdp}
-In \cref{lst:dockerfile-mdp} wird ein Docker-Image für mdp\footnote{\url{https://github.com/visit1985/mdp}} erstellt, dieses Verfahren kann aber auf jedes Linux-Kommandozeilenwerkzeug angewendet werden.
+In \cref{lst:dockerfile-mdp} wird ein Docker-Image für mdp\footnote{\url{https://github.com/visit1985/mdp}} erstellt.
+Dieses Verfahren kann analog auf jedes Linux-Kommandozeilenwerkzeug angewendet werden.
 
 mdp ist ein C-Programm, das aus Markdown-Dateien Folien für die Kommandozeile erstellt.
 Im Dockerfile werden, wie in der offiziellen Dokumentation beschrieben, die Übersetzung und Installation mit \texttt{make} durchgeführt.
@@ -125,7 +126,7 @@ Mithilfe von \texttt{\$\{args\}} werden die Parameter des Funktionsaufrufes an d
 
 Der Aufruf der Werkzeuge erfolgt nun wie gewohnt, wobei die Ausführung in einem Docker-Container für den Anwender unsichtbar ist.
 
-\begin{lstlisting}[caption=Powershell-Funktionen für Docker-Kommandos, language=bash, label=lst:powershell-functions]
+\begin{lstlisting}[caption=Powershell-Funktionen für Docker-Kommandos, label=lst:powershell-functions]
 $ jekyll
 function jekyll { docker run -it --rm -v ${pwd}:/srv/jekyll -p 4000:4000 jekyll/jekyll /usr/local/bin/jekyll ${args} }
 function mdp { docker run -it --rm -v ${pwd}:/data bemayr/mdp mdp ${args} }
@@ -141,7 +142,6 @@ Unable to find image 'jekyll/jekyll:latest' locally
 latest: Pulling from jekyll/jekyll
 baf40e071063: Pull complete
 70acac711d95: Downloading [======>          ] 11.33 MB/91.37 MB
-...
 \end{lstlisting}
 
 \section{Containerbasierte Integrationstests}
@@ -157,7 +157,7 @@ Um konsistente Testdaten beizubehalten, müssen die Datenbanken vor jedem Testla
 In containerbasierten Systemen werden die Testdaten automatisch nach jedem Testlauf verworfen, wodurch keine Probleme durch alte Daten auftreten können.
 Weiters können externe Services sehr einfach durch zusätzliche Container in das System integriert werden.
 
-Das folgende Beispiel stammt aus \autocite{docker-integration-testing:online}, einem Blogeintrag zum Aufbau eines containerbasierten Integrationstestsystems. Die Architektur dessen ist in \cref{fig:containerbasierte-integrationstests} dargestellt.
+Das folgende Beispiel stammt aus \autocite{docker-integration-testing:online}, einem Blogeintrag zum Aufbau eines containerbasierten Integrationstestsystems. Die Architektur dieses Systems ist in \cref{fig:containerbasierte-integrationstests} dargestellt.
 
 \begin{figure}[htbp]
     \centering
@@ -168,12 +168,12 @@ Das folgende Beispiel stammt aus \autocite{docker-integration-testing:online}, e
 
 \noindent Das zu testende System wird von einem weiteren Container, dem "`Integration-Tester"' gesteuert.
 Dieser führt die Testfälle am Service durch und überprüft deren Korrektheit mithilfe von Datenbankabfragen.
-Dadurch kann das gesamte System getestet werden, ohne dass Änderungen an diesem oder der dessen Architektur durchgeführt werden müssen.
+Dadurch kann das gesamte System getestet werden, ohne dass Änderungen an diesem oder dessen Architektur durchgeführt werden müssen.
 Dazu muss der Integration-Tester Zugriff auf das Service und die Datenbank haben.
 Für den Aufbau dieser Architektur kommt Docker Compose (siehe \cref{sec:docker-compose}) zum Einsatz.
 Die Definition der Container ist in \cref{lst:docker-compose-integrationstests} dargestellt.
 
-\begin{lstlisting}[caption=Servicedefinition zum Integrationstesten (docker-compose-yml), label=lst:docker-compose-integrationstests]
+\begin{lstlisting}[caption=Servicedefinition zum Integrationstesten (docker-compose.yml), label=lst:docker-compose-integrationstests]
 version: '2'
 
 services:
@@ -212,11 +212,13 @@ Durch die Möglichkeit, Linux-Anwendungen in Docker-Containern zu starten, könn
 In \cref{lst:greet.c} ist ein übliches "`Hello-World"'-Programm in der Programmiersprache C abgebildet.
 Um dieses nun auf einem Windows-Host auch unter Linux zu testen, genügt der in \cref{lst:docker-run-gcc} dargestellte Befehl.
 Darin wird ein gcc\footnote{\url{https://gcc.gnu.org/}}-Container auf Basis des Alpine-Images zur Übersetzung des C-Programmes verwendet.
-In \cref{fig:greet-output} ist das Resultat des Programmes zu sehen, nachdem es in Linux ausgeführt wurde.
+Mit \texttt{-v \$\{pwd\}:/usr/src} wird dem Container das aktuelle Verzeichnis des Host-Systems unter \texttt{/usr/src} zur Verfügung gestellt.
+\texttt{-w /usr/src} legt das Arbeitsverzeichnis des Containers fest, sodass das \texttt{gcc}-Kommando in diesem Verzeichnis ausgeführt wird.
 
+In \cref{fig:greet-output} ist das Resultat des Programmes zu sehen, nachdem es in Linux ausgeführt wurde.
 Diese Möglichkeit des Cross-Compilings ermöglicht ein schnelles Testen der Plattformunabhängigkeit eines Quelltextes.
 
-\lstinputlisting[caption="`Hello-World"'-C-Programm,label={lst:greet.c}]{listings/greet.c}
+\lstinputlisting[caption="`Hello-World"'-C-Programm,label={lst:greet.c},language=c]{listings/greet.c}
 
 \begin{lstlisting}[caption=Docker-Kommando zum Übersetzen eines C-Programmes mit gcc, language=bash, label=lst:docker-run-gcc]
 docker run --rm -v ${pwd}:/usr/src -w /usr/src frolvlad/alpine-gcc gcc -o greet greet.c

@@ -1,4 +1,10 @@
 \chapter{Resümee}
+Um die Möglichkeiten der Containervirtualisierung anhand von Docker zu analysieren, wurde die Geschichte und Funktionsweise dieser in der Arbeit mit dem Konzept der Vollvirtualisierung verglichen.
+Schwierigkeiten und Probleme im Entwicklungsprozess wurden durch verschiedene Werkzeuge und Lösungsansätze des Konfigurationsmanagements aufgezeigt.
+Nach einer Einführung in Docker wurden Best-Practices und deren Anwendung gezeigt.
+Dieses Wissens wurde anschließend verwendet, um verschiedene Anwendungsmöglichkeiten von Docker für die Lösung häufiger Aufgaben eines Softwareentwicklers aufzuzeigen und deren Vorteile zu evaluieren.
+Im Folgenden wird die Arbeit zusammengefasst und auf Basis der erlangten Erkenntnisse eine Prognose für den zukünftigen Einsatz von Containertechnologien verwendet.
+
 \section{Zusammenfassung}
 Docker hat es geschafft, Containervirtualisierung soweit zu vereinfachen, dass sie sowohl zum Betrieb von hochperformanten Anwendungen in Cloud-Clustern als auch zur Unterstützung im Entwicklungsprozess verwendet werden kann.
 Dies wird erst durch die erhebliche Verbesserung der Virtualisierung mittels Container im Vergleich zu traditionellen Virtualisierungsansätzen ermöglicht.
@@ -6,15 +12,15 @@ Dies wird erst durch die erhebliche Verbesserung der Virtualisierung mittels Con
 Die Verwendung von Konfigurationsmanagement-Werkzeugen war auch vor Docker bereits die Grundlage für einen stabilen und skalierbaren Entwicklungsprozess.
 Docker ermöglicht allerdings eine wesentlich elegantere und leichtgewichtigere Lösung vieler dieser Probleme.
 
-Um saubere Docker-Images zu erstellen ist ein fundiertes Wissen über Docker notwendig, das aufgrund der sehr schnellen Entwicklung ständig aktualisiert werden muss.
+Um saubere Docker-Images zu erstellen, ist ein fundiertes Wissen über Docker notwendig, das aufgrund der sehr schnellen Entwicklung ständig aktualisiert werden muss.
 Durch den großen Anteil an Open-Source-Beispielen und -- oft in Blogs zeitnah dokumentierten -- Ideen für die Anwendung von Docker entstehen allerdings sehr zeit- und ressourcensparende Problemlösungen in vielen Teilen des Softwareentwicklungsprozesses.
 
 \section{Erkenntnisse}
 Viele der vorgestellten Probleme können auch mit bestehenden Werkzeugen, wie \zB Vagrant und Chef, gelöst werden, Docker bietet jedoch eine deutlich modernere und leichtgewichtigere Lösung.
 
-Ohne ein Grundverständnis von Docker ist die Anwendung dessen für Softwareentwickler eine Herausforderung.
+Ohne ein Grundverständnis von Docker ist die Anwendung dieser Technologie für Softwareentwickler eine Herausforderung.
 Nur durch ein tieferes Verständnis können Container so erstellt und abstrahiert werden, dass dem Anwender kaum auffällt, dass er eigentlich mit Docker arbeitet.
-Dadurch ist Docker nicht so leicht einsetzbar, als dass Softwareentwickler ohne Docker-Erfahrung dieses ohne größeren Mehraufwand einsetzen können.
+Dadurch ist Docker nicht so leicht einsetzbar, als dass eine Verwendung ohne größeren Mehraufwand für Softwareentwickler ohne Docker-Erfahrung möglich ist.
 
 Werden die Docker-Kommandos allerdings abstrahiert und beinahe unsichtbar in die bestehende Werkzeugkette integriert, wird dank Containervirtualisierung ein plattformübergreifender, stabiler und sich selbst dokumentierender Entwicklungsprozess ermöglicht.
 
