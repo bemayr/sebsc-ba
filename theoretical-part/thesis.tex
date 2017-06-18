@@ -1,0 +1,79 @@
+%%% ----- general packages and settings ----- %%%
+\documentclass[a4paper, ngerman, bibliography=totoc]{scrreprt}  %%, listof=totoc
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{babel}
+\usepackage{microtype} % fixes line breaks
+
+%%% ----- bibliography ----- %%%
+\usepackage[babel, german=quotes]{csquotes}
+\usepackage[backend=biber, style=alphabetic-verb]{biblatex}
+\bibliography{literatur}
+\DeclareFieldFormat[article]{title}{#1\isdot} % http://golatex.de/formatierung-des-literaturverzeichnisses-mit-biblatex-t3988.html
+
+%%% ----- references (http://tex.stackexchange.com/a/83051) ----- %%%
+\usepackage{varioref}
+\usepackage[breaklinks]{hyperref}
+\usepackage{cleveref}
+\crefname{lstlisting}{Quelltext}{Quelltext}
+
+%%% ----- listings ----- %%%
+\usepackage{xcolor} % http://tex.stackexchange.com/a/150377
+\usepackage{listings}
+\renewcommand{\lstlistingname}{Quelltext}
+\renewcommand*{\lstlistlistingname}{Quelltextverzeichnis}
+
+\definecolor{strings}{rgb}{0.69, 0.196, 0.267}
+\definecolor{comments}{rgb}{0.247, 0.518, 0.173}
+\definecolor{keywords}{rgb}{0.114, 0.180, 0.992}
+\definecolor{linenumbers}{rgb}{0.25, 0.25, 0.25}
+
+\lstset{ %
+  belowcaptionskip=1\baselineskip{},
+  breaklines=true,
+  captionpos=b,
+  commentstyle=\color{comments},
+  keywordstyle=\color{keywords}\bfseries,
+  morecomment=[s][\color{comments}]{/**}{*/},
+  numbers=left,
+  numbersep=16pt,
+  numberstyle=\tiny\color{linenumbers},
+  stringstyle=\color{strings},
+  tabsize=2
+}
+
+%%% ----- graphics ----- %%%
+\usepackage{graphicx}
+
+%%% ----- custom commands ----- %%%
+% - circled numbers (http://tex.stackexchange.com/a/7045)
+\usepackage{tikz}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{\node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+% - z.B. (http://latex.hpfsc.de/content/latex_tipps_und_tricks/eigene_kommandos/)
+\newcommand{\zB}{z.\,B. }
+
+% TEMPORARY FIX: https://tex.stackexchange.com/questions/83440/inputenc-error-unicode-char-u8-not-set-up-for-use-with-latex
+\DeclareUnicodeCharacter{00A0}{ }
+
+
+%%% ---------- Document Data ----------
+\title{Docker als unterstützendes Werkzeug\\für Softwareentwickler}
+\author{Bernhard Mayr}
+\date{\today}
+
+\begin{document}
+\maketitle
+\include{additions/kurzfassung}
+\include{additions/abstract}
+\tableofcontents
+\include{additions/einleitung}
+\include{chapters/virtualisierung}
+\include{chapters/konfigurationsmanagement}
+\include{chapters/docker}
+\include{chapters/anwendungsszenarien}
+\include{additions/resuemee}
+\listoffigures{}
+\lstlistoflistings{}
+\printbibliography{}
+\end{document}

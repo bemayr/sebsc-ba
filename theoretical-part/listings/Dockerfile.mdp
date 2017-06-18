@@ -1,0 +1,16 @@
+FROM alpine:3.5
+MAINTAINER Bernhard Mayr <bernhard@mayr.io>
+ENV MDP_VERSION 1.0.9
+
+RUN apk update && apk add make gcc musl-dev ncurses-dev ca-certificates wget && \
+    update-ca-certificates && mkdir -p /mdp && \
+    wget -P /mdp https://github.com/visit1985/mdp/archive/$MDP_VERSION.tar.gz && \
+    tar -xzf /mdp/$MDP_VERSION.tar.gz -C /mdp && \
+    make -C /mdp/mdp-$MDP_VERSION && make -C /mdp/mdp-$MDP_VERSION install && \
+    cp /mdp/mdp-$MDP_VERSION/sample.md /demo.md && \
+    printf "#!/bin/sh\nsleep 0.1\n\$*\n" > /start.sh && chmod +x /start.sh && \
+    rm -rf /mdp && apk del make && apk del gcc
+
+WORKDIR /data
+ENTRYPOINT ["/start.sh"]
+CMD ["mdp", "/demo.md"]
