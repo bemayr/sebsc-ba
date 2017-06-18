@@ -201,7 +201,3 @@ TSWLatexianTemp*
 
 
 ### --- custom modifications ---
-*.pdf
-!FH Hagenberg - Referenztemplate.pdf
-dist/
-literature/
