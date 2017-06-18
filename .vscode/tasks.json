@@ -2,13 +2,69 @@
     // See https://go.microsoft.com/fwlink/?LinkId=733558
     // for the documentation about the tasks.json format
     "version": "0.1.0",
-    "command": "build",
-    "isShellCommand": true,
     "showOutput": "always",
+    "suppressTaskName": true,
     "tasks": [
         {
-            "taskName": "build",
-            "isBuildCommand": true
+            "taskName": "tba",
+            "isShellCommand": true,
+            "command": "docker",
+            "echoCommand": true,
+            "args": [
+                "run",
+                "--rm",
+                "-v=%cd%/theoretical-part:/data",
+                "janstuemmel/latex",
+                "sh",
+                "-c",
+                "pdflatex thesis && biber thesis && pdflatex thesis && pdflatex thesis"
+            ]
+        },
+        {
+            "taskName": "pba",
+            "isShellCommand": true,
+            "isBuildCommand": true,
+            "command": "docker",
+            "echoCommand": true,
+            "args": [
+                "run",
+                "--rm",
+                "-v=%cd%/practical-part:/data",
+                "janstuemmel/latex",
+                "sh",
+                "-c",
+                "pdflatex thesis && biber thesis && pdflatex thesis && pdflatex thesis"
+            ]
+        },
+        {
+            "taskName": "tba-expose",
+            "isShellCommand": true,
+            "command": "docker",
+            "echoCommand": true,
+            "args": [
+                "run",
+                "--rm",
+                "-v=%cd%/theoretical-part-expose:/data",
+                "janstuemmel/latex",
+                "sh",
+                "-c",
+                "pdflatex expose"
+            ]
+        },
+        {
+            "taskName": "pba-expose",
+            "isShellCommand": true,
+            "command": "docker",
+            "echoCommand": true,
+            "args": [
+                "run",
+                "--rm",
+                "-v=%cd%/practical-part-expose:/data",
+                "janstuemmel/latex",
+                "sh",
+                "-c",
+                "pdflatex expose"
+            ]
         }
     ]
 }
