@@ -47,7 +47,7 @@
                 "janstuemmel/latex",
                 "sh",
                 "-c",
-                "pdflatex expose"
+                "mkdir -p dist/ && pdflatex -output-directory=dist expose && cp dist/expose.pdf ./ 2>/dev/null && rm -rf dist/"
             ]
         },
         {
