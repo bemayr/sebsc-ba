@@ -1,0 +1,58 @@
+\documentclass[a4paper, parskip=false, ngerman]{scrreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{babel}
+\usepackage{enumitem} %numbered lists (http://tex.stackexchange.com/questions/126754/numbers-in-nested-list)
+\usepackage{xfrac}
+\usepackage[style=authoryear-icomp]{biblatex}
+
+\begin{document}
+
+\title{Inhaltsverzeichnis der praktischen Bachelorarbeit}
+\subtitle{softaware/webdev\\Ein Docker-Container zur konsistenten Entwicklung\\von JavaScript-basierten Webprojekten}
+\author{Bernhard Mayr}
+\maketitle
+
+\chapter{Inhaltsverzeichnis (\textasciitilde28 Seiten)}
+
+\begin{enumerate}[label*=\arabic*.]
+    \item Kurzfassung (1)
+    \item Abstract (1)
+    \item Inhaltsverzeichnis (1)
+    \item Einleitung (\textasciitilde3)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Unternehmen (1)
+        \item Projekte (1\sfrac{1}{2})
+    \end{enumerate}
+    \item Problemstellung (\textasciitilde10)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Legacy-Anwendungen im Web (2)
+        \item Aktueller Status der Frontend-Entwicklung (7-8)
+        \begin{enumerate}[label*=\arabic*.]
+            \item JavaScript-Modulsysteme (2-3)
+            \item Paketmanager (2)
+            \item Build-Werkzeuge (3)
+        \end{enumerate}
+    \end{enumerate}
+    \item Konzept (1)
+    \item Umsetzung (7-10)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Dockerfile (2)
+        \item Build-Prozess (1-2)
+        \item Alpine-Linux vs. Debian (1-2)
+        \item Docker Hub (1)
+        \item Dokumentation (1)
+        \item Beispiele (1-2)
+    \end{enumerate}
+    \item Resümee (1)
+    \begin{enumerate}[label*=\arabic*.]
+        \item Zusammenfassung (\sfrac{1}{3})
+        \item Erkenntnisse (\sfrac{1}{3})
+        \item Ausblick (\sfrac{1}{3})
+    \end{enumerate}
+    \item Erfahrungen (1)
+    \item Literaturverzeichnis (1)
+\end{enumerate}
+
+\end{document}
