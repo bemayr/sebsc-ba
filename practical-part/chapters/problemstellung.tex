@@ -1,6 +1,48 @@
 \chapter{Aktuelle Probleme der Frontend-Webentwicklung}
 \label{cha:frontend-problems}
 
+Der aktuelle Status in der Frontend-Webentwicklung ist die enorm hohe Frequenz, in der neue Werkzeuge entstehen.
+Hilfsmittel wie create-react-app\footnote{\url{https://github.com/facebookincubator/create-react-app}} oder Angular CLI\footnote{\url{https://github.com/angular/angular-cli}} erleichtern zwar das Erstellen von Webanwendungen erheblich, doch Versionsprobleme bestehen weiterhin und TODO: neue Probleme entstehen.
+Nachfolgend werden einige dieser Probleme beschrieben.
+
+\subsubsection{Unterschiede bei der verwendeten npm-Version}
+- commit Version of Build-Environment
+- Projektpartner
+- Testen unterschiedlicher Versionen
+- Ausprobieren der neuesten Version
+
+\subsubsection{Parallele Entwicklung mehrerer Projekte}
+- Vagrant
+- nvm + xp
+
+\subsubsection{Globale Installation von npm-Paketen}
+* globale Installation (ng create, gulp, ...), was zwar die lokal installierte Kopie forwarded, jedoch, falls im Readme erwähnt, auf anderen Rechnern ebenso eine globale Installation benötigt, damit das Kommando ausgeführt werden kann, in Legacy-Projekten oft nur schwer änderbar + Sicherheitsrisiko
+ - https://medium.freecodecamp.com/building-teslas-battery-range-calculator-with-react-part-1-2cb7abd8c1ee
+
+Im folgenden werden einige der Werkzeuge beschrieben, um einerseits die Schnellebigkeit der Werkzeuge zu veranschaulichen und andererseits einen Überblick zu liefern, welche Werkzeuge wozu und vor allem warum aktuell eingesetzt werden können.
+
+Schnelle Weiterentwicklung
+Tool-Problematik
+global installierte Build-Tools, Versionen
+
+http://www.marcusoft.net/2015/03/packagejson-and-engines-and-enginestrict.html
+https://github.com/creationix/nvm/issues/651
+https://davidwalsh.name/nvm
+    If you work with a lot of different Node.js utilities, you know that sometimes you need to quickly switch to other versions of Node.js without hosing your entire machine.
+http://davidcai.github.io/blog/posts/lets-use-nvm/
+    My colleague just came to me with a troubled face. He couldn’t figure out why his gulp script failed to start up local server where everyone else is able to do so. After a short debugging session, I found that the culprit is Node JS version. Certainly, our gulp scripts have a conflict with the latest Node JS. Now, my colleague has to downgrade his Node JS installation, or does he have to? :)
+https://johnpapa.net/multiple-versions-of-node-with-n/
+
+
+Falls Build, oder Production andere npm Version
+Testen unterschiedlicher Versionen
+Ausprobieren der neuesten Version
+
+https://github.com/creationix/nvm
+https://github.com/hakobera/nvmw (abandoned)
+https://github.com/coreybutler/nvm-windows (seeking contributors)
+https://github.com/marcelklehr/nodist (Known Issues)
+
 
 \section{Legacy-Anwendungen im Web}
 \label{sec:legacy-applications}
@@ -8,7 +50,7 @@
 
 \section{JavaScript-Modulesysteme}
 \label{sec:js-modulesystems}
-
+https://auth0.com/blog/javascript-module-systems-showdown/
 \subsection{CommonJS}
 \label{sub:commonjs}
 \subsection{AMD}
@@ -20,18 +62,32 @@
 \section{Paketmanager}
 \label{sec:package-managers}
 
+Lokale vs. Globale Installation
+Angular CLI
+
+http://andrewhfarmer.com/javascript-frontend-package-managers/
+
 \subsection{npm}
 \label{sub:npm}
 \subsection{bower}
 \label{sub:bower}
+https://gofore.com/stop-using-bower/
+https://shellmonger.com/2015/07/26/moving-from-bower-to-npm/
+https://www.quora.com/Why-use-Bower-when-there-is-npm
+https://stackoverflow.com/questions/18641899/what-is-the-difference-between-bower-and-npm
 \subsection{yarn}
 \label{sub:yarn}
 \subsection{jspm}
 \label{sub:jspm}
+\subsection{Duo}
+\label{sub:duo}
+
 
 
 \section{Build-Werkzeuge}
 \label{sec:build-tools}
+
+http://ericlathrop.com/2017/05/the-problem-with-npm-install-global/
 
 \subsection{grunt}
 \label{sub:grunt}
@@ -41,5 +97,6 @@
 \label{sub:webpack}
 \subsection{rollup}
 \label{sub:rollup}
+https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c
 \subsection{Best Practice}
 \label{sub:build-tools-best-practices}
