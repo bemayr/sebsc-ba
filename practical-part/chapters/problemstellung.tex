@@ -76,51 +76,65 @@ Angular CLI
 
 \section{Inkompatible node/npm-Versionen}
 Die Basis für die meisten Werkzeuge in der Frontend-Webentwicklung bildet \emph{Node.js}.
-Node.js ist eine Laufzeitumgebung, die auf der Chrome-V8-JavaScipt-Engine basiert und es ermöglicht JavaScript ohne Browser auf dem System nativ auszuführen.
+Node.js ist eine Laufzeitumgebung, die auf der Chrome-V8-JavaScipt-Engine basiert und es ermöglicht, JavaScript ohne Browser auf dem System nativ auszuführen.
 Der große Vorteil, der vor allem Entwicklerwerkzeuge betrifft, ist die Plattformunabhängigkeit.
 Dadurch können Kommandozeilenwerkzeuge mithilfe von Webtechnologien für alle gängigen Betriebssysteme erstellt werden.
 
 \emph{npm} ist ein Paketmanager, der es ermöglicht Node.js-Anwendungen zu installieren, oder Abhängigkeiten zwischen Paketen zu spezifizieren.
 
 Wie in \autocite{Papa.n:online} beschrieben, kann es nun allerdings sein, dass bestimmte Werkzeuge unter bestimmten Node.js-Versionen nicht funktionieren.
-Auch das Testen der Anwendung unter verschiedenen Node.js-Versionen gestaltet sich schwierig, da dafür jedesmal eine Neuinstallation notwwendig wäre.
+Auch das Testen von Anwendungen unter verschiedenen Node.js-Versionen gestaltet sich schwierig, da dafür jedesmal eine Neuinstallation notwendig ist.
 Ein weiteres Problem ist, dass die benötigte Node.js-Version bei Projekten nicht mitversioniert werden kann.
-Sie kann maximal in einer Readme-Datei erfasst werden, wobei von jedem Entwickler sichergestellt werden muss, dass er die korrekte Version verwendet.
-Bei der Entwicklung mehrerer Projekte wird dieses Problem allerdings noch ersichtlicher.
+Sie kann maximal in einer Readme-Datei erfasst werden, wobei jeder Entwickler selbst sicherstellen muss, dass er die korrekte Version verwendet.
+Bei der Entwicklung mehrerer Projekte wird dieses Problem noch ersichtlicher.
 
 
 \section{Parallele Entwicklung mehrerer Projekte}
 Wie in \cref{sec:softaware} erläutert, ist es in der Firma softaware gmbh üblich, dass ein Entwickler an mehreren Projekten gleichzeitig arbeitet.
-Dadurch wird das vorhin erwähnte Problem noch deutlicher sichtbar, da es nun vorkommen kann, dass bei der Entwicklung unterschiedlicher Projekte auf unterschiedliche Node.js-Versionen gewechselt werden muss.
+Dadurch tritt das vorhin erwähnte Problem häufiger auf, da es nun vorkommen kann, dass bei der Entwicklung unterschiedlicher Projekte unterschiedliche Node.js-Versionen notwendig sind.
 
-Ein Lösungsansatz ist die Verwendung von Vagrant. 
-Vagrant ist ein Werkzeug zur automatischen Verwaltung von virtuellen Maschinen und verfolgt den Ansatz, dass die Entwicklung in einer virtuellen Maschine stattfindet.
-Eine virtuelle Maschine benötigt erhebliche Ressourcen, wenn keine grafische Oberfläche benötigt wird, ist dieser Ansatz nur schwer zu rechtfertigen.
+Ein Lösungsansatz dafür ist die Verwendung von Vagrant\footnote{\url{https://www.vagrantup.com/}}. 
+Vagrant ist ein Werkzeug zur automatischen Verwaltung von virtuellen Maschinen und ermöglicht dadurch die deklarative Beschreibung von Entwicklerrechnern.
+Diese Beschreibung kann mitversioniert werden, wodurch eine konsistente Arbeitsumgebung entsteht.
+Eine virtuelle Maschine benötigt allerdings erhebliche Ressourcen, wodurch es, wenn keine grafische Oberfläche benötigt wird, bessere Lösungsansätze gibt.
 
 Ein weiterer Ansatz ist die Verwendung von sogenannten Node.js-Versionsmanagern.
 Beispiele dafür sind nvm\footnote{\url{https://github.com/creationix/nvm}}, n\footnote{\url{https://github.com/tj/n}} oder nvm-windows\footnote{\url{https://github.com/coreybutler/nvm-windows}}.
 Das Hauptproblem dabei ist allerdings, dass es keine Lösung gibt, die plattformübergreifend funktioniert.
-Außerdem wurde die Entwicklung des als letztes erwähnten nvm-windows eingestellt.
-Ein weiteres Problem ist die fehlende Integration in das Projekt.
-Diese Werkzeuge werden als eigenständige Anwendung auf dem Entwicklerrechner installiert und stellen eine implizite Abhängigkeit des Projektes dar.
+Außerdem wurde die Entwicklung des als letztes erwähnten nvm-windows eingestellt, wodurch für Windows keine aktuelle Lösung existiert.
+Ein weiteres Problem ist die fehlende Integration in den Quelltext des Softwareprojektes.
+Daher werden diese Werkzeuge als eigenständige Anwendung auf dem Entwicklerrechner installiert und stellen lediglich eine implizite Abhängigkeit des Projektes dar, die nur schwierig automatisch installiert werden kann.
 
 Nicht nur die parallele Entwicklung mehrerer Projekte kann Probleme bereiten.
 In der Firma softaware gmbh kommt es außerdem regelmäßig vor, dass andere Unternehmen als Projektpartner fungieren.
-Gerade in diesem Fall ist es wichtig, eine einheitliche Lösung zur Verwaltung von Node.js-Versionen zu finden, da für diese Projektpartner die Hemmschwelle zur Entwicklung möglichst niedrig sein soll.
+Gerade in diesem Fall ist es wichtig, eine einheitliche Lösung zur Verwaltung von Node.js-Versionen zu finden, da für diese Projektpartner die Hemmschwelle zur gemeinsamen Entwicklung möglichst niedrig sein soll.
 
 
 \section{Globale Installation von npm-Paketen}
 Bei der vorhin erwähnten Installation von npm-Paketen existieren zwei Möglichkeiten.
 
-Für diverse Werkzeuge (\zB gulp\footnote{\url{http://gulpjs.com/}}) wird als Installationskommando \texttt{npm install -g <werkzeug>} vorgeschlagen, wobei das Paket durch den Parameter \emph{\texttt{-p}} global installiert wird.
-Diese Art der Installation bedeutet, dass diese Anwendungen mit ihrem jeweiligen Namen von der Kommandozeile gestartet werden können.
+Für diverse Werkzeuge wird als Installationskommando \verb|npm install -g <Werkzeug>| vorgeschlagen, wobei das Paket durch den Parameter \verb|-p| global installiert wird.
+Diese Art der Installation bedeutet, dass diese Anwendungen mit ihrem jeweiligen Namen direkt von der Kommandozeile gestartet werden können.
+Diese Funktionalität hört sich sehr verlockend an, erfordert allerdings, dass jeder Entwickler dieses Werkzeug global installiert.
+Dies mag in einer Abteilung problemlos funktionieren, wird aber spätestens bei Open-Source-Projekten zum Problem, da der Einstieg in ein Projekt dadurch erheblich komplizierter wird.
+Außerdem kann es zu Versionsproblemen kommen, falls zwei Projekte dasselbe Werkzeug in unterschiedlichen Versionen benötigen, da global lediglich eine Version installiert werden kann.
 
-Die zweite Möglichkeit der Installation ist das Weglassen des Parameters \texttt{-p}, wodurch das Paket in der Manifest-Datei \texttt{package.json} des Projekts erfasst und in einen Ordner namens \texttt{node\char`_modules} im aktuellen Verzeichnis installiert wird.
-Da dieses Paket nun als Abhängigkeit deklarativ erfasst ist, lässt es sich mit dem Projekt versionieren und wird bei der Installation dessen auf einem anderen Entwicklergerät automatisch mitinstalliert.
+Die zweite Möglichkeit der Installation ist das Weglassen des Parameters \verb|-p|, wodurch das Paket in der Manifest-Datei \verb|package.json| des Projekts erfasst und in einen Ordner namens \verb|node_modules| im aktuellen Verzeichnis installiert wird.
+Da dieses Paket nun als Abhängigkeit erfasst ist, lässt es sich mit dem Projekt gemeinsam versionieren und wird bei der Installation dessen auf einem anderen Entwicklergerät automatisch mitinstalliert.
+Allerdings lassen sich diese Pakete nun nicht mehr mit ihrem Namen auf der Kommandozeile ausführen, weshalb es verlockend klingen mag, \verb|./node_modules/.bin/| zur \verb|$PATH|-Variable hinzuzufügen.
+Dadurch können lokal installierte Pakete einfacher ausgeführt werden, doch diese Änderung birgt zwei wesentliche Probleme.
+Erstens müsste dies jeder Entwickler machen, wodurch eine einfache Zusammenarbeit erschwert wird und wieder eine implizite Abhängigkeit des Projektes entsteht.
+Das wesentlich schwerwiegendere Problem betrifft allerdings die Sicherheit des Rechners.
+Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable Angreifern infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen und dadurch kompletten Zugriff auf das Gerät zu erlangen.
 
-TODO:
-* globale Installation (ng create, gulp, ...), was zwar die lokal installierte Kopie forwarded, jedoch, falls im Readme erwähnt, auf anderen Rechnern ebenso eine globale Installation benötigt, damit das Kommando ausgeführt werden kann, in Legacy-Projekten oft nur schwer änderbar + Sicherheitsrisiko
-% - https://stackoverflow.com/questions/9679932/how-to-use-package-installed-locally-in-node-modules#comment33532258_9683472
+\subsubsection{Empfohlene Vorgehensweise}
+Um die Vorteile von global und lokal installierten Paketen zu kombinieren, gibt es bei dem Installieren von npm-Paketen den Parameter \verb|--save-dev|.
+In der Manifestdatei \verb|package.json| existiert ein eigener Bereich \emph{devDependencies} in dem Werkzeuge erfasst werden, die für das Projekt benötigt werden.
+Zusätzlich bietet das Manifest mithilfe der \emph{npm-scripts} die Möglichkeit eigene Namen für Kommandos zu vergeben, die dann mit \verb|npm run <Skriptname>| gestartet werden können.
+Der Ausführungskontext dieser Kommandos beinhaltet automatisch den Pfad \verb|./node_modules/.bin/|, wodurch dort installierte Werkzeuge verwendet werden können.
+Dies ermöglicht einheitliche Kommandos und eine automatische Dokumentation über Plattformgrenzen hinweg.
+
+Außerdem bietet es den Vorteil, dass das intern verwendete Werkzeug ausgetauscht werden kann (\zB webpack anstatt gulp), für den Entwickler das Kommando aber weiterhin \verb|npm run build| bleibt und er durch diesen Austausch nichts Neues lernen muss.
 
 
 \section{Legacy-Anwendungen}
