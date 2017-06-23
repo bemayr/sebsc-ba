@@ -2,76 +2,147 @@
 \label{cha:frontend-problems}
 
 Das größte Problem der Frontend-Webentwicklung wird in \autocite{Kirejczyk.HDD:online} \emph{Hype Driven Development} genannt.
-Damit ist die enorm hohe Frequenz gemeint, in der neue Technologien entstehen, hochgepriesen werden und danach genau so schnell wieder von neueren abgelöst und verdrängt werden.
+Damit ist die enorm hohe Frequenz gemeint, in der neue Technologien entstehen, hochgepriesen werden und danach genauso schnell wieder von neueren verdrängt werden.
 
-Gerade im Web-Bereich ist durch den Trend zu Open Source Software eine sehr hohe Obsoleszenz zu beobachten, da durch das abzweigen (engl. \emph{forken}) verschiedene Varianten von gesamten Projekten entstehen.
-Dem dadurch entstehenden schnellen Fortschritt steht allerdings die Spaltung von Entwicklergemeinschaften und inkompatible Technologien gegenüber.
+Gerade im Web-Bereich ist durch den Trend zu Open Source Software eine sehr hohe Obsoleszenz zu beobachten, da durch das Abzweigen (engl. \emph{forken}) verschiedene Varianten von gesamten Projekten entstehen.
+Der daraus resultierenden Innovation stehen allerdings die Spaltung von Entwicklergemeinschaften und inkompatible Technologien gegenüber.
 
 Ein Beispiel dafür ist die Teilung von Node.js\footnote{\url{https://nodejs.org/}} in die zwei Projekte Node.js und io.js\footnote{\url{https://iojs.org/}} im Jahr 2014, die allerdings aus den vorhin beschriebenen Problemen 2015 wieder zu Node.js vereint wurden \autocite{Node.io-node-merge:online}.
 Kurzlebige, innovative Technologien bringen die Softwareentwicklung im Generellen voran, doch um eine Technologie in seriösen Anwendungen verwenden zu können, ist ein gewisser Reifegrad notwendig.
 Dieser ermöglicht nicht nur stabile Versionen und besser ausgebildete Entwickler, durch einen Einzug der Technologie in die Lehre, sondern vor allem durchdachte und ausgereifte Werkzeuge für Entwickler.
 
 Nach erfolgreicher Auswahl eines Frameworks ist in der Frontend-Entwicklung die größte Hürde die Konfiguration der benötigten Werkzeuge.
-Die Schwierigkeit liegt wiederum in der beinahe täglichen Aktualisierung der Werkzeuge, die teilweise inkompatible Änderungen verursachen und dem ständigen Erscheinen neuer Werkzeuge.
+Die Schwierigkeit liegt in dem ständigen Erscheinen neuer Werkzeuge und der beinahe täglichen Aktualisierung dieser, wodurch teilweise inkompatible Änderungen verursacht werden.
+
 Hilfsanwendungen wie create-react-app\footnote{\url{https://github.com/facebookincubator/create-react-app}} oder Angular CLI\footnote{\url{https://github.com/angular/angular-cli}} erleichtern die Erstellung von Webanwendungen, indem sie ein initiales Projekt konfigurieren, in dem bereits alle benötigten Abhängigkeiten und Werkzeuge integriert sind.
 
-Im Folgenden werden einige der Werkzeuge beschrieben, um einerseits deren Schnellebigkeit zu veranschaulichen und andererseits einen Überblick zu liefern, welche Werkzeuge wozu aktuell eingesetzt werden.
 
 \section{Werkzeugübersicht}
 \label{sec:tools-overview}
+Im Folgenden werden einige der Werkzeuge beschrieben, um einerseits deren Schnelllebigkeit zu veranschaulichen und andererseits einen Überblick zu liefern, welche Werkzeuge wozu aktuell eingesetzt werden.
 
 \subsection{JavaScript-Modulsysteme}
 \label{sub:js-modulesystems}
-% https://auth0.com/blog/javascript-module-systems-showdown/
+Die Informationen dieses Abschnitts stammen aus \autocite{Osmani.js-modules:online} und \autocite{Peyrott.js-modules:online}.
+
+Im Gegensatz zum aktuellen Einsatzzweck von JavaScript, war diese Sprache ursprünglich nicht für das Entwickeln großer Anwendungen, die aus zahlreichen Modulen bestehen, gedacht.
+Der ursprüngliche Zweck war es, Webseiten Interaktivität zu verleihen.
+
+Konzepte wie Kapselung und die Verwendung von anderem Code als Modul, wurden dabei nicht benötigt.
+Der Sichtbarkeitsbereich einer Variable in JavaScript ist global und Konzepte wie Namensräume sind kein Element der Sprache.
+Bei der Aufteilung einer JavaScript-Anwendung in mehrere Teile muss genau darauf geachtet werden, dass diese in der richtigen Reihenfolge geladen werden, um keine undefinierten Funktionen und Variablen zu erhalten.
+
+Als JavaScript-Anwendungen immer größer wurden, entstanden einige Versuche, ein Modulsystem mit bereits existierenden Sprachmitteln nachzubauen. Im Folgenden werden die drei relevantesten dargestellt.
+
 \subsubsection{CommonJS}
 \label{sub:commonjs}
+Das Ziel von CommonJS ist eine einheitliche Spezifikation für serverseitiges JavaScript.
+Ein Teil davon ist das Modulsystem, das in einer abgewandelten Form auch von Node.js verwendet wird.
+Die API besteht aus zwei Teilen.
+\verb|exports| ist eine Variable, der am Ende eines Modules (einer Datei) die zu exportierende Funktionalität zugewiesen wird.
+Über die Funktion \verb|require(<Modulname>)| kann eine andere Datei geladen und einer Variable zugewiesen werden.
+
+Da dieses Modulsystem lediglich eine Spezifikation ist, werden sowohl browserseitig wie serverseitig Bibliotheken benötigt, die das Laden von Modulen ermöglichen.
+Für das Laden im Browser werden Werkzeuge wie Webpack (siehe \cref{sub:webpack}) oder browserify\footnote{\url{http://browserify.org/}} verwendet, am Server ist Node.js die Standardimplementierung.
+Das Laden von Modulen ist synchron, da es jedoch mithilfe eines Funktionsaufrufes geschieht, kann es überall im Quelltext passieren und beispielsweise durch Verzweigungen optimiert werden. 
+
 \subsubsection{AMD}
 \label{sub:amd}
+Genau wie bei den Problemen der Frontend-Webentwicklung (vgl. \cref{cha:frontend-problems}) beschrieben, ist \emph{AMD} (Asynchronous Module Definition) eine Variante von CommonJS.
+Der Unterschied dazu ist lediglich die Möglichkeit des asynchronen Ladens von Quelltexten, wodurch es sich besonders für Browser eignet, da dadurch die Ladezeit einer Webseite verringert wird.
+Diese Funktionalität wird durch JavaScript-Callbacks ermöglicht, indem Code erst ausgeführt wird, nachdem die Abhängigkeiten geladen wurden.
+Die defacto Standardbibliothek für das asynchrone Laden von Modulen im Browser ist require.js\footnote{\url{http://requirejs.org/}}.
+
 \subsubsection{ES2015}
 \label{sub:es2015}
+JavaScript ist lediglich eine Implementierung des ECMAScript-Standards\footnote{\url{https://www.ecma-international.org/publications/standards/Ecma-262.htm}}.
+Daher muss eine Änderung in JavaScript zuvor im ECMAScript-Standard definiert werden.
+In ECMAScript 2015 wurde die Möglichkeit des Ladens von Modulen durch die zwei neuen Sprachkonstrukte \verb|import ...| und \verb|export ...| eingeführt.
+Seit 2017 gibt es auch einen Vorschlag für das asynchrone Laden von Modulen, dessen Umsetzung für eine zukünftige ECMAScript-Version geplant ist.
+Die Integration in die Sprache erlaubt es statischen Codeanalysewerkzeugen einen Abhängigkeitsgraphen aufzubauen und erweiterte Funktionalität wie Autocompletion zu liefern.
+Dieser Standard wird Modulsysteme wie CommonJS oder AMD definitiv ablösen, da er allerdings noch nicht in jedem Browser unterstützt wird, sind zurzeit noch Werkzeuge notwendig, die diese Abhängigkeiten auflösen und im Vorhinein ein komplettes JavaScript-Programm erstellen.
 
 
 \subsection{Paketmanager}
 \label{sub:package-managers}
+Paketmanager sind in der Web-Welt beinahe ein Glaubenskrieg.
+\autocite{Farmer.package-managers:online} beschreibt bereits 2015 sieben unterschiedliche Paketmanager.
+Die grundsätzliche Aufgabe eines Paketmanagers ist die Zurverfügungstellung von Modulen.
+Dazu ist ein einheitliches Paketformat, eine zentrale Stelle zum Verteilen der Module und eine Anwendung zur Verwaltung dieser, notwendig.
+Aktuell wird versucht die zahlreichen Paketmanager zu vereinen.
+Ansonsten benötigt jeder Entwickler das Know-How für mehrere Paketmanager und muss diese auch installiert haben.
+Zurzeit finden die folgenden drei Paketmanager große Verbreitung.
 
-Lokale vs. Globale Installation
-Angular CLI
-
-% http://andrewhfarmer.com/javascript-frontend-package-managers/
+\subsubsection{Bower}
+\label{sub:bower}
+Bower\footnote{\url{https://bower.io/}} wurde ursprünglich als Paketmanager für Frontend-Pakete entworfen.
+Der ursprüngliche Unterschied zu den folgenden zwei ist eine flache Paketstruktur.
+Um die Geschwindigkeit beim Laden von Webanwendungen zu erhöhen, verfolgt Bower den Ansatz, dass Module, die von mehreren anderen Modulen benötigt werden, lediglich einmal installiert werden.
+Etwaige Versionskonflikte muss der Entwickler per Hand beheben.
+Der Trend in der Webentwicklung geht allerdings dazu, dass die gesamte Webentwicklung von einem Build-Werkzeug erstellt wird, wodurch das direkte Einbinden von statischen Dateien wie Stylesheets und Icons entfällt.
+Dadurch empfiehlt Bower sogar auf der Homepage die Verwendung von yarn (siehe \cref{sub:yarn}) und Webpack (siehe \cref{sub:webpack}).
 
 \subsubsection{npm}
 \label{sub:npm}
-\subsubsection{bower}
-\label{sub:bower}
-% https://gofore.com/stop-using-bower/
-% https://shellmonger.com/2015/07/26/moving-from-bower-to-npm/
-% https://www.quora.com/Why-use-Bower-when-there-is-npm
-% https://stackoverflow.com/questions/18641899/what-is-the-difference-between-bower-and-npm
+npm war ursprünglich der Paketmanager für Node.js.
+Die gesamte Paketstruktur wurde als Baum abgelegt und Abhängigkeiten für jedes Paket separat heruntergeladen, da dies für Serveranwendungen beinahe keinen Unterschied macht und zu keinen Versionsproblemen führt.
+Mit der Zeit wurden immer mehr Frontend-Pakete auf npm veröffentlicht, weshalb mit der Version 3 das Versionssystem verbessert wurde und für kompatible Pakete eine Struktur wie bei Bower verwendet wird.
+Am 25. Mai 2017 wurde die Version 5 veröffentlicht, um mit der Funktionalität von yarn gleichzuziehen.
+
 \subsubsection{yarn}
 \label{sub:yarn}
-\subsubsection{jspm}
-\label{sub:jspm}
-\subsubsection{Duo}
-\label{sub:duo}
+yarn ist ein Paketmanager von Facebook, der die Paket-Registry von npm verwendet und einige Probleme dieses Paketmanagers behebt.
+Die Geschwindigkeit wird durch die Einführung eines lokalen Caches verbessert.
+Bei npm gab es bis zu Version 5 das Problem, dass lediglich die Version der verwendeten Abhängigkeiten spezifiziert werden kann, nicht aber die Versionen von transitiven Abhängigkeiten.
+Dadurch können sehr schwierig zu findende Fehler durch unterschiedliche Paketversionen entstehen.
+yarn löst dieses Problem durch eine Sperrdatei, in der die Version aller installierten Pakete erfasst ist.
 
+Zwei Ungereimtheiten bei yarn sind die irreführende Versionierung, wonach derzeit die stabile Version bei 0.24.6 steht und die Tatsache, dass zwar die Registry von npm verwendet wird, jedoch jegliche Anfragen über einen Proxy von Facebook geleitet werden \autocite{Nemeth.yarnpkg:online}.
 
 
 \subsection{Build-Werkzeuge}
 \label{sub:build-tools}
+Webentwicklung im Jahr 2017 besteht nicht mehr aus dem Erstellen von HTML-, CSS- und JavaScript-Dateien, wobei die Styles und Skripte in der HTML-Datei verlinkt werden.
+Frameworks wie Angular und React stellen Komponenten in den Vordergrund.
+Jede Komponente besitzt ein Template, Styles und Logik.
 
-% http://ericlathrop.com/2017/05/the-problem-with-npm-install-global/
+Die fertige Anwendung besteht aus zahlreichen Komponenten, die dynamisch geladen werden, mit einzelnen Services kommunizieren oder auch mit der Hardware des Gerätes interagieren.
+Anwendungen in dieser Komplexität erfordern ein wesentlich ausgereifteres Set an Werkzeugen, als einen simplen Texteditor.
 
-\subsubsection{grunt}
+In den letzten Jahren haben sich diverse Build-Werkzeuge etabliert, die aus zahlreichen Dateien und Quelltexten eine fertige, für den Browser optimierte Anwendung erstellen.
+Sie unterscheiden sich in der Art der Funktion, der Funktionalität, jedoch vor allem in der Anzahl der Plugins.
+Sie sind jedoch alle in JavaScript geschrieben, laufen auf Node.js und lassen sich in die \emph{package.json}-Datei von npm integrieren.
+
+\subsubsection{Grunt}
 \label{sub:grunt}
-\subsubsection{gulp}
+Grunt\footnote{\url{https://gruntjs.com/}} ist ein Task-Runner, der wiederkehrende Aufgaben automatisiert.
+Die Aufgaben werden im sogenannten \emph{Gruntfile} deklarativ angegeben.
+Darin wird an Grunt eine Konfiguration als JavaScript-Objekt übergeben, in der die zahlreichen Grunt-Plugins konfiguriert werden.
+
+\subsubsection{Gulp}
 \label{sub:gulp}
-\subsubsection{webpack}
+Gulp\footnote{\url{http://gulpjs.com/}} ist genau wie Grunt lediglich ein Task-Runner.
+Der Hauptunterschied liegt in der Konfiguration.
+Während die Plugins Grunt über ein JavaScript-Objekt konfiguriert werden, ist in Gulp jeder Task ein Strom von Dateien.
+Diese werden aus einer Quelle ausgewählt, danach werden sie von einer Reihe von Plugins transformiert und schlussendlich wieder in ein Zielverzeichnis geschrieben.
+Durch diese Art der Konfiguration ist Gulp wesentlich flexibler als Grunt, allerdings auch schwieriger zu konfigurieren und diese Konfiguration ist schwieriger les- und wartbar.
+
+\subsubsection{Webpack}
 \label{sub:webpack}
-\subsubsection{rollup}
+Webpack\footnote{\url{https://webpack.github.io/}} ist ein Module Bundler.
+Im Gegensatz zu einem Task-Runner werden nicht einzelne Aufgaben abgearbeitet, sondern der Module Bundler baut einen Graphen aller Abhängigkeiten der Applikation auf, bevor diese nach vorhin definierten Regeln erstellt wird.
+Diese Regeln werden genau wie bei Grunt oder Gulp von Plugins ausgeführt.
+Bei Webpack werden alle Teile einer Anwendung als Modul gesehen.
+Aufgrund des Graphen weiß Webpack genau welche Bilder, Styles und Quelltexte wirklich referenziert werden und kann die erstellte Anwendung sehr stark optimieren.
+Eine weitere sehr nützliche Funktion ist der \emph{webpack-dev-server}, der Änderungen am Quelltext erkennt und danach automatisch eine neue Version der Anwendung erstellt und den Browser in dem die Anwendung läuft, aktualisiert.
+Alle großen Frameworks verwenden Webpack zum Erstellen der Anwendung, wodurch Mitte 2017 Grunt und Gulp bei neuen Projekten keine Verwendung mehr finden.
+
+\subsubsection{Rollup}
 \label{sub:rollup}
-% https://medium.com/webpack/webpack-and-rollup-the-same-but-different-a41ad427058c
-\subsubsection{Best Practice}
-\label{sub:build-tools-best-practices}
+Rollup\footnote{\url{https://rollupjs.org/}} ist ein Webpack für Bibliotheken \autocite{Harris.webpack-vs-rollup:online}.
+Während Webpack besonderen Wert auf das Teilen von Quelltext zum asynchronen Laden und auf die Verwaltung von statischen Dateien legt, ist der primäre Fokus von Rollup das Erstellen von optimierten Bibliotheken.
+Dazu ermöglicht Rollup auf Basis der Modulsysteme CommonJS und ECMAScript 2015 \emph{Tree Shaking}.
+Dabei wird mithilfe statischer Quelltextanalyse, jener Quelltext der nicht benötigt wird, entfernt und eine Bibliothek erstellt, die so kompakt als möglich ist.
 
 
 \section{Inkompatible node/npm-Versionen}
@@ -86,12 +157,12 @@ Wie in \autocite{Papa.n:online} beschrieben, kann es nun allerdings sein, dass b
 Auch das Testen von Anwendungen unter verschiedenen Node.js-Versionen gestaltet sich schwierig, da dafür jedesmal eine Neuinstallation notwendig ist.
 Ein weiteres Problem ist, dass die benötigte Node.js-Version bei Projekten nicht mitversioniert werden kann.
 Sie kann maximal in einer Readme-Datei erfasst werden, wobei jeder Entwickler selbst sicherstellen muss, dass er die korrekte Version verwendet.
-Bei der Entwicklung mehrerer Projekte wird dieses Problem noch ersichtlicher.
+Bei der Entwicklung mehrerer Projekte wird dieses Problem gravierender.
 
 
 \section{Parallele Entwicklung mehrerer Projekte}
 Wie in \cref{sec:softaware} erläutert, ist es in der Firma softaware gmbh üblich, dass ein Entwickler an mehreren Projekten gleichzeitig arbeitet.
-Dadurch tritt das vorhin erwähnte Problem häufiger auf, da es nun vorkommen kann, dass bei der Entwicklung unterschiedlicher Projekte unterschiedliche Node.js-Versionen notwendig sind.
+Dadurch tritt das vorhin erwähnte Problem häufiger auf, da es vorkommen kann, dass bei der Entwicklung unterschiedlicher Projekte unterschiedliche Node.js-Versionen notwendig sind.
 
 Ein Lösungsansatz dafür ist die Verwendung von Vagrant\footnote{\url{https://www.vagrantup.com/}}. 
 Vagrant ist ein Werkzeug zur automatischen Verwaltung von virtuellen Maschinen und ermöglicht dadurch die deklarative Beschreibung von Entwicklerrechnern.
@@ -101,12 +172,11 @@ Eine virtuelle Maschine benötigt allerdings erhebliche Ressourcen, wodurch es, 
 Ein weiterer Ansatz ist die Verwendung von sogenannten Node.js-Versionsmanagern.
 Beispiele dafür sind nvm\footnote{\url{https://github.com/creationix/nvm}}, n\footnote{\url{https://github.com/tj/n}} oder nvm-windows\footnote{\url{https://github.com/coreybutler/nvm-windows}}.
 Das Hauptproblem dabei ist allerdings, dass es keine Lösung gibt, die plattformübergreifend funktioniert.
-Außerdem wurde die Entwicklung des als letztes erwähnten nvm-windows eingestellt, wodurch für Windows keine aktuelle Lösung existiert.
+Außerdem wurde die Entwicklung von nvm-windows eingestellt, wodurch für Windows aktuell keine Lösung existiert.
 Ein weiteres Problem ist die fehlende Integration in den Quelltext des Softwareprojektes.
 Daher werden diese Werkzeuge als eigenständige Anwendung auf dem Entwicklerrechner installiert und stellen lediglich eine implizite Abhängigkeit des Projektes dar, die nur schwierig automatisch installiert werden kann.
 
-Nicht nur die parallele Entwicklung mehrerer Projekte kann Probleme bereiten.
-In der Firma softaware gmbh kommt es außerdem regelmäßig vor, dass andere Unternehmen als Projektpartner fungieren.
+Nicht nur die parallele Entwicklung mehrerer Projekte kann Probleme bereiten, in der Firma softaware gmbh kommt es außerdem regelmäßig vor, dass andere Unternehmen als Projektpartner fungieren.
 Gerade in diesem Fall ist es wichtig, eine einheitliche Lösung zur Verwaltung von Node.js-Versionen zu finden, da für diese Projektpartner die Hemmschwelle zur gemeinsamen Entwicklung möglichst niedrig sein soll.
 
 
@@ -125,7 +195,7 @@ Allerdings lassen sich diese Pakete nun nicht mehr mit ihrem Namen auf der Komma
 Dadurch können lokal installierte Pakete einfacher ausgeführt werden, doch diese Änderung birgt zwei wesentliche Probleme.
 Erstens müsste dies jeder Entwickler machen, wodurch eine einfache Zusammenarbeit erschwert wird und wieder eine implizite Abhängigkeit des Projektes entsteht.
 Das wesentlich schwerwiegendere Problem betrifft allerdings die Sicherheit des Rechners.
-Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable Angreifern infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen und dadurch kompletten Zugriff auf das Gerät zu erlangen.
+Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable, Angreifern infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen, und dadurch kompletten Zugriff auf das Gerät zu erlangen.
 
 \subsubsection{Empfohlene Vorgehensweise}
 Um die Vorteile von global und lokal installierten Paketen zu kombinieren, gibt es bei dem Installieren von npm-Paketen den Parameter \verb|--save-dev|.
@@ -134,8 +204,4 @@ Zusätzlich bietet das Manifest mithilfe der \emph{npm-scripts} die Möglichkeit
 Der Ausführungskontext dieser Kommandos beinhaltet automatisch den Pfad \verb|./node_modules/.bin/|, wodurch dort installierte Werkzeuge verwendet werden können.
 Dies ermöglicht einheitliche Kommandos und eine automatische Dokumentation über Plattformgrenzen hinweg.
 
-Außerdem bietet es den Vorteil, dass das intern verwendete Werkzeug ausgetauscht werden kann (\zB webpack anstatt gulp), für den Entwickler das Kommando aber weiterhin \verb|npm run build| bleibt und er durch diesen Austausch nichts Neues lernen muss.
-
-
-\section{Legacy-Anwendungen}
-\label{sec:legacy-applications}
+Außerdem bietet es den Vorteil, dass das intern verwendete Werkzeug ausgetauscht werden kann (\zB Webpack anstatt Gulp), für den Entwickler das Kommando aber beispielsweise weiterhin \verb|npm run build| bleibt und er durch diesen Austausch nichts Neues lernen muss.
