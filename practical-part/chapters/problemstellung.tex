@@ -1,15 +1,15 @@
 \chapter{Aktuelle Probleme der Frontend-Webentwicklung}
 \label{cha:frontend-problems}
 
-Das größte Problem der Frontend-Webentwicklung wird in \autocite{Kirejczyk.HDD:online} \emph{Hype Driven Development} genannt.
+Das aktuell größte Problem der Frontend-Webentwicklung wird in \autocite{Kirejczyk.HDD:online} \emph{Hype Driven Development} genannt.
 Damit ist die enorm hohe Frequenz gemeint, in der neue Technologien entstehen, hochgepriesen werden und danach genauso schnell wieder von neueren verdrängt werden.
 
-Gerade im Web-Bereich ist durch den Trend zu Open Source Software eine sehr hohe Obsoleszenz zu beobachten, da durch das Abzweigen (engl. \emph{forken}) verschiedene Varianten von gesamten Projekten entstehen.
+Gerade im Web-Bereich ist durch den Trend zu Open-Source-Software eine sehr hohe Obsoleszenz zu beobachten, da durch das Abzweigen (engl. \emph{forken}) im Entwicklungsgraphen verschiedene Varianten von gesamten Projekten entstehen.
 Der daraus resultierenden Innovation stehen allerdings die Spaltung von Entwicklergemeinschaften und inkompatible Technologien gegenüber.
 
 Ein Beispiel dafür ist die Teilung von Node.js\footnote{\url{https://nodejs.org/}} in die zwei Projekte Node.js und io.js\footnote{\url{https://iojs.org/}} im Jahr 2014, die allerdings aus den vorhin beschriebenen Problemen 2015 wieder zu Node.js vereint wurden \autocite{Node.io-node-merge:online}.
 Kurzlebige, innovative Technologien bringen die Softwareentwicklung im Generellen voran, doch um eine Technologie in seriösen Anwendungen verwenden zu können, ist ein gewisser Reifegrad notwendig.
-Dieser ermöglicht nicht nur stabile Versionen und besser ausgebildete Entwickler, durch einen Einzug der Technologie in die Lehre, sondern vor allem durchdachte und ausgereifte Werkzeuge für Entwickler.
+Dieser ermöglicht nicht nur stabile Versionen und besser ausgebildete Entwickler durch einen Einzug der Technologie in die Lehre, sondern vor allem durchdachte und ausgereifte Werkzeuge für Entwickler.
 
 Nach erfolgreicher Auswahl eines Frameworks ist in der Frontend-Entwicklung die größte Hürde die Konfiguration der benötigten Werkzeuge.
 Die Schwierigkeit liegt in dem ständigen Erscheinen neuer Werkzeuge und der beinahe täglichen Aktualisierung dieser, wodurch teilweise inkompatible Änderungen verursacht werden.
@@ -25,10 +25,10 @@ Im Folgenden werden einige der Werkzeuge beschrieben, um einerseits deren Schnel
 \label{sub:js-modulesystems}
 Die Informationen dieses Abschnitts stammen aus \autocite{Osmani.js-modules:online} und \autocite{Peyrott.js-modules:online}.
 
-Im Gegensatz zum aktuellen Einsatzzweck von JavaScript, war diese Sprache ursprünglich nicht für das Entwickeln großer Anwendungen, die aus zahlreichen Modulen bestehen, gedacht.
+Im Gegensatz zum aktuellen Einsatzzweck von JavaScript war diese Sprache ursprünglich nicht für das Entwickeln großer Anwendungen, die aus zahlreichen Modulen bestehen, gedacht.
 Der ursprüngliche Zweck war es, Webseiten Interaktivität zu verleihen.
 
-Konzepte wie Kapselung und die Verwendung von anderem Code als Modul, wurden dabei nicht benötigt.
+Konzepte wie Kapselung und die Verwendung von anderem Code als Modul wurden dabei nicht benötigt.
 Der Sichtbarkeitsbereich einer Variable in JavaScript ist global und Konzepte wie Namensräume sind kein Element der Sprache.
 Bei der Aufteilung einer JavaScript-Anwendung in mehrere Teile muss genau darauf geachtet werden, dass diese in der richtigen Reihenfolge geladen werden, um keine undefinierten Funktionen und Variablen zu erhalten.
 
@@ -38,45 +38,48 @@ Als JavaScript-Anwendungen immer größer wurden, entstanden einige Versuche, ei
 \label{sub:commonjs}
 Das Ziel von CommonJS ist eine einheitliche Spezifikation für serverseitiges JavaScript.
 Ein Teil davon ist das Modulsystem, das in einer abgewandelten Form auch von Node.js verwendet wird.
-Die API besteht aus zwei Teilen.
-\verb|exports| ist eine Variable, der am Ende eines Modules (einer Datei) die zu exportierende Funktionalität zugewiesen wird.
-Über die Funktion \verb|require(<Modulname>)| kann eine andere Datei geladen und einer Variable zugewiesen werden.
-
+Die API besteht aus zwei Teilen:
+\begin{enumerate}
+    \item \verb|exports| ist eine Variable, der am Ende eines Modules (einer Datei) die zu exportierende Funktionalität zugewiesen wird.
+    \item Über die Funktion \verb|require(<Modulname>)| kann eine andere Datei geladen und einer Variable zugewiesen werden.
+\end{enumerate}
 Da dieses Modulsystem lediglich eine Spezifikation ist, werden sowohl browserseitig wie serverseitig Bibliotheken benötigt, die das Laden von Modulen ermöglichen.
 Für das Laden im Browser werden Werkzeuge wie Webpack (siehe \cref{sub:webpack}) oder browserify\footnote{\url{http://browserify.org/}} verwendet, am Server ist Node.js die Standardimplementierung.
-Das Laden von Modulen ist synchron, da es jedoch mithilfe eines Funktionsaufrufes geschieht, kann es überall im Quelltext passieren und beispielsweise durch Verzweigungen optimiert werden. 
+Das Laden von Modulen ist synchron.
+Da es jedoch mithilfe eines Funktionsaufrufes geschieht, kann es überall im Quelltext geschehen und beispielsweise durch Verzweigungen optimiert werden. 
 
 \subsubsection{AMD}
 \label{sub:amd}
 Genau wie bei den Problemen der Frontend-Webentwicklung (vgl. \cref{cha:frontend-problems}) beschrieben, ist \emph{AMD} (Asynchronous Module Definition) eine Variante von CommonJS.
 Der Unterschied dazu ist lediglich die Möglichkeit des asynchronen Ladens von Quelltexten, wodurch es sich besonders für Browser eignet, da dadurch die Ladezeit einer Webseite verringert wird.
 Diese Funktionalität wird durch JavaScript-Callbacks ermöglicht, indem Code erst ausgeführt wird, nachdem die Abhängigkeiten geladen wurden.
-Die defacto Standardbibliothek für das asynchrone Laden von Modulen im Browser ist require.js\footnote{\url{http://requirejs.org/}}.
+Die de facto Standardbibliothek für das asynchrone Laden von Modulen im Browser ist require.js\footnote{\url{http://requirejs.org/}}.
 
 \subsubsection{ES2015}
 \label{sub:es2015}
 JavaScript ist lediglich eine Implementierung des ECMAScript-Standards\footnote{\url{https://www.ecma-international.org/publications/standards/Ecma-262.htm}}.
 Daher muss eine Änderung in JavaScript zuvor im ECMAScript-Standard definiert werden.
-In ECMAScript 2015 wurde die Möglichkeit des Ladens von Modulen durch die zwei neuen Sprachkonstrukte \verb|import ...| und \verb|export ...| eingeführt.
+In ECMAScript 2015 wurde die Möglichkeit des Ladens von Modulen durch die zwei neuen Sprachkonstrukte \verb|import| und \verb|export| eingeführt.
 Seit 2017 gibt es auch einen Vorschlag für das asynchrone Laden von Modulen, dessen Umsetzung für eine zukünftige ECMAScript-Version geplant ist.
-Die Integration in die Sprache erlaubt es statischen Codeanalysewerkzeugen einen Abhängigkeitsgraphen aufzubauen und erweiterte Funktionalität wie Autocompletion zu liefern.
-Dieser Standard wird Modulsysteme wie CommonJS oder AMD definitiv ablösen, da er allerdings noch nicht in jedem Browser unterstützt wird, sind zurzeit noch Werkzeuge notwendig, die diese Abhängigkeiten auflösen und im Vorhinein ein komplettes JavaScript-Programm erstellen.
+Die Integration in die Sprache erlaubt es statischen Codeanalysewerkzeugen, einen Abhängigkeitsgraphen aufzubauen und erweiterte Funktionalität wie Autocompletion zu liefern.
+Dieser Standard wird Modulsysteme wie CommonJS oder AMD definitiv ablösen.
+Da er allerdings noch nicht in jedem Browser unterstützt wird, sind zurzeit noch Werkzeuge notwendig, die diese Abhängigkeiten auflösen und im Vorhinein ein komplettes JavaScript-Programm erstellen.
 
 
 \subsection{Paketmanager}
 \label{sub:package-managers}
 Paketmanager sind in der Web-Welt beinahe ein Glaubenskrieg.
 \autocite{Farmer.package-managers:online} beschreibt bereits 2015 sieben unterschiedliche Paketmanager.
-Die grundsätzliche Aufgabe eines Paketmanagers ist die Zurverfügungstellung von Modulen.
-Dazu ist ein einheitliches Paketformat, eine zentrale Stelle zum Verteilen der Module und eine Anwendung zur Verwaltung dieser, notwendig.
-Aktuell wird versucht die zahlreichen Paketmanager zu vereinen.
-Ansonsten benötigt jeder Entwickler das Know-How für mehrere Paketmanager und muss diese auch installiert haben.
-Zurzeit finden die folgenden drei Paketmanager große Verbreitung.
+Die grundsätzliche Aufgabe eines Paketmanagers ist das Zurverfügungstellen von Modulen.
+Dazu ist ein einheitliches Paketformat, eine zentrale Stelle zum Verteilen der Module und eine Anwendung zur Verwaltung dieser notwendig.
+Aktuell wird versucht, die zahlreichen Paketmanager zu vereinen.
+Ansonsten benötigt jeder Entwickler das Know-how für mehrere Paketmanager und muss diese auch installiert haben.
+Zurzeit finden die folgenden drei Paketmanager große Verbreitung:
 
 \subsubsection{Bower}
 \label{sub:bower}
 Bower\footnote{\url{https://bower.io/}} wurde ursprünglich als Paketmanager für Frontend-Pakete entworfen.
-Der ursprüngliche Unterschied zu den folgenden zwei ist eine flache Paketstruktur.
+Der ursprüngliche Unterschied zu den zwei nachfolgend beschriebenen ist eine flache Paketstruktur.
 Um die Geschwindigkeit beim Laden von Webanwendungen zu erhöhen, verfolgt Bower den Ansatz, dass Module, die von mehreren anderen Modulen benötigt werden, lediglich einmal installiert werden.
 Etwaige Versionskonflikte muss der Entwickler per Hand beheben.
 Der Trend in der Webentwicklung geht allerdings dazu, dass die gesamte Webentwicklung von einem Build-Werkzeug erstellt wird, wodurch das direkte Einbinden von statischen Dateien wie Stylesheets und Icons entfällt.
@@ -86,18 +89,18 @@ Dadurch empfiehlt Bower sogar auf der Homepage die Verwendung von yarn (siehe \c
 \label{sub:npm}
 npm war ursprünglich der Paketmanager für Node.js.
 Die gesamte Paketstruktur wurde als Baum abgelegt und Abhängigkeiten für jedes Paket separat heruntergeladen, da dies für Serveranwendungen beinahe keinen Unterschied macht und zu keinen Versionsproblemen führt.
-Mit der Zeit wurden immer mehr Frontend-Pakete auf npm veröffentlicht, weshalb mit der Version 3 das Versionssystem verbessert wurde und für kompatible Pakete eine Struktur wie bei Bower verwendet wird.
+Mit der Zeit wurden immer mehr Frontend-Pakete auf Basis von npm veröffentlicht, weshalb mit der Version 3 das Versionssystem verbessert wurde und für kompatible Pakete eine Struktur wie bei Bower verwendet wird.
 Am 25. Mai 2017 wurde die Version 5 veröffentlicht, um mit der Funktionalität von yarn gleichzuziehen.
 
 \subsubsection{yarn}
 \label{sub:yarn}
 yarn ist ein Paketmanager von Facebook, der die Paket-Registry von npm verwendet und einige Probleme dieses Paketmanagers behebt.
 Die Geschwindigkeit wird durch die Einführung eines lokalen Caches verbessert.
-Bei npm gab es bis zu Version 5 das Problem, dass lediglich die Version der verwendeten Abhängigkeiten spezifiziert werden kann, nicht aber die Versionen von transitiven Abhängigkeiten.
+Bei npm gab es bis zur Version 5 das Problem, dass lediglich die Version der verwendeten Abhängigkeiten spezifiziert werden konnte, nicht aber die Versionen von transitiven Abhängigkeiten.
 Dadurch können sehr schwierig zu findende Fehler durch unterschiedliche Paketversionen entstehen.
 yarn löst dieses Problem durch eine Sperrdatei, in der die Version aller installierten Pakete erfasst ist.
 
-Zwei Ungereimtheiten bei yarn sind die irreführende Versionierung, wonach derzeit die stabile Version bei 0.24.6 steht und die Tatsache, dass zwar die Registry von npm verwendet wird, jedoch jegliche Anfragen über einen Proxy von Facebook geleitet werden \autocite{Nemeth.yarnpkg:online}.
+Zwei Ungereimtheiten bei yarn sind die irreführende Versionierung, wonach derzeit die stabile Version bei 0.24.6 steht, und die Tatsache, dass zwar die Registry von npm verwendet wird, jedoch jegliche Anfragen über einen Proxy von Facebook geleitet werden \autocite{Nemeth.yarnpkg:online}.
 
 
 \subsection{Build-Werkzeuge}
@@ -107,11 +110,12 @@ Frameworks wie Angular und React stellen Komponenten in den Vordergrund.
 Jede Komponente besitzt ein Template, Styles und Logik.
 
 Die fertige Anwendung besteht aus zahlreichen Komponenten, die dynamisch geladen werden, mit einzelnen Services kommunizieren oder auch mit der Hardware des Gerätes interagieren.
-Anwendungen in dieser Komplexität erfordern ein wesentlich ausgereifteres Set an Werkzeugen, als einen simplen Texteditor.
+Anwendungen in dieser Komplexität erfordern ein wesentlich ausgereifteres Set an Werkzeugen als einen simplen Texteditor.
 
 In den letzten Jahren haben sich diverse Build-Werkzeuge etabliert, die aus zahlreichen Dateien und Quelltexten eine fertige, für den Browser optimierte Anwendung erstellen.
-Sie unterscheiden sich in der Art der Funktion, der Funktionalität, jedoch vor allem in der Anzahl der Plugins.
-Sie sind jedoch alle in JavaScript geschrieben, laufen auf Node.js und lassen sich in die \emph{package.json}-Datei von npm integrieren.
+Sie unterscheiden sich in der Funktionsweise und der Funktionalität, jedoch vor allem in der Anzahl der Plugins.
+Alle sind jedoch in JavaScript geschrieben, laufen auf Node.js und lassen sich in die \emph{package.json}-Datei von npm integrieren.
+Die nachfolgend beschriebenen Build-Werkzeuge wurden aufgrund ihrer großen Verbeitung ausgewählt.
 
 \subsubsection{Grunt}
 \label{sub:grunt}
@@ -123,26 +127,26 @@ Darin wird an Grunt eine Konfiguration als JavaScript-Objekt übergeben, in der 
 \label{sub:gulp}
 Gulp\footnote{\url{http://gulpjs.com/}} ist genau wie Grunt lediglich ein Task-Runner.
 Der Hauptunterschied liegt in der Konfiguration.
-Während die Plugins Grunt über ein JavaScript-Objekt konfiguriert werden, ist in Gulp jeder Task ein Strom von Dateien.
+Während die Plugins von Grunt über ein JavaScript-Objekt konfiguriert werden, ist in Gulp jeder Task ein Strom von Dateien.
 Diese werden aus einer Quelle ausgewählt, danach werden sie von einer Reihe von Plugins transformiert und schlussendlich wieder in ein Zielverzeichnis geschrieben.
 Durch diese Art der Konfiguration ist Gulp wesentlich flexibler als Grunt, allerdings auch schwieriger zu konfigurieren und diese Konfiguration ist schwieriger les- und wartbar.
 
 \subsubsection{Webpack}
 \label{sub:webpack}
-Webpack\footnote{\url{https://webpack.github.io/}} ist ein Module Bundler.
+Webpack\footnote{\url{https://webpack.github.io/}} ist ein Module-Bundler.
 Im Gegensatz zu einem Task-Runner werden nicht einzelne Aufgaben abgearbeitet, sondern der Module Bundler baut einen Graphen aller Abhängigkeiten der Applikation auf, bevor diese nach vorhin definierten Regeln erstellt wird.
 Diese Regeln werden genau wie bei Grunt oder Gulp von Plugins ausgeführt.
 Bei Webpack werden alle Teile einer Anwendung als Modul gesehen.
-Aufgrund des Graphen weiß Webpack genau welche Bilder, Styles und Quelltexte wirklich referenziert werden und kann die erstellte Anwendung sehr stark optimieren.
-Eine weitere sehr nützliche Funktion ist der \emph{webpack-dev-server}, der Änderungen am Quelltext erkennt und danach automatisch eine neue Version der Anwendung erstellt und den Browser in dem die Anwendung läuft, aktualisiert.
-Alle großen Frameworks verwenden Webpack zum Erstellen der Anwendung, wodurch Mitte 2017 Grunt und Gulp bei neuen Projekten keine Verwendung mehr finden.
+Aufgrund des Graphen weiß Webpack genau, welche Bilder, Styles und Quelltexte wirklich referenziert werden und kann die erstellte Anwendung sehr stark optimieren.
+Eine weitere, sehr nützliche Funktion ist der \emph{webpack-dev-server}, der Änderungen am Quelltext erkennt, danach automatisch eine neue Version der Anwendung erstellt und den Browser, in dem die Anwendung läuft, aktualisiert.
+Alle aktuellen großen Frameworks verwenden Webpack zum Erstellen der Anwendung, wodurch Mitte 2017 Grunt und Gulp bei neuen Projekten kaum mehr Verwendung finden.
 
 \subsubsection{Rollup}
 \label{sub:rollup}
-Rollup\footnote{\url{https://rollupjs.org/}} ist ein Webpack für Bibliotheken \autocite{Harris.webpack-vs-rollup:online}.
+Rollup\footnote{\url{https://rollupjs.org/}} ist ein Module-Bundler für Bibliotheken \autocite{Harris.webpack-vs-rollup:online}.
 Während Webpack besonderen Wert auf das Teilen von Quelltext zum asynchronen Laden und auf die Verwaltung von statischen Dateien legt, ist der primäre Fokus von Rollup das Erstellen von optimierten Bibliotheken.
 Dazu ermöglicht Rollup auf Basis der Modulsysteme CommonJS und ECMAScript 2015 \emph{Tree Shaking}.
-Dabei wird mithilfe statischer Quelltextanalyse, jener Quelltext der nicht benötigt wird, entfernt und eine Bibliothek erstellt, die so kompakt als möglich ist.
+Dabei wird mithilfe statischer Quelltextanalyse jener Quelltext, der nicht benötigt wird, entfernt und eine Bibliothek erstellt, die so kompakt wie möglich ist.
 
 
 \section{Inkompatible node/npm-Versionen}
@@ -151,13 +155,13 @@ Node.js ist eine Laufzeitumgebung, die auf der Chrome-V8-JavaScipt-Engine basier
 Der große Vorteil, der vor allem Entwicklerwerkzeuge betrifft, ist die Plattformunabhängigkeit.
 Dadurch können Kommandozeilenwerkzeuge mithilfe von Webtechnologien für alle gängigen Betriebssysteme erstellt werden.
 
-\emph{npm} ist ein Paketmanager, der es ermöglicht Node.js-Anwendungen zu installieren, oder Abhängigkeiten zwischen Paketen zu spezifizieren.
+\emph{npm} ist ein Paketmanager, der es ermöglicht Node.js-Anwendungen zu installieren oder Abhängigkeiten zwischen Paketen zu spezifizieren.
 
-Wie in \autocite{Papa.n:online} beschrieben, kann es nun allerdings sein, dass bestimmte Werkzeuge unter bestimmten Node.js-Versionen nicht funktionieren.
+Wie in \autocite{Papa.n:online} beschrieben, kann es allerdings sein, dass bestimmte Werkzeuge unter bestimmten Node.js-Versionen nicht funktionieren.
 Auch das Testen von Anwendungen unter verschiedenen Node.js-Versionen gestaltet sich schwierig, da dafür jedesmal eine Neuinstallation notwendig ist.
-Ein weiteres Problem ist, dass die benötigte Node.js-Version bei Projekten nicht mitversioniert werden kann.
+Die benötigte Node.js-Version kann nicht in einer Art und Weise versioniert werden, die plattformübergreifend funktioniert und eine Warnung bei dem Vorhandensein einer falschen Version liefert.
 Sie kann maximal in einer Readme-Datei erfasst werden, wobei jeder Entwickler selbst sicherstellen muss, dass er die korrekte Version verwendet.
-Bei der Entwicklung mehrerer Projekte wird dieses Problem gravierender.
+Bei der Entwicklung mehrerer Projekte wird dieses Problem noch gravierender.
 
 
 \section{Parallele Entwicklung mehrerer Projekte}
@@ -167,43 +171,51 @@ Dadurch tritt das vorhin erwähnte Problem häufiger auf, da es vorkommen kann, 
 Ein Lösungsansatz dafür ist die Verwendung von Vagrant\footnote{\url{https://www.vagrantup.com/}}. 
 Vagrant ist ein Werkzeug zur automatischen Verwaltung von virtuellen Maschinen und ermöglicht dadurch die deklarative Beschreibung von Entwicklerrechnern.
 Diese Beschreibung kann mitversioniert werden, wodurch eine konsistente Arbeitsumgebung entsteht.
-Eine virtuelle Maschine benötigt allerdings erhebliche Ressourcen, wodurch es, wenn keine grafische Oberfläche benötigt wird, bessere Lösungsansätze gibt.
+Eine virtuelle Maschine benötigt allerdings erhebliche Ressourcen.
+Wenn keine grafische Oberfläche benötigt wird, gibt es daher bessere Lösungsansätze.
 
 Ein weiterer Ansatz ist die Verwendung von sogenannten Node.js-Versionsmanagern.
 Beispiele dafür sind nvm\footnote{\url{https://github.com/creationix/nvm}}, n\footnote{\url{https://github.com/tj/n}} oder nvm-windows\footnote{\url{https://github.com/coreybutler/nvm-windows}}.
 Das Hauptproblem dabei ist allerdings, dass es keine Lösung gibt, die plattformübergreifend funktioniert.
 Außerdem wurde die Entwicklung von nvm-windows eingestellt, wodurch für Windows aktuell keine Lösung existiert.
-Ein weiteres Problem ist die fehlende Integration in den Quelltext des Softwareprojektes.
+Ein weiteres Problem ist die fehlende Integration in den Quelltext eines Softwareprojekts.
 Daher werden diese Werkzeuge als eigenständige Anwendung auf dem Entwicklerrechner installiert und stellen lediglich eine implizite Abhängigkeit des Projektes dar, die nur schwierig automatisch installiert werden kann.
 
-Nicht nur die parallele Entwicklung mehrerer Projekte kann Probleme bereiten, in der Firma softaware gmbh kommt es außerdem regelmäßig vor, dass andere Unternehmen als Projektpartner fungieren.
+Nicht nur die parallele Entwicklung mehrerer Projekte kann Probleme bereiten.
+In der Firma softaware gmbh kommt es außerdem regelmäßig vor, dass andere Software-Unternehmen als Projektpartner fungieren.
 Gerade in diesem Fall ist es wichtig, eine einheitliche Lösung zur Verwaltung von Node.js-Versionen zu finden, da für diese Projektpartner die Hemmschwelle zur gemeinsamen Entwicklung möglichst niedrig sein soll.
 
 
 \section{Globale Installation von npm-Paketen}
 \label{sec:global-package-installation}
-Bei der vorhin erwähnten Installation von npm-Paketen existieren zwei Möglichkeiten.
+Für die im letzten Abschnitt erwähnte Installation von npm-Paketen existieren zwei Möglichkeiten.
 
-Für diverse Werkzeuge wird als Installationskommando \verb|npm install -g <Werkzeug>| vorgeschlagen, wobei das Paket durch den Parameter \verb|-p| global installiert wird.
-Diese Art der Installation bedeutet, dass diese Anwendungen mit ihrem jeweiligen Namen direkt von der Kommandozeile gestartet werden können.
-Diese Funktionalität hört sich sehr verlockend an, erfordert allerdings, dass jeder Entwickler dieses Werkzeug global installiert.
-Dies mag in einer Abteilung problemlos funktionieren, wird aber spätestens bei Open-Source-Projekten zum Problem, da der Einstieg in ein Projekt dadurch erheblich komplizierter wird.
-Außerdem kann es zu Versionsproblemen kommen, falls zwei Projekte dasselbe Werkzeug in unterschiedlichen Versionen benötigen, da global lediglich eine Version installiert werden kann.
+\begin{enumerate}
+    \item Für diverse Werkzeuge wird als Installationskommando \verb|npm install -g <Werkzeug>| vorgeschlagen, wobei das Paket durch den Parameter \verb|-g| global installiert wird.
+    Diese Art der Installation bedeutet, dass diese Anwendungen mit ihrem jeweiligen Namen direkt von der Kommandozeile gestartet werden können.
+    Diese Funktionalität hört sich sehr verlockend an, erfordert allerdings, dass jeder Entwickler dieses Werkzeug global installiert.
+    Dies mag in einer Abteilung problemlos funktionieren, wird aber spätestens bei Open-Source-Projekten zum Problem, da die Mitentwicklung an mehrerer Open-Source-Projekten durch die Vielzahl an Werkzeugen erheblich komplizierter wird.
+    Außerdem kann es zu Versionsproblemen kommen, falls zwei Projekte dasselbe Werkzeug in unterschiedlichen Versionen benötigen, da global lediglich eine Version installiert werden kann.
+\item Die zweite Möglichkeit der Installation ist das Weglassen des Parameters \verb|-g|, wodurch das Paket in der Manifest-Datei \verb|package.json| des Projekts erfasst und in einen Ordner namens \verb|node_modules| im aktuellen Verzeichnis installiert wird.
+    Da dieses Paket dadurch als Abhängigkeit erfasst ist, lässt es sich mit dem Projekt gemeinsam versionieren und wird bei der Installation dessen auf einem anderen Entwicklerrechner automatisch mitinstalliert.
+    Allerdings lassen sich diese Pakete nun nicht mehr mit ihrem Namen auf der Kommandozeile ausführen, weshalb es verlockend klingen mag, \verb|./node_modules/.bin/| zur \verb|$PATH|-Variable hinzuzufügen.
+    Dadurch können lokal installierte Pakete einfacher ausgeführt werden.
+    Doch diese Änderung birgt jedoch zwei wesentliche Probleme:
+    \begin{enumerate}
+        \item Erstens müsste dies jeder Entwickler machen, wodurch eine einfache Zusammenarbeit erschwert wird und wieder eine implizite Abhängigkeit des Projekts entsteht.
+        \item Das wesentlich schwerwiegendere Problem betrifft allerdings die Sicherheit des Rechners.
+        Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable Angreifern, infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen und dadurch kompletten Zugriff auf das Gerät zu erlangen.
+    \end{enumerate}
+\end{enumerate}
 
-Die zweite Möglichkeit der Installation ist das Weglassen des Parameters \verb|-p|, wodurch das Paket in der Manifest-Datei \verb|package.json| des Projekts erfasst und in einen Ordner namens \verb|node_modules| im aktuellen Verzeichnis installiert wird.
-Da dieses Paket nun als Abhängigkeit erfasst ist, lässt es sich mit dem Projekt gemeinsam versionieren und wird bei der Installation dessen auf einem anderen Entwicklergerät automatisch mitinstalliert.
-Allerdings lassen sich diese Pakete nun nicht mehr mit ihrem Namen auf der Kommandozeile ausführen, weshalb es verlockend klingen mag, \verb|./node_modules/.bin/| zur \verb|$PATH|-Variable hinzuzufügen.
-Dadurch können lokal installierte Pakete einfacher ausgeführt werden, doch diese Änderung birgt zwei wesentliche Probleme.
-Erstens müsste dies jeder Entwickler machen, wodurch eine einfache Zusammenarbeit erschwert wird und wieder eine implizite Abhängigkeit des Projektes entsteht.
-Das wesentlich schwerwiegendere Problem betrifft allerdings die Sicherheit des Rechners.
-Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable, Angreifern infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen, und dadurch kompletten Zugriff auf das Gerät zu erlangen.
+
 
 \subsubsection{Empfohlene Vorgehensweise}
 \label{subsub:packages-best-practice}
 Um die Vorteile von global und lokal installierten Paketen zu kombinieren, gibt es bei dem Installieren von npm-Paketen den Parameter \verb|--save-dev|.
-In der Manifestdatei \verb|package.json| existiert ein eigener Bereich \emph{devDependencies} in dem Werkzeuge erfasst werden, die für das Projekt benötigt werden.
-Zusätzlich bietet das Manifest mithilfe der \emph{npm-scripts} die Möglichkeit eigene Namen für Kommandos zu vergeben, die dann mit \verb|npm run <Skriptname>| gestartet werden können.
+In der Manifestdatei \verb|package.json| existiert ein eigener Bereich \emph{devDependencies}, in dem Werkzeuge erfasst werden, die für das Projekt benötigt werden.
+Zusätzlich bietet das Manifest mithilfe der \emph{npm-scripts} die Möglichkeit, eigene Namen für Kommandos zu vergeben, die dann mit \verb|npm run <Skriptname>| gestartet werden können.
 Der Ausführungskontext dieser Kommandos beinhaltet automatisch den Pfad \verb|./node_modules/.bin/|, wodurch dort installierte Werkzeuge verwendet werden können.
 Dies ermöglicht einheitliche Kommandos und eine automatische Dokumentation über Plattformgrenzen hinweg.
 
-Außerdem bietet es den Vorteil, dass das intern verwendete Werkzeug ausgetauscht werden kann (\zB Webpack anstatt Gulp), für den Entwickler das Kommando aber beispielsweise weiterhin \verb|npm run build| bleibt und er durch diesen Austausch nichts Neues lernen muss.
+Außerdem bieten \emph{npm-scripts} den Vorteil, dass das intern verwendete Werkzeug ausgetauscht werden kann (\zB Webpack anstatt Gulp), für den Entwickler das Kommando aber beispielsweise weiterhin \verb|npm run build| bleibt und er durch diesen Austausch nichts in seinem Workflow ändern muss.

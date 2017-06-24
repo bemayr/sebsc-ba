@@ -3,40 +3,40 @@
 
 Im folgenden Kapitel wird das Unternehmen vorgestellt, in dem der Autor sein Praktikum absolviert hat, sowie eine Übersicht über die Projekte gegeben, in die er involviert war.
 
-\section{Unternehmen softaware gmbh}
+\section{Das Unternehmen softaware gmbh}
 \label{sec:softaware}
 Die Firma softaware gmbh mit Sitz in Asten, Oberösterreich, entwickelt vorüberwiegend Individualsoftware auf Basis von Microsoft-Technologien.
 Seit 2012 existiert das Unternehmen unter dem Namen softaware gmbh und hat aktuell 15 Angestellte (Stand Juni 2017).
 Bei der Auswahl der Projekte gibt es keine Beschränkung auf bestimmte Branchen.
 Dadurch ergibt sich ein sehr breites Feld an Kunden, das von der Erdölindustrie über den öffentlichen Sektor bis hin zu Automobilkonzernen reicht.
-Die Art der entwickelten Anwendungen ist ebenfalls sehr breit gefächert, wodurch plattformübergreifende Apps genau wie Web-Anwendungen und Enterprise-Desktop-Anwendungen entstehen.
+Die Art der entwickelten Anwendungen ist ebenfalls sehr breit gefächert, wodurch plattformübergreifende Apps genauso wie Web-Anwendungen und Enterprise-Desktop-Anwendungen entstehen.
 
 Die Projekte werden in einer sehr flachen Unternehmensstruktur umgesetzt.
 Je nach Projektgröße werden Teams mit bis zu fünf Entwicklern gebildet, die in einem agilen Entwicklungsprozess an den Produkten arbeiten.
 
-Die eingesetzten Technologien liegen vorüberwiegend im Microsoft-Umfeld.
-Für große Webanwendungen ist Angular das Framework der Wahl und um skalierbare Anwendungen zu ermöglichen, wird Microsoft Azure verwendet.
-Da beim Einsatz von Technologien großer Wert auf deren Aktualität gelegt wird, wurde im Rahmen des Praktikums der Einsatz von Docker getestet.
+Die eingesetzten Technologien liegen überwiegend im Microsoft-Umfeld.
+Für große Webanwendungen ist Angular\footnote{\url{https://angular.io/}} das Framework der Wahl und um skalierbare Anwendungen zu ermöglichen, wird Microsoft Azure\footnote{\url{https://azure.microsoft.com/}} verwendet.
+Da beim Einsatz von Technologien großer Wert auf deren Aktualität gelegt wird, wurde im Rahmen des Praktikums der Einsatz von Docker\footnote{\url{https://www.docker.com/}} getestet.
 Durch die unterschiedlichen Versionen der Webprojekte und den erfolgreichen Tests von Docker ist der Container \emph{softaware/webdev} entstanden, der in dieser Arbeit beschrieben wird.
 
 
 \section{Bearbeitete Projekte}
 \label{sec:projects}
 
-Das Ziel des Praktikums war nicht die Abwicklung eines einzelnen Projektes, sondern Einblick in mehrere Bereiche des Unternehmens zu erhalten, sowie die Erkenntnisse aus der theoretischen Bachelorarbeit im Unternehmen zu etablieren.
+Das Ziel des Praktikums war nicht die Abwicklung eines einzelnen Projekts, sondern Einblick in mehrere Bereiche des Unternehmens zu erhalten, sowie die Erkenntnisse aus der theoretischen Bachelorarbeit des Autors im Unternehmen zu etablieren.
 Darüber hinaus wurde versucht, wiederkehrende Probleme in unterschiedlichsten Projekten zu analysieren und durch eine alternative Herangehensweise Lösungen zu finden.
 So wurden im Laufe des Praktikums folgende Projekte umgesetzt.
 
 \begin{description}
     \item [Windows Container]
-    Im Gegensatz zu Linux-Containern, sind Windows Container noch sehr wenig im Einsatz.
-    Für ein Unternehmen, das sehr stark auf Microsoft-Technologien setzt, können diese allerdings einen erheblichen Unterschied bedeuten.
+    Im Gegensatz zu Linux-Container sind Windows-Container noch sehr wenig im Einsatz.
+    Für ein Unternehmen, das sehr stark auf Microsoft-Tech\-no\-lo\-gien setzt, können diese allerdings einen erheblichen Unterschied bedeuten.
     Der Funktionsumfang, die Stabilität und welcher Nutzen sich durch die Verwendung von Windows Containern ergibt, wurde in einer einwöchigen Analyse evaluiert.
     Die Möglichkeit, mithilfe von Containern ein einfacheres Testen von zeitzonenabhängigen Anwendungen zu ermöglichen, ist allerdings aufgrund eines Docker-Problems\footnote{\url{https://github.com/moby/moby/issues/32518}} zum jetzigen Zeitpunkt nicht möglich.
     \item [Microservices im Frontend]
     Die Microservice-Architektur erlebt besonders serverseitig in den letzten Jahren einen enormen Aufschwung (vgl.~\autocite{Fowler.Microservices:online}).
     Die besonders einfache Verteilung der Aspekte einer Software auf mehrere Teams bietet große Vorteile, die allerdings verschwinden, sobald die Benutzeroberfläche mit aktuellen Frontend-Frameworks wie Angular oder React umgesetzt wird.
-    Das Frontend wird zu einer einzelnen großen Anwendung, die zwar aus wiederverwendbaren Komponenten zusammengestellt wird, welche allerdings von der gewählten Frameworkversion abhängen und ein Aktualisieren dieser, kostentechnisch beinahe unmöglich machen.
+    Das Frontend wird zu einer einzelnen großen Anwendung, die zwar aus wiederverwendbaren Komponenten zusammengestellt wird, welche allerdings von der gewählten Frameworkversion abhängen und ein Aktualisieren dieser kostentechnisch beinahe unmöglich machen.
     In einem einmonatigem Forschungsprojekt wurden Möglichkeiten untersucht, wie Anwendungen zukunftssicherer entwickelt werden können und vor allem, wie neue Funktionalität mit aktuellen Technologien in ältere Anwendungen integriert werden kann.
     \item [Android-App]
     Für einen deutschen Kunden wurde in einem einwöchigen Projekt eine Android-App auf Basis von Xamarin entwickelt, die die Wiedergabe von Audio- und Videodateien ermöglicht.
