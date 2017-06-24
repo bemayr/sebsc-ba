@@ -181,6 +181,7 @@ Gerade in diesem Fall ist es wichtig, eine einheitliche Lösung zur Verwaltung v
 
 
 \section{Globale Installation von npm-Paketen}
+\label{sec:global-package-installation}
 Bei der vorhin erwähnten Installation von npm-Paketen existieren zwei Möglichkeiten.
 
 Für diverse Werkzeuge wird als Installationskommando \verb|npm install -g <Werkzeug>| vorgeschlagen, wobei das Paket durch den Parameter \verb|-p| global installiert wird.
@@ -198,6 +199,7 @@ Das wesentlich schwerwiegendere Problem betrifft allerdings die Sicherheit des R
 Wie in \autocite{stackoverflow:nodemodules-hack:online} beschrieben, ermöglicht es diese Änderung der Systemvariable, Angreifern infizierte Versionen von Standardprogrammen wie \verb|ls| oder \verb|cd| unter \verb|./node_modules/.bin/| abzulegen, und dadurch kompletten Zugriff auf das Gerät zu erlangen.
 
 \subsubsection{Empfohlene Vorgehensweise}
+\label{subsub:packages-best-practice}
 Um die Vorteile von global und lokal installierten Paketen zu kombinieren, gibt es bei dem Installieren von npm-Paketen den Parameter \verb|--save-dev|.
 In der Manifestdatei \verb|package.json| existiert ein eigener Bereich \emph{devDependencies} in dem Werkzeuge erfasst werden, die für das Projekt benötigt werden.
 Zusätzlich bietet das Manifest mithilfe der \emph{npm-scripts} die Möglichkeit eigene Namen für Kommandos zu vergeben, die dann mit \verb|npm run <Skriptname>| gestartet werden können.

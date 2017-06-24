@@ -1,0 +1,16 @@
+# specify the wanted node/npm version-tag as listed in https://hub.docker.com/r/library/node/tags/
+FROM node:{{ node_version }}
+LABEL maintainer "bernhard.mayr@softaware.at"
+
+# set path in a way, that local npm-modules (e.g. ng-cli) can be called like executables
+ENV PATH="./node_modules/.bin:${PATH}"
+
+# set the working-directory
+WORKDIR "/usr/src/app"
+
+# prepare bash
+COPY ./files/.bashrc /root/
+RUN npm completion >> /root/.bashrc
+
+# start a new bash session
+CMD ["/bin/bash"]
