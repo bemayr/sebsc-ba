@@ -28,10 +28,12 @@
 \definecolor{comments}{rgb}{0.247, 0.518, 0.173}
 \definecolor{keywords}{rgb}{0.114, 0.180, 0.992}
 \definecolor{linenumbers}{rgb}{0.25, 0.25, 0.25}
+\definecolor{linebreakmarker}{rgb}{0.25, 0.25, 0.25}
 
 \lstset{ %
   belowcaptionskip=1\baselineskip{},
   breaklines=true,
+  postbreak=\mbox{\textcolor{linebreakmarker}{$\hookrightarrow$}\space},
   captionpos=b,
   commentstyle=\color{comments},
   keywordstyle=\color{keywords}\bfseries,

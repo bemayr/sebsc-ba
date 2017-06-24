@@ -10,12 +10,12 @@ add as dependency
 inherit
 
 \begin{lstlisting}[caption=Kommando zum Starten des softaware/webdev-Containers, language=bash, label=lst:docker-run-webdev]
-docker run -it --rm -v ${pwd}:/usr/app/src softaware/webdev:alpine-8.1.2
+docker container run -it --rm -v ${pwd}:/usr/app/src softaware/webdev:alpine-8.1.2
 \end{lstlisting}
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.92\linewidth,clip]{images/container-execution}
+    \includegraphics[width=0.95\linewidth,clip]{images/container-execution}
     \caption{Ausgabe beim Start des Containers}
 \label{fig:container-execution}
 \end{figure}
@@ -23,21 +23,6 @@ docker run -it --rm -v ${pwd}:/usr/app/src softaware/webdev:alpine-8.1.2
 \section{Dockerfile}
 \label{sec:dockerfile}
 \lstinputlisting[caption=Alpine-Dockerfile,label={lst:dockerfile.alpine}]{listings/Dockerfile.alpine}
-
-\lstinputlisting[caption=Bash-Konfigurationsdatei,label={lst:.bashrc},language=bash]{listings/.bashrc}
-
-https://tex.stackexchange.com/questions/144170/lstlistings-reference-to-line-number
-https://tex.stackexchange.com/questions/116216/is-there-a-possibility-to-make-reference-to-the-line-in-the-lstlisting-environme
-
-Volumes
-. Node modules Typescript
-. Port mappings + Geschichte des Containers
-
-https://docs.npmjs.com/cli/completion
-
-run command
-https://serverfault.com/questions/685697/multiple-commands-in-docker-cmd-directive
-% https://docs.docker.com/engine/reference/builder/#cmd
 
 \subsubsection{Zeile 2}
 Die \verb|FROM|-Anweisung ermöglicht es Docker-Images voneinander zu erben.
@@ -74,7 +59,15 @@ In Zeile 12 wird das aktuelle Arbeitsverzeichnis des resultierenden Containers a
 Die \verb|WORKDIR|-Anweisung eines Dockerfiles entpricht im wesentlich dem Wechsel in dieses Verzeichnis mit \verb|cd|.
 
 \subsubsection {Zeile 15}
-
+Das Aussehen der Eingabeaufforderung wird in Zeile 15 geändert.
+Der Zweck dieser Änderung ist, dass der Entwickler auf den ersten Blick erkennen kann, ob er sich gerade im Containerm, oder außerhalb, befindet.
+\lstinputlisting[caption=.bashrc (Bash-Konfigurationsdatei),label={lst:.bashrc},language=bash]{listings/.bashrc}
+Durch das Dockerfile-Kommando \verb|COPY| wird die Datei \emph{.bashrc} in den Container kopiert.
+Diese ist in \cref{lst:.bashrc} abgebildet.
+Darin wird in Zeile 2 die Eingabeaufforderung durch das Setzen der Umgebungsvariable \verb|PS1| das Format \emph{dev@docker:[<aktuelles Verzeichnis>]>} zugewiesen.
+Die kryptisch aussehende Notation ändert lediglich die Anzeigefarbe des aktuellen Verzeichnisses.
+In Zeile 5 wird mit \verb|printf| eine Nachricht beim initialien Start des Containers ausgegeben.
+Das Resultat ist in \cref{fig:container-execution} zu sehen.
 
 \subsubsection {Zeile 16}
 Beim Ausführen von Skripten, oder beispielsweise dem Deinstallieren von Paketen bietet npm auf der Kommandozeile die Möglichkeit der Autovervollständigung.
@@ -85,11 +78,14 @@ Falls dieses allerdings bei unterschiedlichen npm-Versionen unterschiedlich ausf
 Durch das nachträgliche Hinzufügen des Ergebnisses mithilfe der \verb|RUN|-Anweisung ist nun sichergestellt, dass das Ergebnis von \verb|npm completion| immer zur verwendeten npm-Version passt.
 
 \subsubsection {Zeile 17}
-shell form
-überschrieben
-bash
-welcome message
+In Zeile 17 wird das standardmäßige Startkommando des Containers auf die Bourne Again Shell festgelegt.
+Der verwendete Node.js-Container startet standardmäßig mit dem Kommando \verb|node| ohne weitere Parameter.
+Da der softaware/webdev-Container allerdings zur interaktiven Entwicklung gedacht ist, wird dieses Standardverhalten überschrieben.
+In \cref{sub:examples} wird gezeigt, dass dieses Kommando beim Ausführen des Containers überschreiben lässt, wodurch sich der Container auch zum Skripten eignet.
 
+In einer früheren Version des Containers wurde beim Start ein Skript aufgerufen, das überprüft ob das aktuelle Verzeichnis ein Webprojekt ist.
+In diesem Fall wurde \verb|npm install| aufgerufen, um alle Abhängigkeiten zu überprüfen und im Fall von fehlenden Paketen, diese nachzuinstallieren.
+Da dieses Verhalten für den Verwender unerwartet ist, allerdings bei jedem Start einige Sekunden kostet, wurde dieses Feature wieder entfernt. 
 
 
 \section{Build-Prozess}
@@ -109,10 +105,18 @@ welcome message
 \label{sub:microbadger}
 \subsection{Beispiele}
 \label{sub:examples}
+\lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
 
 
-\section{Probleme}
+\section{Probleme und Besonderheiten}
 \label{sec:container-problems}
+sass build -> verweisen
 different OSs -> delete node_modules
 IDE automatic install
 File Detection
+
+
+
+Volumes
+. Node modules Typescript
+. Port mappings + Geschichte des Containers
