@@ -1,23 +1,27 @@
 \chapter{Lösungsvorschlag auf Basis von Docker}
 \label{cha:concept}
+Die Einsatzmöglichkeiten von Containern als Werkzeug zur Unterstützung des Softwareentwicklers wurden bereits in der theoretischen Bachelorarbeit des Autors beschrieben.
+Die Kapselung von Werkzeugen in einen Container bietet folgende Vorteile:
+
+\begin{itemize}
+    \item Falls keine keine grafische Benutzeroberfläche benötigt wird und eine Kommandozeile ausreicht, bieten Container eine konsistente Möglichkeit der Virtualisierung ohne den Overhead von Vollvirtualisierungslösungen mit Vagrant.
+    \item Container lassen sich gemeinsam mit dem Projekt versionieren, sodass alle Softwareentwickler im Team die gleiche Version der Werkzeuge verwenden.
+    \item Die Anzahl der benötigten Werkzeuge der Entwickler wird reduziert, da im Optimalfall lediglich eine Engine zum Starten der Container (\zB Docker) benötigt wird.
+    \item Falls ein Container gestartet wird, dessen Image auf dem System noch nicht vorhanden war, wird dieser automatisch heruntergeladen und gestartet.
+        Dadurch entfällt die manuelle Installation der Werkzeuge wodurch Probleme wie fehlende Benutzerberechtigungen, falsche Werkzeuge oder inkompatible Version dieser der Vergangenheit angehören.
+\end{itemize}
+
+\subsubsection{Container in der Frontend-Webentwicklung}
+\autocite{Demmel.webdev-environment:online} ist ein exzellenter Artikel über die Verwendung von Containern in der Webentwicklung.
+Am Ende des Artikels wird zur Erstellung von Containern für diverse Werkzeuge aufgerufen.
+Im Besonderen gilt dieser Aufruf Legacy-Projekten und Open-Source-Projekten, da diese eine besonders hohe Einstiegshürde haben.
+Dies liegt vor allem an der Installation und Konfiguration der benötigten Werkzeuge.
 
 
+Für die Entwicklung von Node.js-basierten Webprojekten existiert bereits der offizielle Node.js-Container.
+Dieser ist allerdings für den Betrieb und nicht die Entwicklung von Anwendungen ausgelegt.
 
-- Warum Container
+Das Konzept des softaware/webdev-Containers ist einerseits, diesen den Node.js-Container um Funktionen zu erweitern, die eine angenehme interaktive Entwicklung von Webprojekten ermöglichen.
+Andererseits wird ein Großteil der Entwicklung der Dokumentation gewidmet, die eine Sammlung an Best Practices und durch die Verwendung des Containers gewonnene Erfahrungen darstellt.
 
-
-- Versionierung/Commitable
-- Abhängigkeiten
-- CLI enough
-- Auto-Install
-
-
-Projektbasiertes Arbeiten + Partner bei softaware
-
-Docker sowieso installiert, da RabbitMQ
-
-
-
-What it does?
-Der offizielle Node.js Container stellt bereits die gesamte Grundfunktionalität bereit, um npm und yarn in einem Container zu benutzen.
-In diesem Abschnitt wird ersichtlich, dass der Container mehr eine dokumentierte Sammlung an Best Practices, als ein Container mit unzähligen Zeilen Quelltext ist.
+Im folgenden Abschnitt wird die Implementierung dieses Containers dargestellt, sowie der Weg dorthin und die dabei gewonnenen Erfahrungen.
