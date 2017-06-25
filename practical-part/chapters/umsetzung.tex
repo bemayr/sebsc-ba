@@ -4,21 +4,42 @@ In diesem Abschnitt wird beschrieben, aus welchen Bestandteilen der Container be
 Weiters wird dargestellt, in welchen Aspekten der Container durch neue Kenntnisse beim Einsatz in echten Projekten weiterentwickelt wurde.
 
 \section{Anwendungsszenarien}
-
-run npm
-add as dependency
-inherit
-
-\begin{lstlisting}[caption=Kommando zum Starten des softaware/webdev-Containers, language=bash, label=lst:docker-run-webdev]
-docker container run -it --rm -v ${pwd}:/usr/app/src softaware/webdev:alpine-8.1.2
+Wie in \cref{cha:concept} erläutert, ist die grundlegende Idee des Containers, Node.js und npm oder yarn als versionierbare Abhängigkeit zu einem Projekt hinzuzufügen.
+Anstatt der lokal Installation dieser Werkzeuge wird lediglich Docker auf dem System benötigt.
+Folgend kann der Container wie in \cref{lst:docker-run-container} dargestellt gestartet werden.
+\begin{lstlisting}[caption=Kommando zum Starten des softaware/webdev-Containers, language=bash, label=lst:docker-run-container]
+docker container run -it --rm -v ${pwd}:/usr/src/app softaware/webdev:alpine-8.1.2
 \end{lstlisting}
-
+Das Kommando \verb|docker container run| entstammt der neuen Docker-CLI (seit Version 1.13 enthalten) und erzeugt einen Container auf Basis eines Image.
+Die Parameter \verb|-it| erzeugen eine interaktive Shell zum Container.
+Durch \verb|--rm| wird der Container nach dem Stoppen wieder entfernt.
+Container sollten grundsätzlich keine Daten beinhalten, wodurch diese Option möglich wird und das System sauber hält.
+Erst durch \verb|-v ${pwd}:/usr/src/app| können die Daten des Containers persistiert werden.
+Dieses Kommando bindet das aktuelle Verzeichnis in das Arbeitsverzeichnis des Containers ein.
+Dadurch können sowohl der Host, als auch der Container gleichzeitig mit diesem Verzeichnis arbeiten, wodurch es möglich wird, dass die Entwicklungsumgebung am Host läuft, npm allerdings im Container.
+Am Ende des Kommandos wird das Docker-Image spezifiziert.
+In diesem Fall wird die Alpine-Linux (vgl. \cref{sec:alpine-vs-debian}) mit der Node.js-Version 8.1.2 verwendet.
+Das Ergebnis dieses Kommandos ist in \cref{fig:container-execution} zu sehen.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth,clip]{images/container-execution}
     \caption{Ausgabe beim Start des Containers}
 \label{fig:container-execution}
 \end{figure}
+
+\subsubsection{Verwendungsmöglichkeiten des Containers}
+Für den Container sind grundsätzlich die folgenden drei Anwendungsszenarien vorgesehen:
+
+\begin{enumerate}
+    \item Wie im vorangegangenen Beispiel gezeigt, kann mithilfe des Containers sehr schnell eine spezifische Kommandozeile mit installiertem Node.js und npm gestartet werden.
+        Dies kann \zB zum Initialisieren eines Webprojektes mit \verb|npm init| verwendet werden.
+    \item Weiters kann vom softaware/webdev-Image abgeleitet werden, um ein eigenes spezifischeres Image zu erstellen.
+        In diesem können weitere Werkzeuge installiert werden, oder Ports des Containers explizit freigegeben werden. 
+    \item Falls mithilfe der ersten Anwendungsweise ein Projekt erstellt wurde, wird empfohlen, danach das Startkommando mit derselben Containerversion als Skript zum Projekt hinzuzufügen.
+        Dadurch kann die Entwickungsumgebung konistent reproduziert werden und als Abhängigkeit mit dem Projekt mitversioniert werden.
+        Ein Beispiel dazu ist in \cref{sec:example} zu sehen.
+\end{enumerate}
+Im Folgenden wird das \emph{Dockerfile} erläutert, das die Basis des Containers darstellt und die eben beschriebenen Funktionen ermöglicht.
 
 \section{Dockerfile}
 \label{sec:dockerfile}
@@ -90,7 +111,18 @@ Da dieses Verhalten für den Verwender unerwartet ist, allerdings bei jedem Star
 
 \section{Build-Prozess}
 \label{sec:build-process}
+
+https://docs.docker.com/docker-hub/github/
+Namenskonenvtion
+
 \lstinputlisting[caption=\emph{create-image.ps1} (Build-Skript des Containers),label={lst:create-image.ps1}]{listings/create-image.ps1}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth,clip]{images/create-image}
+    \caption{Ausgabe des Build-Prozesses für Node.js 8.0}
+\label{fig:create-image}
+\end{figure}
 
 \section{Alpine-Linux vs. Debian}
 \label{sec:alpine-vs-debian}
@@ -99,24 +131,36 @@ Da dieses Verhalten für den Verwender unerwartet ist, allerdings bei jedem Star
 \section{Dokumentation}
 \label{sec:documentation}
 
-\subsection{Docker Hub}
+\subsubsection{GitHub}
+\label{sub:github}
+\subsubsection{Docker Hub}
 \label{sub:dockerhub}
-\subsection{Microbadger}
+Der Container ist im Docker Hub\footnote{\url[]} veröffentlicht
+\subsubsection{Microbadger}
 \label{sub:microbadger}
-\subsection{Beispiele}
-\label{sub:examples}
+
+
+\section{Beispielanwendung des Containers}
+\label{sec:example}
 \lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.95\linewidth,clip]{images/docker-webdev}
+    \caption{Hilfe zum Startskript des Containers in einer echten Applikation}
+\label{fig:docker-webdev}
+\end{figure}
 
 
 \section{Probleme und Besonderheiten}
 \label{sec:container-problems}
-sass build -> verweisen
-different OSs -> delete node_modules
-IDE automatic install
-File Detection
 
-
-
-Volumes
-. Node modules Typescript
-. Port mappings + Geschichte des Containers
+\begin{description}
+    \item[Kendo UI Sass Build]
+    \item[different OSs]
+    \item[prevent IDE automatic install]
+    \item[File Detection]
+    \item[Typescript node modules]
+    \item[Port-mapped application containers]
+    \item[optional]
+\end{description}
