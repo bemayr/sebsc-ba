@@ -1,11 +1,25 @@
 \chapter{Resümee}
 \label{cha:resume}
+Um einen kurzen Überblick über die Arbeit zu geben, wird diese in diesem Kapitel zusammengefasst.
+Weiters werden die daraus gewonnenen Erkenntnisse dargestellt, sowie ein Blick in die Zukunft gewagt.
 
 \section{Zusammenfassung}
 \label{sec:summary}
+Die Anzahl und Komplexität der Werkzeuge in der Frontend-Webentwicklung im Jahr 2017 stellt ein großes Problem für Firmen da, die an vielen einzelnen Projekten arbeiten.
+Dabei sind nicht die neuen Werkzeuge problematisch, vielmehr ist es aufgrund von Versionsproblemen beinahe unmöglich, unterschiedlich alte Projekte auf einem Entwicklerrechner zu warten.
+
+Durch die Verwendung von Docker kann ein Großteil der benötigten Werkzeuge mit dem Projekt mitversioniert werden, wodurch die Wartbarkeit von Anwendungen stark erhöht wird.
+Der softaware/webdev-Container bietet eine Basis dazu und liefert mit der Dokumentation eine Übersicht über die Möglichkeiten und Probleme beim Einsatz von Containern.
 
 \section{Erkenntnisse}
 \label{sec:findings}
+Die in der Arbeit beschriebene Verbesserung der Webentwicklung müsste gar nicht existieren, wenn die diversen Werkzeuge dieser rückwärtskompatibel und richtig versioniert wären.
+Da sich das allerdings im Nachhinein nicht mehr beheben lässt, löst ein Container in diesem Fall viele Probleme.
+
+Durch die Erstellung von Startskripten kann Docker soweit abstrahiert werden, dass es auch von Entwicklern, die noch nichts mit Containertechnologien zu tun hatten, problemlos eingesetzt werden kann.
+Zusätzlich führt die Verwendung des Containers zu einem einheitlichen Werkzeugset und einer daraus resultierenden geringeren Hemmschwelle bei Projekteinstiegen.
 
 \section{Ausblick}
 \label{sec:outlook}
+Die Verwendung von Containern als Entwicklerwerkzeuge zeigt genau in einem Beispiel wie diesem ihre Stärken.
+In einer idealen Welt gäbe es allerdings keine Versionskonflikte zwischen Node.js-Paketen und die Notwendigkeit für den softaware/webdev-Container wäre nicht gegeben.
