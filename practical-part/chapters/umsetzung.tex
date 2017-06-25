@@ -162,6 +162,26 @@ In \cref{fig:create-image} ist eine Beispielausgabe zu sehen, mit der die zwei I
 
 \section{Alpine-Linux vs. Debian}
 \label{sec:alpine-vs-debian}
+Um die Imagegröße eines Docker-Containers möglichst gering zu halten, wird der Einsatz der dafür optimierten Linux-Distribution Alpine\footnote{\url{https://alpinelinux.org/}} empfohlen.
+Das Alpine-Basisimage hat lediglich eine Größe von fünf Megabyte und ist für die Ausführung im RAM optimiert.
+
+Auch vom offizielle Node.js-Image\footnote{\url{https://hub.docker.com/_/node/}} existiert eine Alpine-Version, die durch die geringe Größe von etwa 17 Megabyte besticht.
+In der Dokumentation des Node.js-Containers wird darauf hingewiesen, dass Alpine nicht auf der verbreiteten \verb|glibc|, sondern auf \verb|musllibc| basiert.
+
+Nach ausführlichen Tests wurde festgestellt, dass es bei der Verwendung des Alpine-Container Probleme mit der Kompilierung von Sass\footnote{\url{http://sass-lang.com/}} gibt.
+Sass erweitert CSS um die Funktionalität von Variablen und Funktionen.
+Das Problem trat bei der Verwendung des Komponententframeworks Kendo UI\footnote{\url{http://www.telerik.com/kendo-ui}} auf und ist in \autocite{Simko.sass-segfault:online} dokumentiert.
+Daraufhin wird nun auch eine auf Debian basierende Version des Containers angeboten, bei der diese Probleme nicht auftreten.
+Falls der Alpine-Container funktioniert, wird dieser aufgrund der geringeren Größe (~20MB anstatt ~250MB) empfohlen.
+
+\subsubsection{Debian-Dockerfile}
+
+In \cref{lst:dockerfile.debian} ist der Dockerfile der Debian-Version des Containers dargestellt.
+
+Der Hauptunterschied zum in \cref{lst:dockerfile.alpine} dargestellten Alpine-Image liegt in Zeile 2.
+Vom Node.js-Docker-Container existiert sowohl eine Alpine als auch eine Debian-Version, wobei für Alpine-Linux der Präfix \emph{alpine} und für die Debian-Version kein Präfix verwendet wird.
+Der zweite Unterschied ist, dass die Bourne Again Shell in Debian bereits inkludiert ist, weshalb diese Installation im Image entfällt.
+
 \lstinputlisting[caption=Debian-Dockerfile,label={lst:dockerfile.debian}]{listings/Dockerfile.debian}
 
 \section{Dokumentation}
@@ -178,6 +198,7 @@ Der Container ist im Docker Hub\footnote{\url[]} veröffentlicht
 
 \section{Beispiel: Auszug aus einem realen Projekt}
 \label{sec:example}
+Beispielanwendung des Containers
 \lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
 
 \begin{figure}[htbp]
