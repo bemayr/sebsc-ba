@@ -4,6 +4,7 @@ In diesem Abschnitt wird beschrieben aus welchen Bestandteilen der Container bes
 Weiters wird dargestellt, in welchen Aspekten der Container durch neue Kenntnisse beim Einsatz in echten Projekten weiterentwickelt wurde.
 
 \section{Anwendungsszenarien}
+\label{sec:usage}
 Wie in \cref{cha:concept} erläutert, ist die grundlegende Idee des Containers Node.js und npm oder yarn als versionierbare Abhängigkeit zu einem Projekt hinzuzufügen.
 Anstatt der lokalen Installation dieser Werkzeuge wird lediglich Docker auf dem System benötigt.
 Folgend kann der Container, wie in \cref{lst:docker-run-container} dargestellt, gestartet werden.
@@ -119,7 +120,7 @@ Mithilfe diesem kann das Image des Containers für existierende Node.js-Versione
 
 Docker Hub bietet zwar die Möglichkeit eines automatisierten Builds, wobei das Image bei jeder Änderung automatisch in der Cloud erzeugt wird.
 Dieses Service wurde auch evaluiert, Docker Hub benötigt allerdings aufgrund fehlender Funktionen in der GitHub-API Lese- und Schreibrechte auf den gesamten GitHub-Account, des verknüpften Repositorys.
-Leserechte für das Repository wären kein Problem, da der Quelltext des softaware/webdev-Containers ohnehin öffentlich ist, Schreibrechte auf den GitHub-Account der Firma softaware sind allerdings nicht mit den Unternehmensrichtlinien zu vereinbaren.
+Leserechte für das Repository wären kein Problem, da der Quelltext des softaware/webdev-Containers ohnehin öffentlich ist, Schreibrechte auf den GitHub-Account der Firma softaware gmbh sind allerdings nicht mit den Unternehmensrichtlinien zu vereinbaren.
 
 \subsubsection{Build-Skript}
 
@@ -165,59 +166,99 @@ In \cref{fig:create-image} ist eine Beispielausgabe zu sehen, mit der die zwei I
 Um die Imagegröße eines Docker-Containers möglichst gering zu halten, wird der Einsatz der dafür optimierten Linux-Distribution Alpine\footnote{\url{https://alpinelinux.org/}} empfohlen.
 Das Alpine-Basisimage hat lediglich eine Größe von fünf Megabyte und ist für die Ausführung im RAM optimiert.
 
-Auch vom offizielle Node.js-Image\footnote{\url{https://hub.docker.com/_/node/}} existiert eine Alpine-Version, die durch die geringe Größe von etwa 17 Megabyte besticht.
-In der Dokumentation des Node.js-Containers wird darauf hingewiesen, dass Alpine nicht auf der verbreiteten \verb|glibc|, sondern auf \verb|musllibc| basiert.
+Auch vom offiziellen Node.js-Image\footnote{\url{https://hub.docker.com/_/node/}} existiert eine Alpine-Version, die durch die geringe Größe von etwa 17 Megabyte besticht.
+In der Dokumentation des Node.js-Containers wird explizit darauf hingewiesen, dass Alpine nicht auf der verbreiteten \verb|glibc|, sondern auf \verb|musl libc| basiert.
 
-Nach ausführlichen Tests wurde festgestellt, dass es bei der Verwendung des Alpine-Container Probleme mit der Kompilierung von Sass\footnote{\url{http://sass-lang.com/}} gibt.
-Sass erweitert CSS um die Funktionalität von Variablen und Funktionen.
-Das Problem trat bei der Verwendung des Komponententframeworks Kendo UI\footnote{\url{http://www.telerik.com/kendo-ui}} auf und ist in \autocite{Simko.sass-segfault:online} dokumentiert.
-Daraufhin wird nun auch eine auf Debian basierende Version des Containers angeboten, bei der diese Probleme nicht auftreten.
-Falls der Alpine-Container funktioniert, wird dieser aufgrund der geringeren Größe (~20MB anstatt ~250MB) empfohlen.
+Nach ausführlichen Tests wurde festgestellt, dass es bei der Verwendung des Alpine-Container Probleme mit der Kompilierung von \emph{Sass\footnote{\url{http://sass-lang.com/}}} gibt.
+Sass ist eine Sprache, die CSS um die Funktionalität von Variablen und Funktionen erweitert.
+Das Problem trat bei der Verwendung des Komponentenframeworks \emph{Kendo UI\footnote{\url{http://www.telerik.com/kendo-ui}}} auf und ist in \autocite{Simko.sass-segfault:online} dokumentiert.
+Daher wird nun auch eine auf Debian basierende Version des Containers angeboten, bei der diese Probleme nicht auftreten.
+
+Empfohlen wird aufgrund der wesentlich geringeren Größe (\textasciitilde{}20MB anstatt \textasciitilde{}250MB) allerdings die Alpine-Version des Containers.
 
 \subsubsection{Debian-Dockerfile}
 
 In \cref{lst:dockerfile.debian} ist der Dockerfile der Debian-Version des Containers dargestellt.
 
 Der Hauptunterschied zum in \cref{lst:dockerfile.alpine} dargestellten Alpine-Image liegt in Zeile 2.
-Vom Node.js-Docker-Container existiert sowohl eine Alpine als auch eine Debian-Version, wobei für Alpine-Linux der Präfix \emph{alpine} und für die Debian-Version kein Präfix verwendet wird.
+Vom Node.js-Docker-Container existiert sowohl eine Alpine als auch eine Debian-Version, wobei für Alpine-Linux das Präfix \emph{alpine} und für die Debian-Version kein Präfix verwendet wird.
 Der zweite Unterschied ist, dass die Bourne Again Shell in Debian bereits inkludiert ist, weshalb diese Installation im Image entfällt.
 
 \lstinputlisting[caption=Debian-Dockerfile,label={lst:dockerfile.debian}]{listings/Dockerfile.debian}
 
 \section{Dokumentation}
 \label{sec:documentation}
+Dokumentation war neben der möglichst einfachen Benutzung die Hauptaufgabe bei der Erstellung des softaware/webdev-Containers.
+Da der Container das erste Open-Source-Projekt der Firma softaware gmbh ist, soll der Fokus auf Dokumentation bei der Verbreitung des Containers helfen, wodurch auch andere Unternehmen davon profitieren können.
+Im Folgenden werden einige der Besonderheiten bei der Dokumentation des Projekts gezeigt:
 
-\subsubsection{GitHub}
-\label{sub:github}
-\subsubsection{Docker Hub}
-\label{sub:dockerhub}
-Der Container ist im Docker Hub\footnote{\url[]} veröffentlicht
-\subsubsection{Microbadger}
-\label{sub:microbadger}
+\begin{description}
+    \item[GitHub] Das gesamte Projekt wurde auf GitHub im Repository softawaregmbh/docker-webdev\footnote{\url{https://github.com/softawaregmbh/docker-webdev}} veröffentlicht.
+        Die Dokumentation und der Aufbau der Readme-Datei ist an die des Projekts Cycle.js\footnote{\url{https://github.com/cyclejs/cyclejs}} angelehnt, diese sehr übersichtlich ist.
+    \item[Docker Hub] Wie in \cref{sec:build-process} beschrieben, wurde der fertige Container im Docker Hub veröffentlicht.
+        Aufgrund der dort beschriebenen Probleme ist die Verknüpfung mit GitHub nicht möglich.
+        Diese würde zusätzlich zum automatisierten Build-Prozess den Vorteil bringen, dass die Readme-Datei aus dem GitHub-Repository auch im Docker Hub angezeigt wird.
+        Die aktuelle, suboptimale Lösung ist das manuelle Synchronisieren der Readme-Datei von GitHub in den Docker Hub.
+    \item[MicroBadger] MicroBadger\footnote{\url{https://microbadger.com/}} ist ein Onlinedienst, der Informationen zu Docker-Images übersichtlich aufbereitet.
+        Die Verwendung des Dienstes ist für Open-Source-Projekte kostenlos.
+        Zusätzlich werden sogenannte Badges generiert, die in die Dokumentation des Projektes integriert werden können.
+        Beim softaware/webdev-Container werden diese verwendet, um die Imagegrößen der Containerversionen übersichtlich darzustellen.
+        \cref{fig:microbdager-versions} zeigt diese Übersicht.
+\end{description}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.75\linewidth,clip]{images/container-versions}
+    \caption{MicroBadger-Übersicht über die Container-Versionen}
+\label{fig:microbdager-versions}
+\end{figure}
 
 
 \section{Beispiel: Auszug aus einem realen Projekt}
 \label{sec:example}
-Beispielanwendung des Containers
-\lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
+Die in \cref{sec:usage} empfohlene Anwendung des Containers ist die Versionierung durch ein Startskript.
+In \cref{lst:docker-webdev.ps1} ist ein solches Powershell-Skript dargestellt, das die Verwendung des Containers vereinfacht.
+Der Name dieses Skripts ist in der Firma softaware gmbh normalerweise \emph{docker-webdev.ps1}, wodurch der Entwicklerworkflor Projektgrenzen hinweg konsistent ist.
+Außerdem sind diese Skripte in allen Projekten im Wurzelverzeichnis mitversioniert.
 
+Bei dem Projekt des hier angeführten Skriptes handelt es sich um ein Node.js-Webservice, das mit dem Web-Framework \emph{koa\footnote{\url{http://koajs.com/}}} entwickelt wurde. 
+
+\lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
+Das Startskript nimmt ein Kommando entgegen, auf Basis dessen ab Zeile 31 entschieden wird, welches Docker-Kommando ausgeführt wird.
+Falls kein Kommando spezifiziert wird, wird eine Hilfe wie in \cref{fig:docker-webdev} dargestellt, ausgegeben.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.95\linewidth,clip]{images/docker-webdev}
     \caption{Hilfe zum Startskript des Containers in einer echten Applikation}
 \label{fig:docker-webdev}
 \end{figure}
+Der typische Ablauf eines Softwareentwicklers sieht das Starten der Anwendung mit \verb|.\docker-webdev.ps1 start| vor.
+Danach können in einer zweiten Powershell-Sitzung mithilfe von \verb|.\docker-webdev.ps1 shell| npm-Kommandos ausgeführt werden.
+Dies könnte zum Beispiel die Installation eines Pakets mit \verb|npm install <Paketname>| sein. 
 
 
 \section{Probleme und Besonderheiten}
 \label{sec:container-problems}
+Bei der Verwendung des Containers gibt es folgende Besonderheiten zu beachten:
 
-\begin{description}
-    \item[Kendo UI Sass Build]
-    \item[different OSs]
-    \item[prevent IDE automatic install]
-    \item[File Detection]
-    \item[Typescript node modules]
-    \item[Port-mapped application containers]
-    \item[optional]
-\end{description}
+\begin{itemize}
+    \item Wie bereits in \cref{sec:alpine-vs-debian} beschrieben, gibt es bei der Verwendung des Sass-Compilers unter Alpine-Linux Probleme.
+        Die Lösung dafür ist die Debian-Variante des Containers, bei der diese Probleme nicht auftreten.
+    \item Vor der Verwendung des Containers muss das \verb|node_modules|-Verzeichnis gelöscht werden.
+        Diese Maßnahme ist notwendig, da es in Node.js native Pakete gibt, bei denen betriebssystemspezifische Varianten installiert werden.
+        Nach dem Löschen des Verzeichnisses muss \verb|npm install| im Container ausgeführt werden, damit dann die richtigen Pakete installiert werden.
+    \item Bei der Verwendung des Containers in Kombination mit Entwicklungsumgebungen ist besondere Vorsicht geboten.
+        Falls \zB Visual Studio ein Webprojekt erkennt, aktualisiert es im Hintergrund automatisch die npm-Pakete.
+        Da dies allerdings außerhalb des Containers geschieht, entstehen Inkonsistenzen im \verb|node_modules|-Verzeichnis.
+        Als Lösung wird die Deaktivierung dieser Funktion in der Entwicklungsumgebung vorgeschlagen.
+    \item Viele Web-Frameworks werben mit \emph{Hot Reloading}.
+        Damit ist die automatische Aktualisierung des Browsers bei Änderungen am Source Code gemeint.
+        Bei der Verwendung des Containers muss dazu der Modus konfiguriert werden, der Dateiänderungen erkennt.
+        Dieser muss auf Polling umgestellt werden, da es bei Docker ein Problem mit der Erkennung von Änderungen in Dateien gibt, wenn diese zwischen dem Host und dem Container geteilt sind \autocite{Docker.inotify-problem:online}. 
+    \item Während der Entwicklung des Containers wurde die Möglichkeit getestet, das \verb|node_modules|-Verzeichnis als eigenes Docker-Volume zu behandeln.
+        Dadurch wäre die Performance beim Installieren der Pakete wesentlich besser.
+        Allerdings benötigen die Entwicklungsumgebungen Zugriff auf dieses Verzeichnis um die Autovervollständigung für TypeScript zu ermöglichen, da die Typinformationen direkt aus den Paketen ausgelesen werden.
+    \item Die Verwendung des Containers ist optional.
+        Falls sich einzelne Entwickler dagegen entscheiden, muss nur sichergestellt sein, dass sie die richtigen Versionen von Node.js und npm installiert haben.
+        Dadurch werden heterogene Entwicklungsteams ermöglicht, bei denen nicht jeder Entwickler auf Docker angewiesen ist.
+\end{itemize}
