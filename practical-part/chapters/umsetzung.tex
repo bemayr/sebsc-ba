@@ -1,19 +1,19 @@
 \chapter{Erstellung des softaware/webdev-Docker-Containers}
 \label{cha:implementation}
-In diesem Abschnitt wird beschrieben, aus welchen Bestandteilen der Container besteht, warum diese Entscheidungen getroffen wurden und welche Probleme und Hürden sich bei der Entwicklung ergaben.
+In diesem Abschnitt wird beschrieben aus welchen Bestandteilen der Container besteht, warum diese Entscheidungen getroffen wurden und welche Probleme und Hürden sich bei der Entwicklung ergaben.
 Weiters wird dargestellt, in welchen Aspekten der Container durch neue Kenntnisse beim Einsatz in echten Projekten weiterentwickelt wurde.
 
 \section{Anwendungsszenarien}
-Wie in \cref{cha:concept} erläutert, ist die grundlegende Idee des Containers, Node.js und npm oder yarn als versionierbare Abhängigkeit zu einem Projekt hinzuzufügen.
-Anstatt der lokal Installation dieser Werkzeuge wird lediglich Docker auf dem System benötigt.
-Folgend kann der Container wie in \cref{lst:docker-run-container} dargestellt gestartet werden.
+Wie in \cref{cha:concept} erläutert, ist die grundlegende Idee des Containers Node.js und npm oder yarn als versionierbare Abhängigkeit zu einem Projekt hinzuzufügen.
+Anstatt der lokalen Installation dieser Werkzeuge wird lediglich Docker auf dem System benötigt.
+Folgend kann der Container, wie in \cref{lst:docker-run-container} dargestellt, gestartet werden.
 \begin{lstlisting}[caption=Kommando zum Starten des softaware/webdev-Containers, language=bash, label=lst:docker-run-container]
 docker container run -it --rm -v ${pwd}:/usr/src/app softaware/webdev:alpine-8.1.2
 \end{lstlisting}
-Das Kommando \verb|docker container run| entstammt der neuen Docker-CLI (seit Version 1.13 enthalten) und erzeugt einen Container auf Basis eines Image.
-Die Parameter \verb|-it| erzeugen eine interaktive Shell zum Container.
+Das Kommando \verb|docker container run| entstammt der neuen Docker-CLI (seit Version 1.13 enthalten) und erzeugt einen Container auf Basis eines Images.
+Die Parameter \verb|-it| erzeugen eine interaktive Shell, die mit dem Container verbunden ist.
 Durch \verb|--rm| wird der Container nach dem Stoppen wieder entfernt.
-Container sollten grundsätzlich keine Daten beinhalten, wodurch diese Option möglich wird und das System sauber hält.
+Container sollten grundsätzlich keine Daten beinhalten, wodurch diese Option möglich und das System sauber gehalten wird.
 Erst durch \verb|-v ${pwd}:/usr/src/app| können die Daten des Containers persistiert werden.
 Dieses Kommando bindet das aktuelle Verzeichnis in das Arbeitsverzeichnis des Containers ein.
 Dadurch können sowohl der Host, als auch der Container gleichzeitig mit diesem Verzeichnis arbeiten, wodurch es möglich wird, dass die Entwicklungsumgebung am Host läuft, npm allerdings im Container.
@@ -31,13 +31,13 @@ Das Ergebnis dieses Kommandos ist in \cref{fig:container-execution} zu sehen.
 Für den Container sind grundsätzlich die folgenden drei Anwendungsszenarien vorgesehen:
 
 \begin{enumerate}
-    \item Wie im vorangegangenen Beispiel gezeigt, kann mithilfe des Containers sehr schnell eine spezifische Kommandozeile mit installiertem Node.js und npm gestartet werden.
-        Dies kann \zB zum Initialisieren eines Webprojektes mit \verb|npm init| verwendet werden.
+    \item Wie im vorangegangenen Beispiel gezeigt, können mithilfe des Containers sehr schnell spezifische Node.js- und npm-Versionen gestartet werden.
+        Dies kann \zB zum Initialisieren eines Webprojektes durch \verb|npm init| nützlich sein.
     \item Weiters kann vom softaware/webdev-Image abgeleitet werden, um ein eigenes spezifischeres Image zu erstellen.
-        In diesem können weitere Werkzeuge installiert werden, oder Ports des Containers explizit freigegeben werden. 
+        In diesem können \zB weitere Werkzeuge installiert werden oder Ports des Containers explizit freigegeben werden. 
     \item Falls mithilfe der ersten Anwendungsweise ein Projekt erstellt wurde, wird empfohlen, danach das Startkommando mit derselben Containerversion als Skript zum Projekt hinzuzufügen.
-        Dadurch kann die Entwickungsumgebung konistent reproduziert werden und als Abhängigkeit mit dem Projekt mitversioniert werden.
-        Ein Beispiel dazu ist in \cref{sec:example} zu sehen.
+        Dadurch kann die Entwicklungsumgebung konsistent reproduziert werden und als Abhängigkeit mit dem Projekt mitversioniert werden.
+        Ein Beispiel eines realen Projekts ist in \cref{sec:example} zu sehen.
 \end{enumerate}
 Im Folgenden wird das \emph{Dockerfile} erläutert, das die Basis des Containers darstellt und die eben beschriebenen Funktionen ermöglicht.
 
@@ -46,8 +46,8 @@ Im Folgenden wird das \emph{Dockerfile} erläutert, das die Basis des Containers
 \lstinputlisting[caption=Alpine-Dockerfile,label={lst:dockerfile.alpine}]{listings/Dockerfile.alpine}
 
 \subsubsection{Zeile 2}
-Die \verb|FROM|-Anweisung ermöglicht es Docker-Images voneinander zu erben.
-In diesem Fall wird vom offiziellen node-Image\footnote{\url{https://hub.docker.com/_/node/}} geerbt.
+Die \verb|FROM|-Anweisung ermöglicht es, dass Docker-Images voneinander erben können.
+In diesem Fall wird vom offiziellen Node.js-Image\footnote{\url{https://hub.docker.com/_/node/}} geerbt.
 Dieses beinhaltet Node.js, npm und yarn, wodurch die gesamte Basisfunktionalität bereits vorhanden ist.
 
 \verb|{{ node_version }}| ist keine Funktionalität von Docker, dies ist ein Platzhalter für die Versionsnummer des Node.js-Images im Build-Prozess (vgl. \cref{sec:build-process}).
@@ -56,7 +56,7 @@ In diesem Fall wird von dem \emph{alpine}-Image abgeleitet und der Platzhalter i
 
 \subsubsection{Zeile 3}
 Die früher verwendete \verb|MAINTAINER|-Anweisung in Dockerfiles wurde durch das flexiblere \verb|LABEL| ersetzt.
-Durch den \emph{maintainer} werden Metadaten erstellt, die angeben wer für dieses Image verantwortlich ist, und an wen sich der Benutzer dessen wenden kann.
+Durch den \emph{maintainer} werden Metadaten erstellt, die angeben, wer für dieses Image verantwortlich ist, und an wen sich der Benutzer dessen wenden kann.
 
 \subsubsection{Zeile 6}
 Wie im Kommentar in Zeile 5 beschrieben, wird durch die \verb|ENV|-Anweisung die Umgebungsvariable \verb|PATH| erweitert.
@@ -64,30 +64,30 @@ Diese Änderung ermöglicht es, lokal installierte Node.js-Anwendungen als Komma
 
 In \cref{sec:global-package-installation} wurde bereits der Unterschied zwischen global und lokal installierten Anwendungen erläutert.
 Im Container ist allerdings aufgrund der Isolierung das in \autocite{stackoverflow:nodemodules-hack:online} beschriebene Sicherheitsrisiko wesentlich geringer.
-Anstatt der Erstellung eines eigenen Container-Images mit global installierten Paketen, sollten diese bei der Verwendung des Containers immer in der \emph{package.json}-Datei erfasst werden.
-Dadurch muss kein eigenes Image gewartet werden und auch ohne dem Container sind alle Abhängigkeiten des Webprojektes definiert.
+Anstatt der Erstellung eines eigenen Container-Images mit global installierten Paketen, sollten diese immer in der \emph{package.json}-Datei erfasst werden.
+Dadurch muss kein eigenes Image gewartet werden und auch ohne den Container sind alle Abhängigkeiten des Webprojektes definiert.
 
 Diese Änderung an der Umgebungsvariable ist lediglich aus Kompatibilitätsgründen vorhanden, damit auch ältere Projekte, die sich historisch bedingt auf globale Abhängigkeiten verlassen, im Container verwendet werden können.
 Die Konfiguration eines Webprojektes sollte allerdings nach \cref{subsub:packages-best-practice} erfolgen.
 
 \subsubsection{Zeile 9}
 Hier wird unter der Verwendung des Alpine-Linux-Paketmanagers \emph{apk} die Bourne Again Shell installiert.
-Im Gegensatz zur Almquist Shell ist sie wesentlich weiter verbreitet und bietet erweiterte Funktionalität.
+Im Gegensatz zur vorinstallierten Almquist Shell ist sie wesentlich weiter verbreitet und bietet mehr Funktionen.
 Durch den \verb|--no-cache| Parameter wird die Größe des fertigen Docker-Images möglichst klein gehalten.
 
 \subsubsection{Zeile 12}
 In Zeile 12 wird das aktuelle Arbeitsverzeichnis des resultierenden Containers auf \verb|/usr/src/app| gesetzt.
-Die \verb|WORKDIR|-Anweisung eines Dockerfiles entpricht im wesentlich dem Wechsel in dieses Verzeichnis mit \verb|cd|.
+Die \verb|WORKDIR|-Anweisung eines Dockerfiles entspricht im Wesentlichen dem Wechsel in dieses Verzeichnis mit dem Kommando \verb|cd|.
 
 \subsubsection {Zeile 15}
 Das Aussehen der Eingabeaufforderung wird in Zeile 15 geändert.
-Der Zweck dieser Änderung ist, dass der Entwickler auf den ersten Blick erkennen kann, ob er sich gerade im Containerm, oder außerhalb, befindet.
+Der Zweck dieser Änderung ist, dass der Entwickler auf den ersten Blick erkennen kann, ob er sich gerade innerhalb des Containers, oder außerhalb, befindet.
 \lstinputlisting[caption=.bashrc (Bash-Konfigurationsdatei),label={lst:.bashrc},language=bash]{listings/.bashrc}
 Durch das Dockerfile-Kommando \verb|COPY| wird die Datei \emph{.bashrc} in den Container kopiert.
 Diese ist in \cref{lst:.bashrc} abgebildet.
-Darin wird in Zeile 2 die Eingabeaufforderung durch das Setzen der Umgebungsvariable \verb|PS1| das Format \emph{dev@docker:[<aktuelles Verzeichnis>]>} zugewiesen.
+Darin wird in Zeile 2 der Eingabeaufforderung durch das Setzen der Umgebungsvariable \verb|PS1| das Format \emph{dev@docker:[<aktuelles Verzeichnis>]>} zugewiesen.
 Die kryptisch aussehende Notation ändert lediglich die Anzeigefarbe des aktuellen Verzeichnisses.
-In Zeile 5 wird mit \verb|printf| eine Nachricht beim initialien Start des Containers ausgegeben.
+In Zeile 5 wird mit \verb|printf| eine Nachricht beim Start des Containers ausgegeben.
 Das Resultat ist in \cref{fig:container-execution} zu sehen.
 
 \subsubsection {Zeile 16}
@@ -99,28 +99,64 @@ Falls dieses allerdings bei unterschiedlichen npm-Versionen unterschiedlich ausf
 Durch das nachträgliche Hinzufügen des Ergebnisses mithilfe der \verb|RUN|-Anweisung ist nun sichergestellt, dass das Ergebnis von \verb|npm completion| immer zur verwendeten npm-Version passt.
 
 \subsubsection {Zeile 17}
-In Zeile 17 wird das standardmäßige Startkommando des Containers auf die Bourne Again Shell festgelegt.
+In Zeile 17 wird das Startkommando des Containers auf die Bourne Again Shell festgelegt.
 Der verwendete Node.js-Container startet standardmäßig mit dem Kommando \verb|node| ohne weitere Parameter.
 Da der softaware/webdev-Container allerdings zur interaktiven Entwicklung gedacht ist, wird dieses Standardverhalten überschrieben.
-In \cref{sub:examples} wird gezeigt, dass dieses Kommando beim Ausführen des Containers überschreiben lässt, wodurch sich der Container auch zum Skripten eignet.
+In \cref{sec:example} wird gezeigt, dass sich dieses Kommando beim Ausführen des Containers überschreiben lässt, wodurch sich der Container auch in Skripts integrieren lässt.
 
 In einer früheren Version des Containers wurde beim Start ein Skript aufgerufen, das überprüft ob das aktuelle Verzeichnis ein Webprojekt ist.
 In diesem Fall wurde \verb|npm install| aufgerufen, um alle Abhängigkeiten zu überprüfen und im Fall von fehlenden Paketen, diese nachzuinstallieren.
-Da dieses Verhalten für den Verwender unerwartet ist, allerdings bei jedem Start einige Sekunden kostet, wurde dieses Feature wieder entfernt. 
+Da dieses Verhalten für den Benutzer unerwartet ist, allerdings bei jedem Start einige Sekunden kostet, wurde dieses Feature wieder entfernt. 
 
 
 \section{Build-Prozess}
 \label{sec:build-process}
+Um ein Docker-Image auf Basis eines Dockerfiles zu erstellen, benötigt es lediglich das Kommando \verb|docker build .|, welches durch den Punkt nach dem Dockerfile im aktuellen Verzeichnis sucht.
+Das softaware/webdev-Image ist allerdings im offiziellen Docker Hub\footnote{\url{https://hub.docker.com/}} veröffentlicht, um es ohne weitere Konfiguration mit \verb|docker container run| ausführen zu können.
 
-https://docs.docker.com/docker-hub/github/
-Namenskonenvtion
+Anstatt einer Beschreibung zum Erstellen des Images, existiert das in \cref{lst:create-image.ps1} abgebildete Powershell-Skript.
+Mithilfe diesem kann das Image des Containers für existierende Node.js-Versionen automatisch erstellt und veröffentlicht werden.
 
+Docker Hub bietet zwar die Möglichkeit eines automatisierten Builds, wobei das Image bei jeder Änderung automatisch in der Cloud erzeugt wird.
+Dieses Service wurde auch evaluiert, Docker Hub benötigt allerdings aufgrund fehlender Funktionen in der GitHub-API Lese- und Schreibrechte auf den gesamten GitHub-Account, des verknüpften Repositorys.
+Leserechte für das Repository wären kein Problem, da der Quelltext des softaware/webdev-Containers ohnehin öffentlich ist, Schreibrechte auf den GitHub-Account der Firma softaware sind allerdings nicht mit den Unternehmensrichtlinien zu vereinbaren.
+
+\subsubsection{Build-Skript}
+
+Das in \cref{lst:create-image.ps1} abgebildete Build-Skript existiert nicht nur wegen der vorhin beschriebenen Einschränkungen im Docker Hub, sondern auch aufgrund der in \cref{sec:alpine-vs-debian} erläuterten Besonderheiten.
+Da der Container Alpine-Linux und Debian unterstützt, müssen für jede Node.js-Version zwei Images erstellt werden.
+Im Folgenden werden die wichtigsten Funktionen des Build-Skriptes erklärt.
 \lstinputlisting[caption=\emph{create-image.ps1} (Build-Skript des Containers),label={lst:create-image.ps1}]{listings/create-image.ps1}
 
+\subsubsection{\texttt{create-image.ps1}}
+Das Build-Skript selbst nimmt als einzigen Parameter die Node.js-Version des zu verwendenden Basisimages entgegen.
+Zusätzlich können zwei Schalter gesetzt werden:
+\begin{enumerate}
+    \item \verb|-silent| reduziert die Ausgaben auf ein Minimum.
+    \item \verb|-publish| veröffentlicht die erstellten Images auf \url{hub.docker.com}.
+        Dazu muss der Verwender in der Docker CLI mit einem Benutzer eingeloggt sein, der Schreibrechte auf das softaware/webdev-Repository im Docker Hub besitzt.
+\end{enumerate}
+
+\subsubsection{\texttt{Generate-Images}}
+Die Funktion \verb|Generate-Images| ruft für jede registrierte Linux-Distribution die Funktion \verb|Generate-Image| auf.
+So können die unterstützten Linux-Distributionen in der Konstante \verb|$DISTRIBUTIONS| zentral erfasst werden.
+Dadurch wird die Leserlichkeit des Skriptes verbessert und falls der Container in Zukunft um weitere Distributionen erweitert wird, können diese einfach in das Skript integriert werden.
+
+\subsubsection{\texttt{Generate-Image}}
+\verb|Generate-Image| enthält die Logik zum Erstellen der Images.
+Auf Basis der Node.js-Version und der Linux-Distribution wird das Image erstellt, und falls gewünscht, danach veröffentlicht.
+\begin{itemize}
+    \item In Zeile 27 wird das zu verwendende Dockerfile ausgewählt.
+    \item Die Zeilen 28 und 29 setzen auf Basis der Konstanten den Namen des Images, um die Namenskonvention \verb|softaware/webdev:<Linux-Distribution>-<Node.js-Version>| zu erreichen.
+    \item In den Zeilen 31 bis 33 wird ein temporäres Dockerfile erstellt, bei dem der Node.js-Versionsplatzhalter (vgl. \cref{sec:dockerfile}) durch eine echte Versionsnummer ersetzt wird.
+    \item Auf Basis dieses Dockerfiles wird in Zeile 36 das Image mit dem in Zeile 35 generierten Kommando erstellt.
+    \item Schlussendlich wird in Zeile 37 das generierte Dockerfile wieder entfernt.
+\end{itemize}
+In \cref{fig:create-image} ist eine Beispielausgabe zu sehen, mit der die zwei Images für die Node.js-Version 8.0.0 erstellt und veröffentlicht wurden.
 \begin{figure}[htbp]
     \centering
     \includegraphics[width=0.75\linewidth,clip]{images/create-image}
-    \caption{Ausgabe des Build-Prozesses für Node.js 8.0}
+    \caption{Ausgabe des Build-Prozesses für Node.js 8.0.0}
 \label{fig:create-image}
 \end{figure}
 
@@ -140,7 +176,7 @@ Der Container ist im Docker Hub\footnote{\url[]} veröffentlicht
 \label{sub:microbadger}
 
 
-\section{Beispielanwendung des Containers}
+\section{Beispiel: Auszug aus einem realen Projekt}
 \label{sec:example}
 \lstinputlisting[caption=docker-webdev.ps1 (Container-Start-Skript),label={lst:docker-webdev.ps1}]{listings/docker-webdev.ps1}
 
