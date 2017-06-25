@@ -4,15 +4,13 @@ Die Einsatzmöglichkeiten von Containern als Werkzeug zur Unterstützung des Sof
 Die Kapselung von Werkzeugen in einen Container bietet folgende Vorteile:
 
 \begin{itemize}
-    \item Falls keine keine grafische Benutzeroberfläche benötigt wird und eine Kommandozeile ausreicht, bieten Container eine konsistente Möglichkeit der Virtualisierung ohne den Overhead von Vollvirtualisierungslösungen mit Vagrant.
+    \item Falls keine keine grafische Benutzeroberfläche benötigt wird und eine Kommandozeile ausreicht, bieten Container eine konsistente Möglichkeit der Virtualisierung ohne den Overhead von Vollvirtualisierungslösungen, wie \zB mit Vagrant.
     \item Container lassen sich gemeinsam mit dem Projekt versionieren, sodass alle Softwareentwickler im Team die gleiche Version der Werkzeuge verwenden.
     \item Die Anzahl der benötigten Werkzeuge der Entwickler wird reduziert, da im Optimalfall lediglich eine Engine zum Starten der Container (\zB Docker) benötigt wird.
     \item Falls ein Container gestartet wird, dessen Image auf dem System noch nicht vorhanden war, wird dieser automatisch heruntergeladen und gestartet.
-        Dadurch entfällt die manuelle Installation der Werkzeuge wodurch Probleme wie fehlende Benutzerberechtigungen, falsche Werkzeuge oder inkompatible Version dieser der Vergangenheit angehören.
+        Dadurch entfällt die manuelle Installation der Werkzeuge, wodurch Probleme wie fehlende Benutzerberechtigungen, falsche Werkzeuge oder inkompatible Versionen dieser der Vergangenheit angehören.
 \end{itemize}
-
-\subsubsection{Container in der Frontend-Webentwicklung}
-\autocite{Demmel.webdev-environment:online} ist ein exzellenter Artikel über die Verwendung von Containern in der Webentwicklung.
+\autocite{Demmel.webdev-environment:online} ist ein exzellenter Artikel über die Verwendung von Containern in der Web\-ent\-wick\-lung.
 Am Ende des Artikels wird zur Erstellung von Containern für diverse Werkzeuge aufgerufen.
 Im Besonderen gilt dieser Aufruf Legacy-Projekten und Open-Source-Projekten, da diese eine besonders hohe Einstiegshürde haben.
 Dies liegt vor allem an der Installation und Konfiguration der benötigten Werkzeuge.
@@ -22,6 +20,6 @@ Für die Entwicklung von Node.js-basierten Webprojekten existiert bereits der of
 Dieser ist allerdings für den Betrieb und nicht die Entwicklung von Anwendungen ausgelegt.
 
 Das Konzept des softaware/webdev-Containers ist einerseits, diesen den Node.js-Container um Funktionen zu erweitern, die eine angenehme interaktive Entwicklung von Webprojekten ermöglichen.
-Andererseits wird ein Großteil der Entwicklung der Dokumentation gewidmet, die eine Sammlung an Best Practices und durch die Verwendung des Containers gewonnene Erfahrungen darstellt.
+Andererseits wird ein Großteil der Entwicklung der Dokumentation gewidmet, die eine Sammlung von Best Practices und durch die Verwendung des Containers gewonnenen Erfahrungen darstellt.
 
-Im folgenden Abschnitt wird die Implementierung dieses Containers dargestellt, sowie der Weg dorthin und die dabei gewonnenen Erfahrungen.
+Im folgenden Kapitel werden die Implementierung dieses Containers dargestellt sowie der Weg dorthin und die dabei gewonnenen Erfahrungen beschrieben.
