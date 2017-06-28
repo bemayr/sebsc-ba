@@ -23,7 +23,6 @@
         {
             "taskName": "pba",
             "isShellCommand": true,
-            "isBuildCommand": true,
             "command": "docker",
             "echoCommand": true,
             "args": [
@@ -64,6 +63,22 @@
                 "sh",
                 "-c",
                 "mkdir -p dist/ && pdflatex -output-directory=dist expose && cp dist/expose.pdf ./ 2>/dev/null && rm -rf dist/"
+            ]
+        },
+        {
+            "taskName": "combined",
+            "isShellCommand": true,
+            "isBuildCommand": true,
+            "command": "docker",
+            "echoCommand": true,
+            "args": [
+                "run",
+                "--rm",
+                "-v=%cd%/combined:/data",
+                "janstuemmel/latex",
+                "sh",
+                "-c",
+                "mkdir -p dist/ && pdflatex -output-directory=dist thesis && cp dist/thesis.pdf ./ 2>/dev/null && rm -rf dist/"
             ]
         }
     ]

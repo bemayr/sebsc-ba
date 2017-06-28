@@ -203,3 +203,5 @@ TSWLatexianTemp*
 ### --- custom modifications ---
 **/*.pdf
 **/dist/
+!combined/*.pdf
+combined/thesis.pdf

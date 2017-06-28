@@ -1,0 +1,24 @@
+%%% ----- general packages and settings ----- %%%
+\documentclass[a4paper, ngerman]{scrreprt}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{babel}
+\usepackage{microtype} % fixes line breaks
+
+%%% ----- include pdf ----- %%%
+\usepackage{pdfpages}
+
+
+%%% ---------- Document Data ----------
+\begin{document}
+\pagenumbering{gobble}
+\includepdf[pages=-]{deckblatt.pdf}
+\includepdf[pages=-]{inhaltsuebersicht.pdf}
+\include{eidesstattliche-erklaerung}
+\include{danksagung}
+\includepdf[pages=-]{tba-titelblatt.pdf}
+% \includepdf[pages=-]{tba.pdf}
+\includepdf[pages=-]{pba-titelblatt.pdf}
+% \includepdf[pages=-]{pba.pdf}
+\end{document}
