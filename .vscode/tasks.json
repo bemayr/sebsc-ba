@@ -17,7 +17,7 @@
                 "janstuemmel/latex",
                 "sh",
                 "-c",
-                "pdflatex thesis && biber thesis && pdflatex thesis && pdflatex thesis"
+                "mkdir -p dist/ && find . -type d -not -path \"./dist\" | cpio -pdvm dist/ && pdflatex -output-directory=dist thesis && biber dist/thesis && pdflatex -output-directory=dist thesis && pdflatex -output-directory=dist thesis && cp dist/thesis.pdf ./ 2>/dev/null ; rm -rf dist/"
             ]
         },
         {
