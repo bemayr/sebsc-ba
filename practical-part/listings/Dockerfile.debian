@@ -1,4 +1,4 @@
-# specify the wanted node/npm version-tag as listed in https://hub.docker.com/r/library/node/tags/
+# specify the wanted node/npm version tag as listed in https://hub.docker.com/r/library/node/tags/
 FROM node:{{ node_version }}
 LABEL maintainer "bernhard.mayr@softaware.at"
 

@@ -1,20 +1,20 @@
 \chapter{Erstellung des softaware/webdev-\\Docker-Containers}
 \label{cha:implementation}
-In diesem Abschnitt wird beschrieben, aus welchen Bestandteilen der Container besteht, warum diese Entscheidungen getroffen wurden und welche Probleme und Hürden sich bei der Entwicklung ergaben.
-Weiters wird dargestellt, in welchen Aspekten der Container durch neue Kenntnisse beim Einsatz in echten Projekten weiterentwickelt wurde.
+In diesem Abschnitt wird beschrieben, aus welchen Bestandteilen der Container besteht, welche Entscheidungen bei der Entwicklung getroffen wurden und welche Probleme und Hürden sich dabei ergaben.
+Weiters wird dargestellt, in welchen Aspekten der Container durch neue Erkenntnisse beim Einsatz in Kundenprojekten weiterentwickelt wurde.
 
 \section{Anwendungsszenarien}
 \label{sec:usage}
 Wie in \cref{cha:concept} erläutert, ist die grundlegende Idee des Containers, Node.js und npm oder yarn als versionierbare Abhängigkeit zu einem Projekt hinzuzufügen.
 Anstatt der lokalen Installation dieser Werkzeuge wird lediglich Docker auf dem System benötigt.
-Folgend kann der Container, wie in \cref{lst:docker-run-container} dargestellt, gestartet werden.
+Der Container kann, wie in \cref{lst:docker-run-container} dargestellt, gestartet werden.
 \begin{lstlisting}[caption=Kommando zum Starten des softaware/webdev-Containers, language=bash, label=lst:docker-run-container]
 docker container run -it --rm -v ${pwd}:/usr/src/app softaware/webdev:alpine-8.1.2
 \end{lstlisting}
 Das Kommando \verb|docker container run| entstammt der neuen Docker-CLI (seit Version 1.13 enthalten) und erzeugt einen Container auf Basis eines Images.
 Der Parameter \verb|-it| erzeugt eine interaktive Shell, die mit dem Container verbunden ist.
 Durch \verb|--rm| wird der Container nach dem Stoppen wieder entfernt.
-Container sollten grundsätzlich keine Daten beinhalten, wodurch diese Option möglich und das System sauber gehalten wird.
+Container sollten grundsätzlich keine Daten beinhalten, was durch diese Option sichergestellt wird und das System sauber hält.
 Erst durch \verb|-v ${pwd}:/usr/src/app| können die Daten des Containers persistiert werden.
 Dieses Kommando bindet das aktuelle Verzeichnis in das Arbeitsverzeichnis des Containers ein.
 Dadurch können sowohl der Host als auch der Container gleichzeitig mit diesem Verzeichnis arbeiten, wodurch es möglich wird, dass die Entwicklungsumgebung am Host läuft, npm allerdings im Container.
@@ -40,7 +40,7 @@ Für den Container sind grundsätzlich die folgenden drei Anwendungsszenarien vo
         Dadurch kann die Entwicklungsumgebung konsistent reproduziert werden und als Abhängigkeit mit dem Projekt mitversioniert werden.
         Ein Beispiel eines realen Projekts ist in \cref{sec:example} beschrieben.
 \end{enumerate}
-Im Folgenden wird das \emph{Dockerfile} erläutert, das die Basis des Containers darstellt und die eben beschriebenen Funktionen ermöglicht.
+Im Folgenden wird der \emph{Dockerfile} erläutert, das die Basis des Containers darstellt und die eben beschriebenen Funktionen ermöglicht.
 
 \section{Dockerfile}
 \label{sec:dockerfile}
@@ -61,7 +61,7 @@ In diesem Fall wird vom \emph{alpine}-Image abgeleitet und der Platzhalter im Bu
 
 \subsubsection{Zeile 3}
 Die \verb|MAINTAINER|-Anweisung in Dockerfiles wurde ab Version 1.13 durch das flexiblere \verb|LABEL| ersetzt.
-Durch den \emph{maintainer} werden Metadaten erstellt, die angeben, wer für dieses Image verantwortlich ist, und an wen sich der Benutzer dessen wenden kann.
+Durch den \emph{maintainer} werden Metadaten erstellt, die angeben, wer für dieses Image verantwortlich ist, und an wen sich dessen Benutzer wenden kann.
 
 \subsubsection{Zeile 6}
 Wie im Kommentar in Zeile 5 beschrieben, wird durch die \verb|ENV|-Anweisung die Umgebungsvariable \verb|PATH| erweitert.
@@ -76,7 +76,7 @@ Diese Änderung an der Umgebungsvariable ist lediglich aus Kompatibilitätsgrün
 Die Konfiguration eines neuen Webprojekts sollte allerdings nach \cref{subsub:packages-best-practice} erfolgen.
 
 \subsubsection{Zeile 9}
-Hier wird unter der Verwendung des Alpine Linux-Paketmanagers \emph{apk} die Bourne Again Shell installiert.
+Hier wird unter der Verwendung des Alpine-Paketmanagers \emph{apk} die Bourne Again Shell installiert.
 Im Gegensatz zur vorinstallierten Almquist Shell ist sie wesentlich weiter verbreitet und bietet mehr Funktionen.
 Durch den \verb|--no-cache| Parameter wird die Größe des fertigen Docker-Images möglichst klein gehalten.
 
@@ -125,7 +125,8 @@ Mithilfe dessen kann das Image des Containers für existierende Node.js-Versione
 
 Docker Hub bietet zwar die Möglichkeit eines automatisierten Builds, wobei das Image bei jeder Änderung automatisch in der Cloud erzeugt wird.
 Dieses Service wurde auch evaluiert, Docker Hub benötigt allerdings aufgrund fehlender Funktionen in der GitHub-API Lese- und Schreibrechte auf den gesamten GitHub-Account des verknüpften Repositorys.
-Leserechte für das Repository wären kein Problem, da der Quelltext des softaware/webdev-Containers ohnehin öffentlich ist Schreibrechte auf den GitHub-Account der Firma softaware gmbh sind allerdings nicht mit den Unternehmensrichtlinien zu vereinbaren.
+Leserechte für das Repository wären kein Problem, da der Quelltext des softaware/webdev-Containers ohnehin öffentlich ist.
+Schreibrechte auf den GitHub-Account der Firma softaware gmbh sind allerdings nicht mit den Unternehmensrichtlinien zu vereinbaren.
 
 \subsubsection{Build-Skript}
 
@@ -146,18 +147,18 @@ Zusätzlich können zwei Schalter gesetzt werden:
 \subsubsection{\texttt{Generate-Images}}
 Die Funktion \verb|Generate-Images| ruft für jede registrierte Linux-Distribution die Funktion \verb|Generate-Image| auf.
 So können die unterstützten Linux-Distributionen in der Konstante \verb|$DISTRIBUTIONS| zentral erfasst werden.
-Dadurch wird die Lesbarkeit des Skripts verbessert
+Dadurch wird die Lesbarkeit des Skripts verbessert.
 Falls der Container in Zukunft um weitere Distributionen erweitert wird, können diese einfach in das Skript integriert werden.
 
 \subsubsection{\texttt{Generate-Image}}
 \verb|Generate-Image| enthält die Logik zum Erstellen der Images.
 Auf Basis der Node.js-Version und der Linux-Distribution wird das Image erstellt und, falls gewünscht, danach veröffentlicht:
 \begin{itemize}
-    \item In Zeile 27 wird das zu verwendende Dockerfile ausgewählt.
+    \item In Zeile 27 wird der zu verwendende Dockerfile ausgewählt.
     \item Die Zeilen 28 und 29 setzen den Namen des Images, um die Namenskonvention \verb|softaware/webdev:<Linux-Distribution>-<Node.js-Version>| zu erreichen.
-    \item In den Zeilen 31 bis 33 wird ein temporäres Dockerfile erstellt, bei dem der Node.js-Versionsplatzhalter (vgl. \cref{sec:dockerfile}) durch eine echte Versionsnummer ersetzt wird.
+    \item In den Zeilen 31 bis 33 wird ein temporärer Dockerfile erstellt, bei dem der Node.js-Versionsplatzhalter (vgl. \cref{sec:dockerfile}) durch eine echte Versionsnummer ersetzt wird.
     \item Auf Basis dieses Dockerfiles wird in Zeile 36 das Image mit dem in Zeile 35 generierten Kommando erstellt.
-    \item Schlussendlich wird in Zeile 37 das generierte Dockerfile wieder entfernt.
+    \item Schlussendlich wird in Zeile 37 der generierte Dockerfile wieder entfernt.
 \end{itemize}
 In \cref{fig:create-image} ist eine Beispielausgabe zu sehen, mit der die zwei Images für die Node.js-Version 8.0.0 erstellt und veröffentlicht wurden.
 \begin{figure}[htbp]
@@ -202,7 +203,7 @@ Auf folgende Besonderheiten wurde bei der Dokumentation des Projekts Wert gelegt
     \item[GitHub] Das gesamte Projekt wurde auf GitHub im Repository softawaregmbh/docker-webdev\footnote{\url{https://github.com/softawaregmbh/docker-webdev}} veröffentlicht.
         Die Dokumentation und der Aufbau der Readme-Datei ist an diejenige des Projekts Cycle.js\footnote{\url{https://github.com/cyclejs/cyclejs}} angelehnt, da diese sehr übersichtlich ist.
     \item[Docker Hub] Wie in \cref{sec:build-process} beschrieben, wurde der fertige Container im Docker Hub veröffentlicht.
-        Aufgrund der in jenem Abschnitt beschriebenen Probleme ist die Verknüpfung mit GitHub nicht möglich.
+        Aufgrund der in diesem Abschnitt erläuterten Probleme ist die Verknüpfung mit GitHub nicht möglich.
         Diese würde zusätzlich zum automatisierten Build-Prozess den Vorteil bringen, dass die Readme-Datei aus dem GitHub-Repository auch im Docker Hub angezeigt wird.
         Die aktuelle, suboptimale Lösung ist das manuelle Synchronisieren der Readme-Datei von GitHub in den Docker Hub.
     \item[MicroBadger] MicroBadger\footnote{\url{https://microbadger.com/}} ist ein Onlinedienst, der Informationen zu Docker-Images übersichtlich aufbereitet.
@@ -220,7 +221,7 @@ Auf folgende Besonderheiten wurde bei der Dokumentation des Projekts Wert gelegt
 \end{figure}
 
 
-\section{Beispiel: Auszug aus einem realen Projekt}
+\section{Beispiel: Auszug aus einem Kundenprojekt}
 \label{sec:example}
 Die in \cref{sec:usage} empfohlene Anwendung des Containers ist die Versionierung durch ein Startskript.
 In \cref{lst:docker-webdev.ps1} ist ein solches Powershell-Skript dargestellt, das die Verwendung des Containers vereinfacht.
@@ -259,7 +260,7 @@ Bei der Verwendung des Containers gilt es, folgende Besonderheiten zu beachten:
         Da dies allerdings außerhalb des Containers geschieht, entstehen Inkonsistenzen im \verb|node_modules|-Verzeichnis.
         Als Lösung wird die Deaktivierung dieser Funktion in der Entwicklungsumgebung vorgeschlagen.
     \item Viele Web-Frameworks werben mit \emph{Hot Reloading}.
-        Damit ist die automatische Aktualisierung des Browsers bei Änderungen am Source Code gemeint.
+        Damit ist die automatische Aktualisierung des Browsers bei Änderungen am Quelltext gemeint.
         Bei der Verwendung des Containers muss dazu der Modus konfiguriert werden, der Dateiänderungen erkennt.
         Dieser muss auf Polling umgestellt werden, da es bei Docker ein Problem mit der Erkennung von Änderungen in Dateien gibt, wenn diese zwischen dem Host und dem Container geteilt sind \autocite{Docker.inotify-problem:online}. 
     \item Während der Entwicklung des Containers wurde die Möglichkeit getestet, das \verb|node_modules|-Verzeichnis als eigenes Docker-Volume zu behandeln.
