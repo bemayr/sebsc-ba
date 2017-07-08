@@ -1,0 +1,51 @@
+{
+  "version": "0.1.0",
+  "showOutput": "always",
+  "suppressTaskName": true,
+  "tasks": [
+    {
+      "taskName": "build",
+      "isBuildCommand": true,
+      "isShellCommand": true,
+      "command": "docker",
+      "echoCommand": true,
+      "args": [
+        "run",
+        "--rm",
+        "-v=\"%cd%/src/queue:/app\"",
+        "bemayr/ubuntu-gcc-valgrind",
+        "make",
+        "clean",
+        "depend",
+        "all"
+      ]
+    },
+    {
+      "taskName": "run",
+      "isShellCommand": true,
+      "command": "docker",
+      "echoCommand": true,
+      "args": [
+        "run",
+        "--rm",
+        "-v=\"%cd%/src/queue:/app\"",
+        "bemayr/ubuntu-gcc-valgrind",
+        "./main"
+      ]
+    },
+    {
+      "taskName": "valgrind",
+      "isShellCommand": true,
+      "command": "docker",
+      "echoCommand": true,
+      "args": [
+        "run",
+        "--rm",
+        "-v=\"%cd%/src/queue:/app\"",
+        "bemayr/ubuntu-gcc-valgrind",
+        "valgrind",
+        "./main"
+      ]
+    }
+  ]
+}
